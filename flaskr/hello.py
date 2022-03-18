@@ -24,12 +24,15 @@ class earningsdates(db.Model):
 
 @app.route('/<string:ticker>')
 def hello(ticker):
-    theticker =  Main.query.filter_by(ticker = ticker).first()
-    companyname = theticker.company_name
-    avg_optvol = theticker.avg_optvol
-    market_cap = theticker.market_cap
-    avg_stockvol = theticker.avg_stockvol
-    theticker = theticker.ticker
+    try:
+        theticker =  Main.query.filter_by(ticker = ticker).first()
+        companyname = theticker.company_name
+        avg_optvol = theticker.avg_optvol
+        market_cap = theticker.market_cap
+        avg_stockvol = theticker.avg_stockvol
+        theticker = theticker.ticker
+    except:
+        pass
     edate = earningsdates.query.filter_by(ticker = ticker).first()
     exactearningsdate = edate.exactearningsdate
     thisticker = edate.ticker
@@ -37,18 +40,22 @@ def hello(ticker):
     #condition = earningsdates.exactearningsdate > now
     sidebar = earningsdates.query \
         .with_entities(earningsdates.ticker, earningsdates.exactearningsdate) \
-        .filter(earningsdates.exactearningsdate > now).all()
+        .filter(earningsdates.exactearningsdate > now).order_by(earningsdates.ticker).all()
     df = pd.DataFrame (sidebar, columns =['ticker', 'exactearningsdate'])
-    df['ticker'] = '<a href="' + df.ticker.map(str) + '">'  + df.ticker.map(str) + '</a>'
+    df['ticker'] = '<a href="' + df.ticker.map(str) + '" style="color: white;">'  + df.ticker.map(str) + '</a>'
 
-
-    return render_template('index.html', 
-        theticker=thisticker,
-        companyname = companyname,
-        avg_optvol = avg_optvol,
-        market_cap = market_cap,
-        avg_stockvol = avg_stockvol,
-        earningsdate = exactearningsdate,
-        thedate = now,
-        tables = df.to_html(classes='table table-dark sidebarhref', border=None, render_links=True, escape=False, index=False, header=False))
+    try:
+        return render_template('index.html', 
+            theticker = thisticker,
+            companyname = companyname,
+            avg_optvol = avg_optvol,
+            market_cap = market_cap,
+            avg_stockvol = avg_stockvol,
+            earningsdate = exactearningsdate,
+            thedate = now,
+            tables = df.to_html(classes='table table-dark', escape=False, index=False, header=False, render_links=True).replace('border="1"', 'border="0"'))
+    except:
+        return render_template('index.html', 
+            companyname = "This doesn't exist",
+            tables = df.to_html(classes='table table-dark', escape=False, index=False, header=False, render_links=True).replace('border="1"', 'border="0"'))
         
