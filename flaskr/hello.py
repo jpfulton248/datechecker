@@ -1,8 +1,9 @@
-import json
-from flask import Flask, render_template
+from flask import Flask, render_template, url_for, redirect
 from flask_sqlalchemy import SQLAlchemy
 from config import sqlalchemyurl
 import datetime
+import pandas as pd
+from markupsafe import Markup
 
 app = Flask(__name__, instance_relative_config=True)
 app.config['SQLALCHEMY_DATABASE_URI'] = sqlalchemyurl
@@ -32,13 +33,22 @@ def hello(ticker):
     edate = earningsdates.query.filter_by(ticker = ticker).first()
     exactearningsdate = edate.exactearningsdate
     thisticker = edate.ticker
+    now = datetime.datetime.now()
+    #condition = earningsdates.exactearningsdate > now
+    sidebar = earningsdates.query \
+        .with_entities(earningsdates.ticker, earningsdates.exactearningsdate) \
+        .filter(earningsdates.exactearningsdate > now).all()
+    df = pd.DataFrame (sidebar, columns =['ticker', 'exactearningsdate'])
+    df['ticker'] = '<a href="' + df.ticker.map(str) + '">'  + df.ticker.map(str) + '</a>'
 
-    # return theticker.company_name
-    # return f"Company Name = {theticker.company_name}"
-    return render_template('stats.html', 
-                       theticker=theticker,
-                       companyname = companyname,
-                       avg_optvol = avg_optvol,
-                       market_cap = market_cap,
-                       avg_stockvol = avg_stockvol,
-                       earningsdate = exactearningsdate)
+
+    return render_template('index.html', 
+        theticker=thisticker,
+        companyname = companyname,
+        avg_optvol = avg_optvol,
+        market_cap = market_cap,
+        avg_stockvol = avg_stockvol,
+        earningsdate = exactearningsdate,
+        thedate = now,
+        tables = df.to_html(classes='table table-dark sidebarhref', border=None, render_links=True, escape=False, index=False, header=False))
+        
