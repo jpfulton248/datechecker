@@ -42,7 +42,16 @@ def hello(ticker):
         .with_entities(earningsdates.ticker, earningsdates.exactearningsdate) \
         .filter(earningsdates.exactearningsdate > now).order_by(earningsdates.ticker).all()
     df = pd.DataFrame (sidebar, columns =['ticker', 'exactearningsdate'])
-    df['ticker'] = '<a href="' + df.ticker.map(str) + '" style="color: white;">'  + df.ticker.map(str) + '</a>'
+    df['exactearningsdatestr'] = df['exactearningsdate'].dt.strftime('%-m/%-d/%-y %-H')
+    df[['exactearningsdatestr', 'time']] = df['exactearningsdatestr'].str.split(' ', n=1, expand=True)
+    df = df.drop(columns=['exactearningsdate'])
+    df['time'] = df['time'].replace('8', 'Before Market Open')
+    df['time'] = df['time'].replace('16', 'After Market Close')
+    df = df.sort_values(['exactearningsdatestr', 'time'], ascending=[True, False])
+    df['ticker'] = '<a href="' + df.ticker.map(str) + '">'  + df.ticker.map(str) + '</a>'
+    df.set_index(['exactearningsdatestr', 'time', 'ticker'], inplace=True)
+    
+
 
     try:
         return render_template('index.html', 
@@ -53,9 +62,10 @@ def hello(ticker):
             avg_stockvol = avg_stockvol,
             earningsdate = exactearningsdate,
             thedate = now,
-            tables = df.to_html(classes='table table-dark', escape=False, index=False, header=False, render_links=True).replace('border="1"', 'border="0"'))
+            #tables = df.to_html(escape=False, index=False, header=False, render_links=True).replace('border="1"', ''))
+            tables = df.to_html(classes='table table-dark', escape=False, index=True, header=True, render_links=True).replace('border="1"', 'border="0"'))
     except:
         return render_template('index.html', 
             companyname = "This doesn't exist",
-            tables = df.to_html(classes='table table-dark', escape=False, index=False, header=False, render_links=True).replace('border="1"', 'border="0"'))
+            tables = df.to_html(classes='table table-dark', escape=False, index=True, header=False, render_links=True).replace('border="1"', 'border="0"'))
         
