@@ -4,6 +4,7 @@ from config import sqlalchemyurl
 import datetime
 import pandas as pd
 from markupsafe import Markup
+import re
 
 app = Flask(__name__, instance_relative_config=True)
 app.config['SQLALCHEMY_DATABASE_URI'] = sqlalchemyurl
@@ -50,7 +51,18 @@ def hello(ticker):
     df = df.sort_values(['exactearningsdatestr', 'time'], ascending=[True, False])
     df['ticker'] = '<a href="' + df.ticker.map(str) + '">'  + df.ticker.map(str) + '</a>'
     df.set_index(['exactearningsdatestr', 'time', 'ticker'], inplace=True)
-    
+    df.groupby('exactearningsdatestr').indices
+    table = df.to_html(escape=False, index=True, header=False, render_links=True).replace('border="1"', '')
+    table = re.sub(r'(?:<th rowspan=\"\d+\" valign=\"top\">)', '<div class=\"edate\">', table, 0, re.MULTILINE)
+    table = re.sub(r'(?:</th>)', '</div>', table, 0, re.MULTILINE)
+    table = re.sub(r'(?:<th>)', '<div class=\"aticker\">', table, 0, re.MULTILINE)
+    table = re.sub(r'(?:\"edate\">Before)', '\"bmoamc\">Before', table, 0, re.MULTILINE)
+    table = re.sub(r'(?:\"edate\">After)', '\"bmoamc\">After', table, 0, re.MULTILINE)
+    table = re.sub(r'(?:\s</tr>)', '', table, 0, re.MULTILINE)
+    table = re.sub(r'(?:<tr>)', '', table, 0, re.MULTILINE)
+
+    # table = table.replace('exactearningsdatestr', '').replace('time','').replace('ticker','')
+    # table = table.replace('      ', '<br/>')
 
 
     try:
@@ -62,10 +74,9 @@ def hello(ticker):
             avg_stockvol = avg_stockvol,
             earningsdate = exactearningsdate,
             thedate = now,
-            #tables = df.to_html(escape=False, index=False, header=False, render_links=True).replace('border="1"', ''))
-            tables = df.to_html(classes='table table-dark', escape=False, index=True, header=True, render_links=True).replace('border="1"', 'border="0"'))
+            tables = table)
     except:
         return render_template('index.html', 
             companyname = "This doesn't exist",
-            tables = df.to_html(classes='table table-dark', escape=False, index=True, header=False, render_links=True).replace('border="1"', 'border="0"'))
+            tables = table)
         
