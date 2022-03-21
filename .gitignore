@@ -3,4 +3,5 @@ config.py
 __pycache__
 .DS_Store
 flaskr/__pycache_
-flakr/config.py
+flaskr/config.py
+myenv
