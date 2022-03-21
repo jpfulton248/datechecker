@@ -1,5 +1,9 @@
+from site import setcopyright
+from tkinter import image_names
 from flask import Flask, render_template, url_for, redirect
 from flask_sqlalchemy import SQLAlchemy
+from matplotlib import image
+from numpy import logical_or
 from config import sqlalchemyurl
 import datetime
 import pandas as pd
@@ -20,6 +24,15 @@ class Main(db.Model):
     avg_optvol = db.Column(db.Float)
     market_cap = db.Column(db.Float)
     avg_stockvol = db.Column(db.Float)
+    sector = db.Column(db.String(30))
+    industry = db.Column(db.String(30))
+    address = db.Column(db.String(30))
+    city = db.Column(db.String(30))
+    state = db.Column(db.String(30))
+    # zipcode = db.Column(db.String(10))
+    description = db.Column(db.Text(255))
+    # logo = db.Column(db.String(255))
+    website = db.Column(db.String(255))
 
 class earningsdates(db.Model):
     earningsdateid = db.Column(db.Integer(), primary_key=True)
@@ -37,6 +50,17 @@ def hello(ticker):
         avg_stockvol = theticker.avg_stockvol
         theticker = theticker.ticker
         market_cap = round((market_cap/1000000000), 2)
+        # sector = theticker.sector
+        # industry = theticker.industry
+        # address = theticker.address
+        # city = theticker.city
+        # state = theticker.state
+        # zipcode = theticker.zipcode
+        # description = theticker.description 
+        # logo = theticker.logo
+        # website = theticker.website
+
+
     except:
         pass
     edate = earningsdates.query.filter_by(ticker = ticker).first()
@@ -75,6 +99,15 @@ def hello(ticker):
             avg_stockvol = f'{int(avg_stockvol):,}',
             earningsdate = edatestr,
             bmoamc = bmoamc,
+            # sector = sector,
+            # industry = industry,
+            # address = address,
+            # city = city,
+            # state = state,
+            # zipcode = zipcode,
+            # description = description,
+            # logo = logo,
+            # website = website,
             lists = lists)
     except:
         return render_template('index.html', 
