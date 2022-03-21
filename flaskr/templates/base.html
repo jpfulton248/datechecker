@@ -9,7 +9,7 @@
 <body class="bg-dark">
 <div class="container-fluid">
     <div class="row content">
-        <div class="col-sm-3">
+        <div class="col-sm-3" height="100%">
             <div class="accordion bg-secondary" id="accordionPanelsStayOpenExample">
 
 {% for list, items in lists.items() %}
@@ -35,9 +35,11 @@
             </div>
         </div>
         <div class="col-lg-auto">
-            <h1 style="color: white">{{ companyname }}</h1>
             <h3 style="color: white">{{ theticker }}</h3>
             <h4 style="color: white">{{ earningsdate }} {{ bmoamc }}</h4>
+            <div>
+                <span class="col-md-3" style="color: white">{{ companyname }}</span>
+            </div>   
             <div>
                 <span class="col-md-3" style="color: white">Avg Opt Vol:</span>
                 <span class="col-md-3" style="color: white">{{ avg_optvol }}</span>
@@ -45,11 +47,37 @@
            <div>
                 <span class="col-md-3" style="color: white">Market Cap:</span>
                 <span class="col-md-3" style="color: white">{{ market_cap }} Billion</span>
-            <div>
+           </div>
+           <div>
                 <span class="col-md-3" style="color: white">Avg Vol:</span>
                 <span class="col-md-3" style="color: white">{{ avg_stockvol }}</span>
+            </div>
+            <div>
+                <span class="col-md-3" style="color: white">{{ website }}</span>
+            </div>
+            <div>
+                <span class="col-md-3" style="color: white">{{ sector }}</span>
+            </div>
+            <div>
+                <span class="col-md-3" style="color: white">{{ industry }}</span>
+            </div>
+            <div>
+                <span class="col-md-3" style="color: white">{{ address }}</span>
+            </div>
+            <div>
+                <span class="col-md-3" style="color: white">{{ city }}</span>
+            </div>
+            <div>
+                <span class="col-md-3" style="color: white">{{ state }}</span>
+            </div>
+            <div>
+                <span class="col-md-3" style="color: white">{{ zipcode }}</span>
+            </div>
+            <div>
+                <span class="col-lg-auto" style="color: white"></span>
+            </div>
         </div>
-</div>
+    </div>
     {% block content %}
     {% endblock %}
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
