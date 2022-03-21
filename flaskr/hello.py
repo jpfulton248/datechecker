@@ -1,5 +1,4 @@
 from site import setcopyright
-from tkinter import image_names
 from flask import Flask, render_template, url_for, redirect
 from flask_sqlalchemy import SQLAlchemy
 from matplotlib import image
@@ -20,18 +19,20 @@ import calendar
 class Main(db.Model):
     mainid = db.Column(db.Integer(), primary_key=True)
     ticker = db.Column(db.String(15))
-    company_name = db.Column(db.String(50))
+    company_name = db.Column(db.String(255))
     avg_optvol = db.Column(db.Float)
     market_cap = db.Column(db.Float)
     avg_stockvol = db.Column(db.Float)
-    sector = db.Column(db.String(30))
-    industry = db.Column(db.String(30))
-    address = db.Column(db.String(30))
-    city = db.Column(db.String(30))
-    state = db.Column(db.String(30))
-    # zipcode = db.Column(db.String(10))
+    sector = db.Column(db.String(255))
+    industry = db.Column(db.String(255))
+    address = db.Column(db.String(255))
+    city = db.Column(db.String(255))
+    state = db.Column(db.String(255))
+    zipcode = db.Column(db.String(10))
     description = db.Column(db.Text(255))
-    # logo = db.Column(db.String(255))
+    updated = db.Column(db.String())
+    isactivelytrading = db.Column(db.Integer())
+    logo = db.Column(db.String(255))
     website = db.Column(db.String(255))
 
 class earningsdates(db.Model):
@@ -43,27 +44,25 @@ class earningsdates(db.Model):
 @app.route('/<string:ticker>')
 def hello(ticker):
     try:
-        theticker =  Main.query.filter_by(ticker = ticker).first()
-        companyname = theticker.company_name
-        avg_optvol = theticker.avg_optvol
-        market_cap = theticker.market_cap
-        avg_stockvol = theticker.avg_stockvol
-        theticker = theticker.ticker
-        market_cap = round((market_cap/1000000000), 2)
-        # sector = theticker.sector
-        # industry = theticker.industry
-        # address = theticker.address
-        # city = theticker.city
-        # state = theticker.state
-        # zipcode = theticker.zipcode
-        # description = theticker.description 
-        # logo = theticker.logo
-        # website = theticker.website
-
-
+        mresult = Main.query.filter(Main.ticker==ticker).first()
+        company_name = mresult.company_name
+        avg_optvol = mresult.avg_optvol
+        market_cap = round((mresult.market_cap/1000000000), 2)
+        avg_stockvol = mresult.avg_stockvol
+        theticker = mresult.ticker
+        sector = mresult.sector
+        industry = mresult.industry
+        address = mresult.address
+        city = mresult.city
+        state = mresult.state
+        zipcode = mresult.zipcode
+        description = mresult.description
+        logo = mresult.logo
+        website = mresult.website
     except:
         pass
-    edate = earningsdates.query.filter_by(ticker = ticker).first()
+    edate = earningsdates.query.filter_by(ticker = ticker).order_by(earningsdates.exactearningsdate.desc()).first()
+
     exactearningsdate = edate.exactearningsdate
     edatestr = datetime.datetime.strftime(exactearningsdate,'%-m/%-d/%Y %-H')
     thisticker = edate.ticker
@@ -71,11 +70,13 @@ def hello(ticker):
     bmoamc = bmoamc.replace('8', 'Before Market Open')
     bmoamc = bmoamc.replace('16', 'After Market Close')
     now = datetime.datetime.now()
-    result = earningsdates.query \
+
+    #query
+    eresult = earningsdates.query \
         .with_entities(earningsdates.ticker, earningsdates.exactearningsdate, earningsdates.companyname) \
         .filter(earningsdates.exactearningsdate > now).order_by(earningsdates.ticker).all()
     
-    df = pd.DataFrame(result, columns =['ticker', 'exactearningsdate', 'companyname'])
+    df = pd.DataFrame(eresult, columns =['ticker', 'exactearningsdate', 'companyname'])
     df['exactearningsdatestr'] = df['exactearningsdate'].dt.strftime('%-m/%-d/%-y %-H')
     df['earningsdow'] = df['exactearningsdate'].dt.day_name()
     df[['exactearningsdatestr', 'time']] = df['exactearningsdatestr'].str.split(' ', n=1, expand=True)
@@ -93,21 +94,21 @@ def hello(ticker):
     try:
         return render_template('index.html', 
             theticker = thisticker,
-            companyname = companyname,
+            companyname = company_name,
             avg_optvol = f'{int(avg_optvol):,}',
             market_cap = market_cap,
             avg_stockvol = f'{int(avg_stockvol):,}',
             earningsdate = edatestr,
             bmoamc = bmoamc,
-            # sector = sector,
-            # industry = industry,
-            # address = address,
-            # city = city,
-            # state = state,
-            # zipcode = zipcode,
-            # description = description,
-            # logo = logo,
-            # website = website,
+            sector = sector,
+            industry = industry,
+            address = address,
+            city = city,
+            state = state,
+            zipcode = zipcode,
+            description = description,
+            logo = logo,
+            website = website,
             lists = lists)
     except:
         return render_template('index.html', 
