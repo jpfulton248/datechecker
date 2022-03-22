@@ -1,3 +1,3 @@
 #.flaskenv
-FLASK_APP=hello
+FLASK_APP=mm
 FLASK_ENV=development
