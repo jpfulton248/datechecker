@@ -64,7 +64,16 @@ class indexes(db.Model):
     prevclose = db.Column(db.Numeric(20,2))
     dated = db.Column(db.String())
 
-
+class changes(db.Model):
+    changesid = db.Column(db.Integer(), primary_key=True)
+    ticker = db.Column(db.String())
+    dated = db.Column(db.String())
+    iv = db.Column(db.Numeric(10,2))
+    straddle = db.Column(db.Numeric(10,2))
+    impliedmove = db.Column(db.Numeric(10,2))
+    underlying = db.Column(db.Numeric(10,2))
+    strike = db.Column(db.Numeric(10,2))
+    quarter = db.Column(db.String())
 
 @app.route('/<string:ticker>')
 def hello(ticker):
@@ -116,26 +125,37 @@ def hello(ticker):
     for k, g in groupby(mydict, key=lambda t: t['earningsdow']):
         lists[k] = list(g)
 
-    try:
-        return render_template('index.html', 
-            theticker = thisticker,
-            companyname = company_name,
-            avg_optvol = f'{int(avg_optvol):,}',
-            market_cap = market_cap,
-            avg_stockvol = f'{int(avg_stockvol):,}',
-            earningsdate = edatestr,
-            bmoamc = bmoamc,
-            sector = sector,
-            industry = industry,
-            address = address,
-            city = city,
-            state = state,
-            zipcode = zipcode,
-            description = description,
-            logo = logo,
-            website = website,
-            lists = lists)
-    except:
-        return render_template('index.html', 
-            companyname = "This doesn't exist",
-            lists=lists)        
+    #changes query
+    cresult = changes.query \
+        .with_entities(changes.dated, changes.iv, changes.straddle, changes.impliedmove, changes.underlying, changes.strike) \
+        .filter(changes.ticker == ticker).all()
+    cdf = pd.DataFrame(cresult, columns =['Time', 'IV', 'Straddle Price', 'Implied Move', 'Stock Price', 'Strike'])
+    cdf = cdf.sort_values(['Time'], ascending=[False])
+    cdf['Time'] = cdf['Time'].dt.strftime("%-m/%-d/%-y %-I:%M %p")
+    return render_template('index.html', 
+        theticker = thisticker,
+        companyname = company_name,
+        avg_optvol = f'{int(avg_optvol):,}',
+        market_cap = market_cap,
+        avg_stockvol = f'{int(avg_stockvol):,}',
+        earningsdate = edatestr,
+        bmoamc = bmoamc,
+        sector = sector,
+        industry = industry,
+        address = address,
+        city = city,
+        state = state,
+        zipcode = zipcode,
+        description = description,
+        logo = logo,
+        website = website,
+        tables = cdf.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True),
+        lists = lists)
+    # except:
+    #     return render_template('index.html', 
+    #         companyname = "This doesn't exist",
+    #         lists=lists)        
+
+# @app.route('/')
+# def home():
+#     print url_for('/', ticker='AAPL')
