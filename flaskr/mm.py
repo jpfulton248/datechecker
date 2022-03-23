@@ -1,7 +1,5 @@
 from site import setcopyright
-from flask import Flask, render_template, url_for, redirect
-import flask
-from flask import request
+from flask import Flask, current_app, render_template, url_for, redirect, request
 from flask_sqlalchemy import SQLAlchemy
 from matplotlib import image
 from numpy import logical_or
@@ -17,6 +15,13 @@ from collections import OrderedDict, defaultdict
 import json
 from itertools import groupby
 import calendar
+
+#declare some variables
+routeedate = ''
+now = datetime.datetime.now()
+staticstrike = 10
+lists = {}
+
 
 class Main(db.Model):
     mainid = db.Column(db.Integer(), primary_key=True)
@@ -43,29 +48,6 @@ class earningsdates(db.Model):
     companyname = db.Column(db.String(100))
     exactearningsdate = db.Column(db.String())
 
-class spy(db.Model):
-    id = db.Column(db.Integer(), primary_key=True)
-    price = db.Column(db.Numeric(20,2))
-    volume = db.Column(db.Integer())
-    high = db.Column(db.Numeric(20,2))
-    low = db.Column(db.Numeric(20,2))
-    open = db.Column(db.Numeric(20,2))
-    dated = db.Column(db.String())
-
-class indexes(db.Model):
-    indexesid = db.Column(db.Integer(), primary_key=True)
-    symbol = db.Column(db.String())
-    price = db.Column(db.Numeric(20,2))
-    percchange = db.Column(db.Numeric(4,2))
-    change = db.Column(db.Numeric(10,2))
-    daylow = db.Column(db.Numeric(20,2))
-    dayhigh = db.Column(db.Numeric(20,2))
-    volume = db.Column(db.Integer())
-    avgvol = db.Column(db.Integer())
-    open = db.Column(db.Numeric(20,2))
-    prevclose = db.Column(db.Numeric(20,2))
-    dated = db.Column(db.String())
-
 class changes(db.Model):
     changesid = db.Column(db.Integer(), primary_key=True)
     ticker = db.Column(db.String())
@@ -77,15 +59,27 @@ class changes(db.Model):
     strike = db.Column(db.Numeric(10,2))
     quarter = db.Column(db.String())
 
+class ridingstraddle(db.Model):
+    rdid = db.Column(db.Integer(), primary_key=True)
+    ticker = db.Column(db.String())
+    exactearningsdate = db.Column(db.String())
+    staticstraddle = db.Column(db.Numeric(10,2))
+    staticiv = db.Column(db.Numeric(10,2))
+    underlying = db.Column(db.Numeric(10,2))
+    staticstrike = db.Column(db.Numeric(10,2))
+    dated = db.Column(db.String())
+
+
 @app.route('/<string:ticker>')
 def hello(ticker):
+    routeticker = ticker
     try:
-        mresult = Main.query.filter(Main.ticker==ticker).first()
+        mresult = Main.query.filter(Main.ticker==routeticker).first()
         company_name = mresult.company_name
         avg_optvol = mresult.avg_optvol
         market_cap = round((mresult.market_cap/1000000000), 2)
         avg_stockvol = mresult.avg_stockvol
-        theticker = mresult.ticker
+    #   theticker = mresult.ticker
         sector = mresult.sector
         industry = mresult.industry
         address = mresult.address
@@ -97,47 +91,43 @@ def hello(ticker):
         website = mresult.website
     except:
         pass
-    edate = earningsdates.query.filter_by(ticker = ticker).order_by(earningsdates.exactearningsdate.desc()).first()
-    # exactearningsdate = edate.exactearningsdate
-    exactearningsdate = getedate()
+
+    #####MAINCONTENT#####
+    #This is for loading all the stats in main content
+    with app.test_request_context('/'), app.test_client() as c:
+        routeticker = request.path
+    routeticker = routeticker
+    routeticker = 'ADBE'
+    edate = earningsdates.query. \
+        with_entities(earningsdates.ticker, earningsdates.companyname, earningsdates.exactearningsdate). \
+            filter(earningsdates.ticker == routeticker).order_by(earningsdates.exactearningsdate. \
+            desc()).first()
+    mcdf = pd.DataFrame(edate, columns=['ticker', 'companyname', 'exactearningsdate'])
+    mcdf.iterrows:
+        
     edatestr = datetime.datetime.strftime(exactearningsdate,'%-m/%-d/%Y %-H')
-    thisticker = edate.ticker
     edatestr, bmoamc = edatestr.split()
     bmoamc = bmoamc.replace('8', 'Before Market Open')
     bmoamc = bmoamc.replace('16', 'After Market Close')
-    now = datetime.datetime.now()
 
-    #query
-    eresult = earningsdates.query \
-        .with_entities(earningsdates.ticker, earningsdates.exactearningsdate, earningsdates.companyname) \
-        .filter(earningsdates.exactearningsdate > now).order_by(earningsdates.ticker).all()
-    df = pd.DataFrame(eresult, columns =['ticker', 'exactearningsdate', 'companyname'])
-    df['exactearningsdatestr'] = df['exactearningsdate'].dt.strftime('%-m/%-d/%-y %-H')
-    df['earningsdow'] = df['exactearningsdate'].dt.day_name()
-    df[['exactearningsdatestr', 'time']] = df['exactearningsdatestr'].str.split(' ', n=1, expand=True)
-    df['time'] = df['time'].replace('8', 'BMO')
-    df['time'] = df['time'].replace('16', 'AMC')
-    df = df.sort_values(['exactearningsdatestr', 'time'], ascending=[True, False])
-    df = df.drop(columns='exactearningsdate')
-    mydict = df.to_dict(orient='rows')
+    #####GETTING VALUES FROM FUNCTION RETURNS#####
+    #sidebar
+    sidemenu = sidebar()
 
-    lists = {}
+    #static table and assign variable to get static strike
+    stable = statictable()
+    try:
+        staticstrike = stable['Strike'].iloc[0]
+    except:
+        staticstrike = 10
 
-    for k, g in groupby(mydict, key=lambda t: t['earningsdow']):
-        lists[k] = list(g)
+    #changestable
+    ctable = changestable()
+    # cdf.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True)
 
-    #put changes stuff back here if this doesn't work
-    
-    cdf = thetable()
-    minval = cdf['Min Value'].iloc[0]
-    maxval = cdf['Max Value'].iloc[0]
-    cdf = cdf.drop(columns=['Min Value', 'Max Value'])
-    tables = cdf.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True)
-
-
-
+    #####THE FINAL RENDERING OF /<ticker> TO INDEX.HTML#####
     return render_template('index.html', 
-        theticker = thisticker,
+        routeticker = routeticker,
         companyname = company_name,
         avg_optvol = f'{int(avg_optvol):,}',
         market_cap = market_cap,
@@ -153,50 +143,61 @@ def hello(ticker):
         description = description,
         logo = logo,
         website = website,
-        tables = tables,
-        lists = lists,
-        minval = minval,
-        maxval = maxval), theticker
+        tables = ctable,
+        stables = stable.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True),
+        lists = sidemenu,
+        staticstrike = staticstrike)
     # except:
     #     return render_template('index.html', 
     #         companyname = "This doesn't exist",
     #         lists=lists)        
 
-def getedate():
-    #need to figure out how to get current route so I can get ticker
-    ticker = hello([2])
-    edate = earningsdates.query.with_entities(earningsdates.exactearningsdate).filter_by(ticker = ticker).order_by(earningsdates.exactearningsdate.desc()).first()
-    edf = pd.DataFrame(edate, ['edate'])
-    exactedate = edf['edate']
-    return exactedate
-
-def threefortyfive():
-    #need to get earningsdate in here so i can properly calculate threefortyfive
-    today = datetime.date.today()
-    yesterday = today - datetime.timedelta(days=1)
-    threefortyfive = datetime.time(15, 45, 00)
-    threefortyfive = datetime.datetime.combine(yesterday, threefortyfive)
-    threefortyfive = datetime.datetime.strftime(threefortyfive, '%Y-%m-%d %H:%M:%S')
-    return threefortyfive
-
-def thetable():
-    ticker = hello([2])
-    #need to figure out how to get current route so I can get ticker
+#####CHANGESTABLE#####
+#CHANGES query this is all for loading the table of changes
+def changestable():
+    with app.test_request_context('/'), app.test_client() as c:
+        routeticker = request.path
     cresult = changes.query \
         .with_entities(changes.dated, changes.iv, changes.straddle, changes.impliedmove, changes.underlying, changes.strike) \
-        .filter(changes.ticker == ticker, changes.dated > threefortyfive(), changes.dated < datetime.datetime.now()).all()
+        .filter(changes.ticker == routeticker).all()
     cdf = pd.DataFrame(cresult, columns =['Time', 'IV', 'Straddle Price', 'Implied Move', 'Stock Price', 'Strike'])
-    cdf['Min Value'] = cdf['Straddle Price'].min()
-    cdf['Max Value'] = cdf['Straddle Price'].max()
     cdf = cdf.sort_values(['Time'], ascending=[False])
-    # cdf['Time'] = cdf['Time'].dt.strptime()
-    # cdf['Time'] = cdf['Time'].dt.strftime("%-m/%-d/%-y %-I:%M %p")
-    #minvalue = cdf['Straddle Price'].min()
-    # minvaluetime = cdf['Straddle Price'].idxmin()
-    # maxvaluetime = cdf['Straddle Price'].idxmax()
-    #maxvalue = cdf['Straddle Price'].max()
+    cdf['Time'] = cdf['Time'].apply(lambda x: x.strftime('%-m/%-d/%-y %-I:%M %p'))
+    cdf = cdf.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True)
+    print(routeticker)
     return cdf
+changestable()
+
+#####STATIC TABLE#####
+#STATIC TABLE query this is all for loading the table of changes
+def statictable():
+    #####STATICTABLE#####
+    #STATIC query this is all for loading the table of changes
+    sresult = ridingstraddle.query \
+        .with_entities(ridingstraddle.dated, ridingstraddle.staticiv, ridingstraddle.staticstraddle, ridingstraddle.underlying, ridingstraddle.staticstrike) \
+        .filter(ridingstraddle.ticker == routeticker).all()
+    sdf = pd.DataFrame(sresult, columns =['Time', 'IV', 'Straddle Price', 'Stock Price', 'Strike'])
+    sdf = sdf.sort_values(['Time'], ascending=[False])
+    sdf['Time'] = sdf['Time'].apply(lambda x: x.strftime('%-m/%-d/%-y %-I:%M %p'))
+    sdf.drop(columns='Strike')
+    return sdf
 
 
-# @app.route('/get_table')
-# def get_table():
+#####SIDEBAR#####
+#this is for loading the sidebar
+def sidebar():
+    eresult = earningsdates.query \
+        .with_entities(earningsdates.ticker, earningsdates.exactearningsdate, earningsdates.companyname) \
+        .filter(earningsdates.exactearningsdate > now).order_by(earningsdates.ticker).all()
+    df = pd.DataFrame(eresult, columns =['ticker', 'exactearningsdate', 'companyname'])
+    df['exactearningsdatestr'] = df['exactearningsdate'].dt.strftime('%-m/%-d/%-y %-H')
+    df['earningsdow'] = df['exactearningsdate'].dt.day_name()
+    df[['exactearningsdatestr', 'time']] = df['exactearningsdatestr'].str.split(' ', n=1, expand=True)
+    df['time'] = df['time'].replace('8', 'BMO')
+    df['time'] = df['time'].replace('16', 'AMC')
+    df = df.sort_values(['exactearningsdatestr', 'time'], ascending=[True, False])
+    df = df.drop(columns='exactearningsdate')
+    mydict = df.to_dict(orient='rows')
+    for k, g in groupby(mydict, key=lambda t: t['earningsdow']):
+        lists[k] = list(g)
+    return lists
