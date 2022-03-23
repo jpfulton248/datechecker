@@ -1,5 +1,7 @@
 from site import setcopyright
 from flask import Flask, render_template, url_for, redirect
+import flask
+from flask import request
 from flask_sqlalchemy import SQLAlchemy
 from matplotlib import image
 from numpy import logical_or
@@ -96,8 +98,8 @@ def hello(ticker):
     except:
         pass
     edate = earningsdates.query.filter_by(ticker = ticker).order_by(earningsdates.exactearningsdate.desc()).first()
-
-    exactearningsdate = edate.exactearningsdate
+    # exactearningsdate = edate.exactearningsdate
+    exactearningsdate = getedate()
     edatestr = datetime.datetime.strftime(exactearningsdate,'%-m/%-d/%Y %-H')
     thisticker = edate.ticker
     edatestr, bmoamc = edatestr.split()
@@ -109,7 +111,6 @@ def hello(ticker):
     eresult = earningsdates.query \
         .with_entities(earningsdates.ticker, earningsdates.exactearningsdate, earningsdates.companyname) \
         .filter(earningsdates.exactearningsdate > now).order_by(earningsdates.ticker).all()
-    
     df = pd.DataFrame(eresult, columns =['ticker', 'exactearningsdate', 'companyname'])
     df['exactearningsdatestr'] = df['exactearningsdate'].dt.strftime('%-m/%-d/%-y %-H')
     df['earningsdow'] = df['exactearningsdate'].dt.day_name()
@@ -125,13 +126,16 @@ def hello(ticker):
     for k, g in groupby(mydict, key=lambda t: t['earningsdow']):
         lists[k] = list(g)
 
-    #changes query
-    cresult = changes.query \
-        .with_entities(changes.dated, changes.iv, changes.straddle, changes.impliedmove, changes.underlying, changes.strike) \
-        .filter(changes.ticker == ticker).all()
-    cdf = pd.DataFrame(cresult, columns =['Time', 'IV', 'Straddle Price', 'Implied Move', 'Stock Price', 'Strike'])
-    cdf = cdf.sort_values(['Time'], ascending=[False])
-    cdf['Time'] = cdf['Time'].dt.strftime("%-m/%-d/%-y %-I:%M %p")
+    #put changes stuff back here if this doesn't work
+    
+    cdf = thetable()
+    minval = cdf['Min Value'].iloc[0]
+    maxval = cdf['Max Value'].iloc[0]
+    cdf = cdf.drop(columns=['Min Value', 'Max Value'])
+    tables = cdf.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True)
+
+
+
     return render_template('index.html', 
         theticker = thisticker,
         companyname = company_name,
@@ -149,13 +153,50 @@ def hello(ticker):
         description = description,
         logo = logo,
         website = website,
-        tables = cdf.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True),
-        lists = lists)
+        tables = tables,
+        lists = lists,
+        minval = minval,
+        maxval = maxval), theticker
     # except:
     #     return render_template('index.html', 
     #         companyname = "This doesn't exist",
     #         lists=lists)        
 
-# @app.route('/')
-# def home():
-#     print url_for('/', ticker='AAPL')
+def getedate():
+    #need to figure out how to get current route so I can get ticker
+    ticker = hello([2])
+    edate = earningsdates.query.with_entities(earningsdates.exactearningsdate).filter_by(ticker = ticker).order_by(earningsdates.exactearningsdate.desc()).first()
+    edf = pd.DataFrame(edate, ['edate'])
+    exactedate = edf['edate']
+    return exactedate
+
+def threefortyfive():
+    #need to get earningsdate in here so i can properly calculate threefortyfive
+    today = datetime.date.today()
+    yesterday = today - datetime.timedelta(days=1)
+    threefortyfive = datetime.time(15, 45, 00)
+    threefortyfive = datetime.datetime.combine(yesterday, threefortyfive)
+    threefortyfive = datetime.datetime.strftime(threefortyfive, '%Y-%m-%d %H:%M:%S')
+    return threefortyfive
+
+def thetable():
+    ticker = hello([2])
+    #need to figure out how to get current route so I can get ticker
+    cresult = changes.query \
+        .with_entities(changes.dated, changes.iv, changes.straddle, changes.impliedmove, changes.underlying, changes.strike) \
+        .filter(changes.ticker == ticker, changes.dated > threefortyfive(), changes.dated < datetime.datetime.now()).all()
+    cdf = pd.DataFrame(cresult, columns =['Time', 'IV', 'Straddle Price', 'Implied Move', 'Stock Price', 'Strike'])
+    cdf['Min Value'] = cdf['Straddle Price'].min()
+    cdf['Max Value'] = cdf['Straddle Price'].max()
+    cdf = cdf.sort_values(['Time'], ascending=[False])
+    # cdf['Time'] = cdf['Time'].dt.strptime()
+    # cdf['Time'] = cdf['Time'].dt.strftime("%-m/%-d/%-y %-I:%M %p")
+    #minvalue = cdf['Straddle Price'].min()
+    # minvaluetime = cdf['Straddle Price'].idxmin()
+    # maxvaluetime = cdf['Straddle Price'].idxmax()
+    #maxvalue = cdf['Straddle Price'].max()
+    return cdf
+
+
+# @app.route('/get_table')
+# def get_table():
