@@ -65,10 +65,55 @@ class indexes(db.Model):
     prevclose = db.Column(db.Numeric(20,2))
     dated = db.Column(db.String())
 
-@app.route('/<string:ticker>')
-def hello(ticker):
+class changes(db.Model):
+    changesid = db.Column(db.Integer(), primary_key=True)
+    ticker = db.Column(db.String())
+    dated = db.Column(db.String())
+    iv = db.Column(db.Numeric(10,2))
+    straddle = db.Column(db.Numeric(10,2))
+    impliedmove = db.Column(db.Numeric(10,2))
+    underlying = db.Column(db.Numeric(10,2))
+    strike = db.Column(db.Numeric(10,2))
+    quarter = db.Column(db.String())
+
+class ridingstraddle(db.Model):
+    rdid = db.Column(db.Integer(), primary_key=True)
+    ticker = db.Column(db.String())
+    exactearningsdate = db.Column(db.String())
+    staticstraddle = db.Column(db.Numeric(10,2))
+    staticiv = db.Column(db.Numeric(10,2))
+    underlying = db.Column(db.Numeric(10,2))
+    staticstrike = db.Column(db.Numeric(10,2))
+    dated = db.Column(db.String())
+
+def now():
+    now = datetime.datetime.now()
+    return now
+
+
+def sidebar(routeticker):
+    eresult = earningsdates.query \
+        .with_entities(earningsdates.ticker, earningsdates.exactearningsdate, earningsdates.companyname) \
+        .filter(earningsdates.exactearningsdate > now()).order_by(earningsdates.ticker).all()
+    df = pd.DataFrame(eresult, columns =['ticker', 'exactearningsdate', 'companyname'])
+    df['exactearningsdatestr'] = df['exactearningsdate'].dt.strftime('%-m/%-d/%-y %-H')
+    df['earningsdow'] = df['exactearningsdate'].dt.day_name()
+    df[['exactearningsdatestr', 'time']] = df['exactearningsdatestr'].str.split(' ', n=1, expand=True)
+    df['time'] = df['time'].replace('8', 'BMO')
+    df['time'] = df['time'].replace('16', 'AMC')
+    df = df.sort_values(['exactearningsdatestr', 'time'], ascending=[True, False])
+    df = df.drop(columns='exactearningsdate')
+    mydict = df.to_dict(orient='rows')
+
+    lists = {}
+
+    for k, g in groupby(mydict, key=lambda t: t['earningsdow']):
+        lists[k] = list(g)
+    return lists
+
+def maincontent(routeticker):
     try:
-        mresult = Main.query.filter(Main.ticker==ticker).first()
+        mresult = Main.query.filter(Main.ticker==routeticker).first()
         company_name = mresult.company_name
         avg_optvol = mresult.avg_optvol
         market_cap = round((mresult.market_cap/1000000000), 2)
@@ -85,43 +130,37 @@ def hello(ticker):
         website = mresult.website
     except:
         pass
-    edate = earningsdates.query.filter_by(ticker = ticker).order_by(earningsdates.exactearningsdate.desc()).first()
-
+    edate = earningsdates.query.filter(earningsdates.ticker==routeticker).order_by(earningsdates.exactearningsdate.desc()).first()
     exactearningsdate = edate.exactearningsdate
     edatestr = datetime.datetime.strftime(exactearningsdate,'%-m/%-d/%Y %-H')
     thisticker = edate.ticker
     edatestr, bmoamc = edatestr.split()
     bmoamc = bmoamc.replace('8', 'Before Market Open')
     bmoamc = bmoamc.replace('16', 'After Market Close')
-    now = datetime.datetime.now()
+    maincontentvars = [company_name, avg_optvol, market_cap, avg_stockvol, sector, industry, address, city, state, zipcode, description, logo, website, exactearningsdate, edatestr, thisticker, bmoamc]
+    return maincontentvars
 
-    #query
-    eresult = earningsdates.query \
-        .with_entities(earningsdates.ticker, earningsdates.exactearningsdate, earningsdates.companyname) \
-        .filter(earningsdates.exactearningsdate > now).order_by(earningsdates.ticker).all()
-    
-    df = pd.DataFrame(eresult, columns =['ticker', 'exactearningsdate', 'companyname'])
-    df['exactearningsdatestr'] = df['exactearningsdate'].dt.strftime('%-m/%-d/%-y %-H')
-    df['earningsdow'] = df['exactearningsdate'].dt.day_name()
-    df[['exactearningsdatestr', 'time']] = df['exactearningsdatestr'].str.split(' ', n=1, expand=True)
-    df['time'] = df['time'].replace('8', 'BMO')
-    df['time'] = df['time'].replace('16', 'AMC')
-    df = df.sort_values(['exactearningsdatestr', 'time'], ascending=[True, False])
-    df = df.drop(columns='exactearningsdate')
-    mydict = df.to_dict(orient='rows')
-
-    lists = {}
-
-    for k, g in groupby(mydict, key=lambda t: t['earningsdow']):
-        lists[k] = list(g)
-
-    #changes query
+def changestable(routeticker):
     cresult = changes.query \
         .with_entities(changes.dated, changes.iv, changes.straddle, changes.impliedmove, changes.underlying, changes.strike) \
-        .filter(changes.ticker == ticker).all()
-    cdf = pd.DataFrame(cresult, columns =['Time', 'IV', 'Straddle Price', 'Implied Move', 'Stock Price', 'Strike'])
-    cdf = cdf.sort_values(['Time'], ascending=[False])
-    cdf['Time'] = cdf['Time'].dt.strftime("%-m/%-d/%-y %-I:%M %p")
+        .filter(changes.ticker == routeticker).all()
+    changestable = pd.DataFrame(cresult, columns =['Time', 'IV', 'Straddle Price', 'Implied Move', 'Stock Price', 'Strike'])
+    changestable = changestable.sort_values(['Time'], ascending=[False])
+    changestable['Time'] = changestable['Time'].dt.strftime("%-m/%-d/%-y %-I:%M %p")
+    ctable = changestable
+    return ctable
+
+# def statictable(routeticker):
+#     cresult = changes.query \
+#         .with_entities(changes.dated, changes.iv, changes.straddle, changes.impliedmove, changes.underlying, changes.strike) \
+#         .filter(changes.ticker == routeticker).all()
+
+@app.route('/<string:routeticker>')
+def mainroute(routeticker):
+    sidebarlist = sidebar(routeticker)
+    company_name, avg_optvol, market_cap, avg_stockvol, sector, industry, address, city, state, zipcode, description, logo, website, exactearningsdate, edatestr, thisticker, bmoamc = maincontent(routeticker)
+    ctable = changestable(routeticker)
+
     return render_template('index.html', 
         theticker = thisticker,
         companyname = company_name,
@@ -139,8 +178,8 @@ def hello(ticker):
         description = description,
         logo = logo,
         website = website,
-        tables = cdf.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True),
-        lists = lists)
+        tables = ctable.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True),
+        lists = sidebarlist)
     # except:
     #     return render_template('index.html', 
     #         companyname = "This doesn't exist",
