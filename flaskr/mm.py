@@ -15,6 +15,8 @@ from collections import OrderedDict, defaultdict
 import json
 from itertools import groupby
 import calendar
+from dotenv import load_dotenv
+
 
 class Main(db.Model):
     mainid = db.Column(db.Integer(), primary_key=True)
