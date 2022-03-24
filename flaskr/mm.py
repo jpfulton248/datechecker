@@ -15,6 +15,7 @@ from collections import OrderedDict, defaultdict
 import json
 from itertools import groupby
 import calendar
+from dotenv import load_dotenv
 
 class Main(db.Model):
     mainid = db.Column(db.Integer(), primary_key=True)
@@ -41,16 +42,28 @@ class earningsdates(db.Model):
     companyname = db.Column(db.String(100))
     exactearningsdate = db.Column(db.String())
 
-class changes(db.Model):
-    changesid = db.Column(db.Integer(), primary_key=True)
-    ticker = db.Column(db.String())
+class spy(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    price = db.Column(db.Numeric(20,2))
+    volume = db.Column(db.Integer())
+    high = db.Column(db.Numeric(20,2))
+    low = db.Column(db.Numeric(20,2))
+    open = db.Column(db.Numeric(20,2))
     dated = db.Column(db.String())
-    iv = db.Column(db.Numeric(10,2))
-    straddle = db.Column(db.Numeric(10,2))
-    impliedmove = db.Column(db.Numeric(10,2))
-    underlying = db.Column(db.Numeric(10,2))
-    strike = db.Column(db.Numeric(10,2))
-    quarter = db.Column(db.String())
+
+class indexes(db.Model):
+    indexesid = db.Column(db.Integer(), primary_key=True)
+    symbol = db.Column(db.String())
+    price = db.Column(db.Numeric(20,2))
+    percchange = db.Column(db.Numeric(4,2))
+    change = db.Column(db.Numeric(10,2))
+    daylow = db.Column(db.Numeric(20,2))
+    dayhigh = db.Column(db.Numeric(20,2))
+    volume = db.Column(db.Integer())
+    avgvol = db.Column(db.Integer())
+    open = db.Column(db.Numeric(20,2))
+    prevclose = db.Column(db.Numeric(20,2))
+    dated = db.Column(db.String())
 
 @app.route('/<string:ticker>')
 def hello(ticker):
