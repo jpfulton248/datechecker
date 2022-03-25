@@ -150,16 +150,23 @@ def changestable(routeticker):
     ctable = changestable
     return ctable
 
-# def statictable(routeticker):
-#     cresult = changes.query \
-#         .with_entities(changes.dated, changes.iv, changes.straddle, changes.impliedmove, changes.underlying, changes.strike) \
-#         .filter(changes.ticker == routeticker).all()
+def statictable(routeticker):
+    sresult = ridingstraddle.query \
+        .with_entities(ridingstraddle.dated, ridingstraddle.staticiv, ridingstraddle.staticstraddle, ridingstraddle.underlying, ridingstraddle.staticstrike) \
+        .filter(ridingstraddle.ticker == routeticker).all()
+    sdf = pd.DataFrame(sresult, columns =['Time', 'IV', 'Straddle Price', 'Stock Price', 'Strike'])
+    sdf = sdf.sort_values(['Time'], ascending=[False])
+    sdf['Time'] = sdf['Time'].apply(lambda x: x.strftime('%-m/%-d/%-y %-I:%M %p'))
+    sdf.drop(columns='Strike')
+    print(sdf)
+    return sdf
 
 @app.route('/<string:routeticker>')
 def mainroute(routeticker):
     sidebarlist = sidebar(routeticker)
     company_name, avg_optvol, market_cap, avg_stockvol, sector, industry, address, city, state, zipcode, description, logo, website, exactearningsdate, edatestr, thisticker, bmoamc = maincontent(routeticker)
     ctable = changestable(routeticker)
+    stable = statictable(routeticker)
 
     return render_template('index.html', 
         theticker = thisticker,
@@ -178,7 +185,8 @@ def mainroute(routeticker):
         description = description,
         logo = logo,
         website = website,
-        tables = ctable.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True),
+        ctable = ctable.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True),
+        stable = stable.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True),
         lists = sidebarlist)
     # except:
     #     return render_template('index.html', 

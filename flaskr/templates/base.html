@@ -73,8 +73,11 @@
             <div>
                 <span class="col-md-3" style="color: white">{{ zipcode }}</span>
             </div></br>
-            <div class="center">
-                <span class="col-lg-auto" style="color: white">{{ tables|safe }}</span>
+            <div class="table table1" style="display:none;">
+                <span class="col-lg-auto" style="color: white">{{ ctable|safe }}</span>
+            </div>
+            <div class="table table2" style="display:block;">
+                <span class="col-lg-auto" style="color: white">{{ stable|safe }}</span>
             </div>
         </div>
     </div>
