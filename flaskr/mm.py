@@ -1,5 +1,5 @@
 from site import setcopyright
-from flask import Flask, render_template, url_for, redirect
+from flask import Flask, render_template, url_for, redirect, request
 from flask_sqlalchemy import SQLAlchemy
 from matplotlib import image
 from numpy import logical_or
@@ -91,25 +91,29 @@ def now():
     return now
 
 
-def sidebar(routeticker):
-    eresult = earningsdates.query \
-        .with_entities(earningsdates.ticker, earningsdates.exactearningsdate, earningsdates.companyname) \
-        .filter(earningsdates.exactearningsdate > now()).order_by(earningsdates.ticker).all()
-    df = pd.DataFrame(eresult, columns =['ticker', 'exactearningsdate', 'companyname'])
-    df['exactearningsdatestr'] = df['exactearningsdate'].dt.strftime('%-m/%-d/%-y %-H')
-    df['earningsdow'] = df['exactearningsdate'].dt.day_name()
-    df[['exactearningsdatestr', 'time']] = df['exactearningsdatestr'].str.split(' ', n=1, expand=True)
-    df['time'] = df['time'].replace('8', 'BMO')
-    df['time'] = df['time'].replace('16', 'AMC')
-    df = df.sort_values(['exactearningsdatestr', 'time'], ascending=[True, False])
-    df = df.drop(columns='exactearningsdate')
-    mydict = df.to_dict(orient='rows')
+def sidebar():
+    try:
+        eresult = earningsdates.query \
+            .with_entities(earningsdates.ticker, earningsdates.exactearningsdate, earningsdates.companyname) \
+            .filter(earningsdates.exactearningsdate > now()).order_by(earningsdates.ticker).all()
+        df = pd.DataFrame(eresult, columns =['ticker', 'exactearningsdate', 'companyname'])
+        df['exactearningsdatestr'] = df['exactearningsdate'].dt.strftime('%-m/%-d/%-y %-H')
+        df['earningsdow'] = df['exactearningsdate'].dt.day_name()
+        df[['exactearningsdatestr', 'time']] = df['exactearningsdatestr'].str.split(' ', n=1, expand=True)
+        df['time'] = df['time'].replace('8', 'BMO')
+        df['time'] = df['time'].replace('16', 'AMC')
+        df = df.sort_values(['exactearningsdatestr', 'time'], ascending=[True, False])
+        df = df.drop(columns='exactearningsdate')
+        mydict = df.to_dict(orient='rows')
 
-    lists = {}
+        lists = {}
 
-    for k, g in groupby(mydict, key=lambda t: t['earningsdow']):
-        lists[k] = list(g)
-    return lists
+        for k, g in groupby(mydict, key=lambda t: t['earningsdow']):
+            lists[k] = list(g)
+        return lists
+    except:
+        noearnings = str('no earnings yet')
+        return noearnings
 
 def maincontent(routeticker):
     try:
@@ -144,7 +148,7 @@ def changestable(routeticker):
     cresult = changes.query \
         .with_entities(changes.dated, changes.iv, changes.straddle, changes.impliedmove, changes.underlying, changes.strike) \
         .filter(changes.ticker == routeticker).all()
-    changestable = pd.DataFrame(cresult, columns =['Time', 'IV', 'Straddle Price', 'Implied Move', 'Stock Price', 'Strike'])
+    changestable = pd.DataFrame(cresult, columns=['Time', 'IV', 'Straddle Price', 'Implied Move', 'Stock Price', 'Strike'])
     changestable = changestable.sort_values(['Time'], ascending=[False])
     changestable['Time'] = changestable['Time'].dt.strftime("%-m/%-d/%-y %-I:%M %p")
     ctable = changestable
@@ -163,7 +167,7 @@ def statictable(routeticker):
 
 @app.route('/<string:routeticker>')
 def mainroute(routeticker):
-    sidebarlist = sidebar(routeticker)
+    sidebarlist = sidebar()
     company_name, avg_optvol, market_cap, avg_stockvol, sector, industry, address, city, state, zipcode, description, logo, website, exactearningsdate, edatestr, thisticker, bmoamc = maincontent(routeticker)
     ctable = changestable(routeticker)
     stable = statictable(routeticker)
@@ -196,3 +200,29 @@ def mainroute(routeticker):
 # @app.route('/')
 # def home():
 #     print url_for('/', ticker='AAPL')
+
+@app.route('/upload', methods=['GET', 'POST'])
+def upload():
+    global thedf
+    if request.method == 'POST':
+        file = request.files['file']        
+        thedf = pd.read_csv(file)
+        thedf.reset_index
+        thedf = thedf.drop(columns=['Implied Move', 'Implied Move Relative to 4-Qtr Avg', 'Implied Move Relative to 12-Qtr Avg', 'Implied Move Relative to 12-Qtr Median', 'Abs. Avg Implied Move', 'Abs. Avg Actual Move', 'Abs. Max Actual Move', 'Abs. Min Actual Move', 'Abs. Avg Implied Move.1', 'Abs. Avg Actual Move.1', 'Abs. Median Actual Move', 'Abs. Max Actual Move.1', 'Abs. Min Actual Move.1', 'Current Price', 'InWatchlist', 'EtfHoldingsList', 'Sector', 'Industry', 'Diff_ImpliedVsLast4AvgImplied', 'Diff_ImpliedVsLast12AvgImplied'])
+        thedf['Earnings Date'] = pd.to_datetime(thedf['Earnings Date'])
+        thedf['bmoamc'] = thedf['bmoamc'].replace('BMO', '8:00:00')
+        thedf['bmoamc'] = thedf['bmoamc'].replace('AMC', '16:00:00')
+        thedf['Earnings Date'] = thedf['Earnings Date'].astype(str) + ' ' + thedf['bmoamc'].astype(str)
+        thedf['Earnings Date'] = thedf['Earnings Date']
+        thedf = thedf.drop(columns=['bmoamc'])
+        thedf = thedf.rename(columns={'Symbol': 'ticker', 'Avg Option Volume': 'averageoptionvol', 'Earnings Date': 'exactearningsdate', 'Name': 'companyname', 'Avg. Stock Volume': 'averagestockvol', 'MarketCap': 'marketcap'}, errors='raise')
+        thedf.drop(thedf.columns[0], axis = 1) 
+        return render_template('upload.html', tables=[thedf.to_html()], titles=[''])
+    return render_template('upload.html')
+
+
+@app.route('/importit', methods=['GET', 'POST'])
+def importit():
+    thedf.to_sql('earningsdates', con=db.engine, if_exists='append', index=False)
+    success = str('Success')
+    return render_template('import.html', tables=[thedf.to_html()], titles=[''], success=success)

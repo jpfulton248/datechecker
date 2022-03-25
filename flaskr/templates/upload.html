@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+<form method="POST" action="" enctype="multipart/form-data">
+    <p><input type="file" name="file"></p>
+    <p><input type="submit" value="Submit"></p>
+  </form>
+    <form action="/importit" method="post">
+        <button type="submit" value="Import">Import</button>
+    </form>
+		<div>
+			<table>
+				<h1>
+				<!--Displaying the converted table-->
+					{% for table in tables %}
+					<h2>{{titles[loop.index]}}</h2>							
+					{{ table|safe }}
+					{% endfor %}	
+				</h1>
+			</table>
+		</div>
+	</body>
+</html>
