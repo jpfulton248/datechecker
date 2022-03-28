@@ -41,6 +41,16 @@ class earningsdates(db.Model):
     ticker = db.Column(db.String(15))
     companyname = db.Column(db.String(100))
     exactearningsdate = db.Column(db.String())
+    averageoptionvol = db.Column(db.Float())
+    averagestockvol = db.Column(db.Float())
+    marketcap = db.Column(db.Numeric(20,2))
+    impliedmove = db.Column(db.Numeric(20,2))
+    staticstrike = db.Column(db.Numeric(20,2))
+    staticexpiry = db.Column(db.String())
+    staticprice = db.Column(db.Numeric(20,2))
+    staticiv = db.Column(db.Numeric(20,2))
+    actualmove = db.Column(db.Numeric(20,2))
+    updated = db.Column(db.String())
 
 class spy(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
@@ -90,12 +100,15 @@ def now():
     now = datetime.datetime.now()
     return now
 
+def yesterday():
+    yesterday = now() - datetime.timedelta(days=1)
+    return yesterday
 
 def sidebar():
     try:
         eresult = earningsdates.query \
             .with_entities(earningsdates.ticker, earningsdates.exactearningsdate, earningsdates.companyname) \
-            .filter(earningsdates.exactearningsdate > now()).order_by(earningsdates.ticker).all()
+            .filter(earningsdates.exactearningsdate > yesterday()).order_by(earningsdates.ticker).all()
         df = pd.DataFrame(eresult, columns =['ticker', 'exactearningsdate', 'companyname'])
         df['exactearningsdatestr'] = df['exactearningsdate'].dt.strftime('%-m/%-d/%-y %-H')
         df['earningsdow'] = df['exactearningsdate'].dt.day_name()
@@ -132,6 +145,7 @@ def maincontent(routeticker):
         description = mresult.description
         logo = mresult.logo
         website = mresult.website
+        website = '<a href="' + str(website) + '">' + str(website) + '</a>'
     except:
         pass
     edate = earningsdates.query.filter(earningsdates.ticker==routeticker).order_by(earningsdates.exactearningsdate.desc()).first()
@@ -145,33 +159,55 @@ def maincontent(routeticker):
     return maincontentvars
 
 def changestable(routeticker):
-    cresult = changes.query \
-        .with_entities(changes.dated, changes.iv, changes.straddle, changes.impliedmove, changes.underlying, changes.strike) \
-        .filter(changes.ticker == routeticker).all()
-    changestable = pd.DataFrame(cresult, columns=['Time', 'IV', 'Straddle Price', 'Implied Move', 'Stock Price', 'Strike'])
-    changestable = changestable.sort_values(['Time'], ascending=[False])
-    changestable['Time'] = changestable['Time'].dt.strftime("%-m/%-d/%-y %-I:%M %p")
-    ctable = changestable
+    try:
+        cresult = changes.query \
+            .with_entities(changes.dated, changes.iv, changes.straddle, changes.impliedmove, changes.underlying, changes.strike) \
+            .filter(changes.ticker == routeticker).all()
+        changestable = pd.DataFrame(cresult, columns=['Time', 'IV', 'Straddle Price', 'Implied Move', 'Stock Price', 'Strike'])
+        changestable = changestable.sort_values(['Time'], ascending=[False])
+        changestable['Time'] = changestable['Time'].dt.strftime("%-m/%-d/%-y %-I:%M %p")
+        ctable = changestable
+    except:
+        ctable = pd.DataFrame()
     return ctable
 
 def statictable(routeticker):
-    sresult = ridingstraddle.query \
-        .with_entities(ridingstraddle.dated, ridingstraddle.staticiv, ridingstraddle.staticstraddle, ridingstraddle.underlying, ridingstraddle.staticstrike) \
-        .filter(ridingstraddle.ticker == routeticker).all()
-    sdf = pd.DataFrame(sresult, columns =['Time', 'IV', 'Straddle Price', 'Stock Price', 'Strike'])
-    sdf = sdf.sort_values(['Time'], ascending=[False])
-    sdf['Time'] = sdf['Time'].apply(lambda x: x.strftime('%-m/%-d/%-y %-I:%M %p'))
-    sdf.drop(columns='Strike')
-    print(sdf)
+    try:
+        sresult = ridingstraddle.query \
+            .with_entities(ridingstraddle.dated, ridingstraddle.staticiv, ridingstraddle.staticstraddle, ridingstraddle.underlying, ridingstraddle.staticstrike) \
+            .filter(ridingstraddle.ticker == routeticker).all()
+        sdf = pd.DataFrame(sresult, columns =['Time', 'IV', 'Straddle Price', 'Stock Price', 'Strike'])
+        sdf = sdf.sort_values(['Time'], ascending=[False])
+        sdf['Time'] = sdf['Time'].apply(lambda x: x.strftime('%-m/%-d/%-y %-I:%M %p'))
+        sdf.drop(columns='Strike')
+    except:
+        sdf = pd.DataFrame()
     return sdf
 
-@app.route('/<string:routeticker>')
+@app.route("/search", methods=["POST", "GET"])
+def home():
+    if request.method == "GET":
+        thechoices = Main.query.with_entities(Main.ticker).all()
+        thechoices = pd.DataFrame(thechoices, columns=['choice'], index=None)
+        choiceoption = thechoices['choice'].tolist()
+    return render_template("search.html", languages=choiceoption)
+
+@app.route("/search", methods=["GET", "POST"])
+def home2():
+    if request.method == "POST":
+        text = request.form['text']
+        processed_text = text.upper()
+        print(processed_text)
+        return processed_text
+
+
+@app.route('/<string:routeticker>', methods=['POST', 'GET'])
 def mainroute(routeticker):
     sidebarlist = sidebar()
     company_name, avg_optvol, market_cap, avg_stockvol, sector, industry, address, city, state, zipcode, description, logo, website, exactearningsdate, edatestr, thisticker, bmoamc = maincontent(routeticker)
     ctable = changestable(routeticker)
-    stable = statictable(routeticker)
-
+    # stable = statictable(routeticker)
+    
     return render_template('index.html', 
         theticker = thisticker,
         companyname = company_name,
@@ -190,16 +226,30 @@ def mainroute(routeticker):
         logo = logo,
         website = website,
         ctable = ctable.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True),
-        stable = stable.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True),
+        # stable = stable.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True),
         lists = sidebarlist)
-    # except:
-    #     return render_template('index.html', 
-    #         companyname = "This doesn't exist",
-    #         lists=lists)        
 
-# @app.route('/')
-# def home():
-#     print url_for('/', ticker='AAPL')
+@app.route('/')
+def screener():
+    l = earningsdates.query \
+            .with_entities(earningsdates.ticker, earningsdates.exactearningsdate, earningsdates.companyname, earningsdates.averageoptionvol, \
+                earningsdates.averagestockvol, earningsdates.marketcap, earningsdates.impliedmove) \
+            .filter(earningsdates.exactearningsdate > yesterday()).order_by(earningsdates.ticker).all()
+    df = pd.DataFrame(l)
+    df['companyname'] = df['companyname'].str[:40]
+    df['ticker'] = '<a href="' + df['ticker'].astype(str) + '" style="color:#FFFFFF;">' + df['ticker'].astype(str) + '</a>'
+    df['marketcap'] = df['marketcap'].div(1000000000)
+    
+    df['date'] = df['exactearningsdate'].dt.strftime('%-m/%-d/%-y %-H')
+    df[['date', 'time']] = df['date'].str.split(' ', n=1, expand=True)
+    df['time'] = df['time'].replace('8', 'BMO')
+    df['time'] = df['time'].replace('16', 'AMC')
+    df = df.sort_values(['date', 'time'], ascending=[True, False])
+    df = df.drop(columns=['exactearningsdate', 'impliedmove'])
+    pd.options.display.float_format = '{:,}'.format 
+    pd.options.display.float_format = '{:,.0f}'.format 
+    return render_template('screener.html', screener=df.to_html(classes='table table-dark sortable table-striped display', table_id='sortit', escape=False, index=False, header=True, render_links=True, justify='left'), lists = sidebar())
+
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
@@ -219,7 +269,6 @@ def upload():
         thedf.drop(thedf.columns[0], axis = 1) 
         return render_template('upload.html', tables=[thedf.to_html()], titles=[''])
     return render_template('upload.html')
-
 
 @app.route('/importit', methods=['GET', 'POST'])
 def importit():
