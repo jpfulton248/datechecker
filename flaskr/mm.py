@@ -16,6 +16,17 @@ import json
 from itertools import groupby
 import calendar
 from dotenv import load_dotenv
+load_dotenv
+import os
+
+token = os.environ.get("api-token")
+
+HOST = os.environ.get("HOST")
+USERNAME = os.environ.get("USERNAME")
+DATABASE = os.environ.get("DATABASE")
+PASSWORD = os.environ.get("PASSWORD")
+f_api_key = os.environ.get("f_api_key")
+sqlalchemyurl = os.environ.get("sqlalchemyurl")
 
 #declare some variables
 routeedate = ''

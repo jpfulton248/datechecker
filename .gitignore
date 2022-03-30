@@ -6,3 +6,4 @@ flaskr/__pycache_
 flaskr/config.py
 myenv
 config.py
+flaskr/.env
