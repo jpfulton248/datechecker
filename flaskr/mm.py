@@ -138,7 +138,7 @@ def maincontent(routeticker):
     edatestr, bmoamc = edatestr.split()
     bmoamc = bmoamc.replace('8', 'Before Market Open')
     bmoamc = bmoamc.replace('16', 'After Market Close')
-    maincontentvars = [company_name, avg_optvol, market_cap, avg_stockvol, sector, industry, address, city, state, zipcode, description, logo, website, exactearningsdate, edatestr, thisticker, bmoamc]
+    maincontentvars = [company_name, avg_optvol, market_cap, avg_stockvol, sector, industry, address, city, state, zipcode, description, logo, website, exactearningsdate, edatestr, routeticker, bmoamc]
     return maincontentvars
 
 def changestable(routeticker):
