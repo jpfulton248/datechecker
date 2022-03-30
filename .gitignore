@@ -5,3 +5,4 @@ __pycache__
 flaskr/__pycache_
 flaskr/config.py
 myenv
+config.py
