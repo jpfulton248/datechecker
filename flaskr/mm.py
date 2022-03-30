@@ -1,5 +1,5 @@
 from site import setcopyright
-from flask import Flask, render_template, url_for, redirect, request
+from flask import Flask, current_app, render_template, url_for, redirect, request
 from flask_sqlalchemy import SQLAlchemy
 from matplotlib import image
 from numpy import logical_or
@@ -16,6 +16,13 @@ import json
 from itertools import groupby
 import calendar
 from dotenv import load_dotenv
+
+#declare some variables
+routeedate = ''
+now = datetime.datetime.now()
+staticstrike = 10
+lists = {}
+
 
 class Main(db.Model):
     mainid = db.Column(db.Integer(), primary_key=True)
@@ -51,29 +58,6 @@ class earningsdates(db.Model):
     staticiv = db.Column(db.Numeric(20,2))
     actualmove = db.Column(db.Numeric(20,2))
     updated = db.Column(db.String())
-
-class spy(db.Model):
-    id = db.Column(db.Integer(), primary_key=True)
-    price = db.Column(db.Numeric(20,2))
-    volume = db.Column(db.Integer())
-    high = db.Column(db.Numeric(20,2))
-    low = db.Column(db.Numeric(20,2))
-    open = db.Column(db.Numeric(20,2))
-    dated = db.Column(db.String())
-
-class indexes(db.Model):
-    indexesid = db.Column(db.Integer(), primary_key=True)
-    symbol = db.Column(db.String())
-    price = db.Column(db.Numeric(20,2))
-    percchange = db.Column(db.Numeric(4,2))
-    change = db.Column(db.Numeric(10,2))
-    daylow = db.Column(db.Numeric(20,2))
-    dayhigh = db.Column(db.Numeric(20,2))
-    volume = db.Column(db.Integer())
-    avgvol = db.Column(db.Integer())
-    open = db.Column(db.Numeric(20,2))
-    prevclose = db.Column(db.Numeric(20,2))
-    dated = db.Column(db.String())
 
 class changes(db.Model):
     changesid = db.Column(db.Integer(), primary_key=True)
@@ -135,7 +119,7 @@ def maincontent(routeticker):
         avg_optvol = mresult.avg_optvol
         market_cap = round((mresult.market_cap/1000000000), 2)
         avg_stockvol = mresult.avg_stockvol
-        theticker = mresult.ticker
+    #   theticker = mresult.ticker
         sector = mresult.sector
         industry = mresult.industry
         address = mresult.address
@@ -151,7 +135,6 @@ def maincontent(routeticker):
     edate = earningsdates.query.filter(earningsdates.ticker==routeticker).order_by(earningsdates.exactearningsdate.desc()).first()
     exactearningsdate = edate.exactearningsdate
     edatestr = datetime.datetime.strftime(exactearningsdate,'%-m/%-d/%Y %-H')
-    thisticker = edate.ticker
     edatestr, bmoamc = edatestr.split()
     bmoamc = bmoamc.replace('8', 'Before Market Open')
     bmoamc = bmoamc.replace('16', 'After Market Close')
@@ -200,6 +183,9 @@ def home2():
         print(processed_text)
         return processed_text
 
+    #changestable
+    ctable = changestable()
+    # cdf.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True)
 
 @app.route('/<string:routeticker>', methods=['POST', 'GET'])
 def mainroute(routeticker):
@@ -209,7 +195,7 @@ def mainroute(routeticker):
     # stable = statictable(routeticker)
     
     return render_template('index.html', 
-        theticker = thisticker,
+        routeticker = routeticker,
         companyname = company_name,
         avg_optvol = f'{int(avg_optvol):,}',
         market_cap = market_cap,
