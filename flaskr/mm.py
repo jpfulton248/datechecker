@@ -3,30 +3,30 @@ from flask import Flask, current_app, render_template, url_for, redirect, reques
 from flask_sqlalchemy import SQLAlchemy
 from matplotlib import image
 from numpy import logical_or
-from config import sqlalchemyurl
+# from config import sqlalchemyurl
 import datetime
 import pandas as pd
 from markupsafe import Markup
 import re
+from dotenv import load_dotenv
+import os
+load_dotenv
+SQLALCHEMY_DATABASE_URI = os.environ.get("SQLALCHEMY_DATABASE_URI")
 app = Flask(__name__, instance_relative_config=True)
-app.config['SQLALCHEMY_DATABASE_URI'] = sqlalchemyurl
+app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
 db = SQLAlchemy(app)
 from collections import OrderedDict, defaultdict
 import json
 from itertools import groupby
 import calendar
-from dotenv import load_dotenv
-load_dotenv
-import os
+
 
 token = os.environ.get("api-token")
-
 HOST = os.environ.get("HOST")
 USERNAME = os.environ.get("USERNAME")
 DATABASE = os.environ.get("DATABASE")
 PASSWORD = os.environ.get("PASSWORD")
 f_api_key = os.environ.get("f_api_key")
-sqlalchemyurl = os.environ.get("sqlalchemyurl")
 
 #declare some variables
 routeedate = ''
