@@ -7,3 +7,6 @@ flaskr/config.py
 myenv
 config.py
 flaskr/.env
+flaskr/.flaskenv
+.flaskenv
+.env
