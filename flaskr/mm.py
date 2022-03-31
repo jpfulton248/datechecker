@@ -121,14 +121,6 @@ def sidebar():
         noearnings = str('no earnings yet')
         return noearnings
 
-def historical():
-    eresult = earningsdates.query \
-            .with_entities(earningsdates.ticker, earningsdates.exactearningsdate, earningsdates.theamove, earningsdates.actualmoveperc).all()
-    df = pd.DataFrame(eresult, columns=['Ticker', 'EarningsDate', 'ActualMove', 'ActualmovePerc'])
-    df.groupby(by=["Ticker"]).mean().apply()
-    historicaldf = df
-    return historicaldf
-
 def maincontent(routeticker):
     try:
         mresult = Main.query.filter(Main.ticker==routeticker).first()
@@ -184,6 +176,16 @@ def statictable(routeticker):
         sdf = pd.DataFrame()
     return sdf
 
+def historical(routeticker):
+    eresult = earningsdates.query \
+            .with_entities(earningsdates.ticker, earningsdates.exactearningsdate, earningsdates.theamove, earningsdates.actualmoveperc) \
+            .filter(earningsdates.ticker == routeticker).all()
+    df = pd.DataFrame(eresult, columns=['Ticker', 'EarningsDate', 'ActualMove', 'ActualmovePerc'])
+    df['ActualMove'] = df['ActualMove'].abs()
+    # df = df.groupby(by=["Ticker"])
+    historicaldf = df
+    return historicaldf
+
 @app.route("/search", methods=["POST", "GET"])
 def home():
     if request.method == "GET":
@@ -209,6 +211,7 @@ def mainroute(routeticker):
     sidebarlist = sidebar()
     company_name, avg_optvol, market_cap, avg_stockvol, sector, industry, address, city, state, zipcode, description, logo, website, exactearningsdate, edatestr, thisticker, bmoamc = maincontent(routeticker)
     ctable = changestable(routeticker)
+    historicalresult = historical(routeticker)
     # stable = statictable(routeticker)
     
     return render_template('index.html', 
@@ -228,6 +231,7 @@ def mainroute(routeticker):
         description = description,
         logo = logo,
         website = website,
+        historicalresult = historicalresult.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True),
         ctable = ctable.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True),
         # stable = stable.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True),
         lists = sidebarlist)
