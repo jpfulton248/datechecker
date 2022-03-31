@@ -31,7 +31,6 @@ now = datetime.datetime.now()
 staticstrike = 10
 lists = {}
 
-
 class Main(db.Model):
     mainid = db.Column(db.Integer(), primary_key=True)
     ticker = db.Column(db.String(15))
