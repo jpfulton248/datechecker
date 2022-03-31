@@ -11,7 +11,12 @@ import re
 from dotenv import load_dotenv
 import os
 load_dotenv
-SQLALCHEMY_DATABASE_URI=os.environ.get('SQLALCHEMY_DATABASE_URI')
+USERNAME = os.environ.get('USERNAME')
+HOST = os.environ.get('HOST')
+DATABASE = os.environ.get('DATABASE')
+PASSWORD = os.environ.get('PASSWORD')
+PORT = os.environ.get('PORT')
+SQLALCHEMY_DATABASE_URI=str('mysql+pymysql://') + USERNAME + str(':') + PASSWORD + str('@') + HOST + str(':') + PORT + str('/') + DATABASE
 app=Flask(__name__, instance_relative_config=True)
 app.config['SQLALCHEMY_DATABASE_URI']=SQLALCHEMY_DATABASE_URI
 db=SQLAlchemy(app)
@@ -62,7 +67,7 @@ class earningsdates(db.Model):
     averageoptionvol = db.Column(db.Float())
     averagestockvol = db.Column(db.Float())
     marketcap = db.Column(db.Numeric(20,2))
-    theamove = db.Column(db.Numberic(10,5))
+    theamove = db.Column(db.Numeric(10,5))
     actualmoveperc = db.Column(db.Numeric(10,5))
     impliedmove = db.Column(db.Numeric(20,2))
     staticstrike = db.Column(db.Numeric(20,2))
