@@ -10,15 +10,16 @@ from markupsafe import Markup
 import re
 from dotenv import load_dotenv
 import os
+from wsgi import SQLALCHEMY_DATABASE_URL
 load_dotenv
-USERNAME = os.environ.get('USERNAME')
-HOST = os.environ.get('HOST')
-DATABASE = os.environ.get('DATABASE')
-PASSWORD = os.environ.get('PASSWORD')
-PORT = os.environ.get('PORT')
-SQLALCHEMY_DATABASE_URI=str('mysql+pymysql://') + USERNAME + str(':') + PASSWORD + str('@') + HOST + str(':') + PORT + str('/') + DATABASE
+# USERNAME = os.environ.get('USERNAME')
+# HOST = os.environ.get('HOST')
+# DATABASE = os.environ.get('DATABASE')
+# PASSWORD = os.environ.get('PASSWORD')
+# PORT = os.environ.get('PORT')
+# SQLALCHEMY_DATABASE_URI=str('mysql+pymysql://') + USERNAME + str(':') + PASSWORD + str('@') + HOST + str(':') + PORT + str('/') + DATABASE
 app=Flask(__name__, instance_relative_config=True)
-app.config['SQLALCHEMY_DATABASE_URI']=SQLALCHEMY_DATABASE_URI
+app.config['SQLALCHEMY_DATABASE_URL']=SQLALCHEMY_DATABASE_URL
 db=SQLAlchemy(app)
 from collections import OrderedDict, defaultdict
 import json
