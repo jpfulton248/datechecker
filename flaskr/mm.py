@@ -16,9 +16,9 @@ HOST = os.environ.get('HOST')
 DATABASE = os.environ.get('DATABASE')
 PASSWORD = os.environ.get('PASSWORD')
 PORT = os.environ.get('PORT')
-SQLALCHEMY_DATABASE_URI=str('mysql+pymysql://') + USERNAME + str(':') + PASSWORD + str('@') + HOST + str(':') + PORT + str('/') + DATABASE
+SQLALCHEMY_DATABASE_URL=str('mysql+pymysql://') + USERNAME + str(':') + PASSWORD + str('@') + HOST + str(':') + PORT + str('/') + DATABASE
 app=Flask(__name__, instance_relative_config=True)
-app.config['SQLALCHEMY_DATABASE_URI']=SQLALCHEMY_DATABASE_URI
+app.config['SQLALCHEMY_DATABASE_URI']=SQLALCHEMY_DATABASE_URL
 db=SQLAlchemy(app)
 from collections import OrderedDict, defaultdict
 import json
