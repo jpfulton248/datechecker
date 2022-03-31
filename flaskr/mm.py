@@ -11,10 +11,10 @@ import re
 from dotenv import load_dotenv
 import os
 load_dotenv
-SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')
-app = Flask(__name__, instance_relative_config=True)
-app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
-db = SQLAlchemy(app)
+SQLALCHEMY_DATABASE_URI=os.environ.get('SQLALCHEMY_DATABASE_URI')
+app=Flask(__name__, instance_relative_config=True)
+app.config['SQLALCHEMY_DATABASE_URI']=SQLALCHEMY_DATABASE_URI
+db=SQLAlchemy(app)
 from collections import OrderedDict, defaultdict
 import json
 from itertools import groupby
