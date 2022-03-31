@@ -74,7 +74,6 @@ class earningsdates(db.Model):
     staticexpiry = db.Column(db.String())
     staticprice = db.Column(db.Numeric(20,2))
     staticiv = db.Column(db.Numeric(20,2))
-    actualmove = db.Column(db.Numeric(20,2))
     updated = db.Column(db.String())
 
 class changes(db.Model):
