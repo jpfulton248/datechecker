@@ -62,6 +62,8 @@ class earningsdates(db.Model):
     averageoptionvol = db.Column(db.Float())
     averagestockvol = db.Column(db.Float())
     marketcap = db.Column(db.Numeric(20,2))
+    theamove = db.Column(db.Numberic(10,5))
+    actualmoveperc = db.Column(db.Numeric(10,5))
     impliedmove = db.Column(db.Numeric(20,2))
     staticstrike = db.Column(db.Numeric(20,2))
     staticexpiry = db.Column(db.String())
@@ -122,6 +124,14 @@ def sidebar():
     except:
         noearnings = str('no earnings yet')
         return noearnings
+
+def historical():
+    eresult = earningsdates.query \
+            .with_entities(earningsdates.ticker, earningsdates.exactearningsdate, earningsdates.theamove, earningsdates.actualmoveperc).all()
+    df = pd.DataFrame(eresult, columns=['Ticker', 'EarningsDate', 'ActualMove', 'ActualmovePerc'])
+    df.groupby(by=["Ticker"]).mean().apply()
+    historicaldf = df
+    return historicaldf
 
 def maincontent(routeticker):
     try:
