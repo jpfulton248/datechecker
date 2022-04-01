@@ -81,6 +81,15 @@
                 <span class="col-md-3" style="color: white">{{ city }}, {{ state }} {{ zipcode }}</span>
             </div>
             <div>
+                <span class="col-md-3" style="color: white">Abs Avg Move: &plusmn;${{ absactualmove }}</span>
+            </div>
+            <div>
+                <span class="col-md-3" style="color: white">Abs Avg Move: &plusmn;{{ absactualmoveperc }}%</span>
+            </div>
+            <div>
+                <span class="col-md-3" style="color: white">Implied Move: &plusmn;{{ impmove }}%</span>
+            </div>
+            <div>
                 <span class="col-md-3" style="color: white">{{ website|safe }}</span>
             </div></br>
             <div class="table table1">
@@ -88,9 +97,6 @@
             </div>
             <div class="table table1">
                 <span class="col-lg-auto" style="color: white">{{ historicalresult|safe }}</span>
-            </div>
-            <div>
-                <span class="col-md-3" style="color: white">{{ website|safe }}</span>
             </div>
         </div>
     </div>
