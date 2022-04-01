@@ -247,7 +247,7 @@ def mainroute(routeticker):
         # absactualmoveperc = round(absactualmoveperc,2),
         impmove = impmove,
         historicalresult = historicalresult.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True),
-        # ctable = ctable.to_html(classes='table table-light', escape=False, index=True, header=True, render_links=True),
+        ctable = ctable.to_html(classes='table table-light', escape=False, index=True, header=True, render_links=True),
         # stable = stable.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True),
         lists = sidebarlist)
 
