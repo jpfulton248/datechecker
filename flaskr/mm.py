@@ -150,7 +150,7 @@ def maincontent(routeticker):
     edatestr, bmoamc = edatestr.split()
     bmoamc = bmoamc.replace('8', 'Before Market Open')
     bmoamc = bmoamc.replace('16', 'After Market Close')
-    maincontentvars = [company_name, avg_optvol, market_cap, avg_stockvol, sector, industry, address, city, state, zipcode, description, logo, website, exactearningsdate, edatestr, routeticker, bmoamc]
+    maincontentvars = [company_name, avg_optvol, market_cap, avg_stockvol, sector, industry, address, city, state, zipcode, description, logo, website, edatestr, bmoamc]
     return maincontentvars
 
 def changestable(routeticker):
@@ -221,11 +221,14 @@ def home2():
 @app.route('/<string:routeticker>', methods=['POST', 'GET'])
 def mainroute(routeticker):
     sidebarlist = sidebar()
-    company_name, avg_optvol, market_cap, avg_stockvol, sector, industry, address, city, state, zipcode, description, logo, website, exactearningsdate, edatestr, thisticker, bmoamc = maincontent(routeticker)
+    company_name, avg_optvol, market_cap, avg_stockvol, sector, industry, address, city, state, zipcode, description, logo, website, edatestr, bmoamc = maincontent(routeticker)
     ctable = changestable(routeticker)
-    impmove = ctable.at[0, 'Implied Move']
+    try:
+        impmove = ctable.at[0, 'Implied Move']
+    except:
+        impmove = ''
     # absactualmove, absactualmoveperc = historical(routeticker)
-    historicalresult = historical(routeticker)
+    # historicalresult = historical(routeticker)
 
     # stable = statictable(routeticker)
     
@@ -249,7 +252,7 @@ def mainroute(routeticker):
         # absactualmove = round(absactualmove,2),
         # absactualmoveperc = round(absactualmoveperc,2),
         impmove = impmove,
-        historicalresult = historicalresult.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True),
+        # historicalresult = historicalresult.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True),
         ctable = ctable.to_html(classes='table table-light', escape=False, index=True, header=True, render_links=True),
         # stable = stable.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True),
         lists = sidebarlist)
