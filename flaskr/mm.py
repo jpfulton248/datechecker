@@ -11,12 +11,13 @@ import re
 from dotenv import load_dotenv
 import os
 load_dotenv
-USERNAME = os.environ.get('USERNAME')
-HOST = os.environ.get('HOST')
-DATABASE = os.environ.get('DATABASE')
-PASSWORD = os.environ.get('PASSWORD')
-PORT = os.environ.get('PORT')
-SQLALCHEMY_DATABASE_URI=str('mysql+pymysql://') + USERNAME + str(':') + PASSWORD + str('@') + HOST + str(':') + PORT + str('/') + DATABASE
+# USERNAME = os.environ.get('USERNAME')
+# HOST = os.environ.get('HOST')
+# DATABASE = os.environ.get('DATABASE')
+# PASSWORD = os.environ.get('PASSWORD')
+# PORT = os.environ.get('PORT')
+SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')
+# SQLALCHEMY_DATABASE_URI=str('mysql+pymysql://') + USERNAME + str(':') + PASSWORD + str('@') + HOST + str(':') + PORT + str('/') + DATABASE
 app=Flask(__name__, instance_relative_config=True)
 app.config['SQLALCHEMY_DATABASE_URI']=SQLALCHEMY_DATABASE_URI
 db=SQLAlchemy(app)
@@ -25,20 +26,11 @@ import json
 from itertools import groupby
 import calendar
 
-
-token = os.environ.get("api-token")
-HOST = os.environ.get("HOST")
-USERNAME = os.environ.get("USERNAME")
-DATABASE = os.environ.get("DATABASE")
-PASSWORD = os.environ.get("PASSWORD")
-f_api_key = os.environ.get("f_api_key")
-
 #declare some variables
 routeedate = ''
 now = datetime.datetime.now()
 staticstrike = 10
 lists = {}
-
 
 class Main(db.Model):
     mainid = db.Column(db.Integer(), primary_key=True)
@@ -132,14 +124,6 @@ def sidebar():
         noearnings = str('no earnings yet')
         return noearnings
 
-def historical():
-    eresult = earningsdates.query \
-            .with_entities(earningsdates.ticker, earningsdates.exactearningsdate, earningsdates.theamove, earningsdates.actualmoveperc).all()
-    df = pd.DataFrame(eresult, columns=['Ticker', 'EarningsDate', 'ActualMove', 'ActualmovePerc'])
-    df.groupby(by=["Ticker"]).mean().apply()
-    historicaldf = df
-    return historicaldf
-
 def maincontent(routeticker):
     try:
         mresult = Main.query.filter(Main.ticker==routeticker).first()
@@ -176,6 +160,7 @@ def changestable(routeticker):
             .filter(changes.ticker == routeticker).all()
         changestable = pd.DataFrame(cresult, columns=['Time', 'IV', 'Straddle Price', 'Implied Move', 'Stock Price', 'Strike'])
         changestable = changestable.sort_values(['Time'], ascending=[False])
+        changestable = changestable.reset_index(drop=True)
         changestable['Time'] = changestable['Time'].dt.strftime("%-m/%-d/%-y %-I:%M %p")
         ctable = changestable
     except:
@@ -194,6 +179,24 @@ def statictable(routeticker):
     except:
         sdf = pd.DataFrame()
     return sdf
+
+def historical(routeticker):
+    eresult = earningsdates.query \
+            .with_entities(earningsdates.ticker, earningsdates.exactearningsdate, earningsdates.theamove, earningsdates.actualmoveperc) \
+            .filter(earningsdates.ticker == routeticker).all()
+    df = pd.DataFrame(eresult, columns=['Ticker', 'EarningsDate', 'ActualMove', 'ActualMovePerc'])
+    df = df.sort_values(['EarningsDate'], ascending=[True])
+    #make actual move absolute then take cumulative mean
+    df['AbsActualMovePerc'] = df['ActualMovePerc'].astype(float).abs()
+    df['CumulativeActMovePerc'] = df.groupby('Ticker')['AbsActualMovePerc'].expanding().mean().values
+    df['AbsActualMove'] = df['ActualMove'].astype(float).abs()    
+    # df = df.groupby('Ticker', as_index=False).mean()
+    absactualmove = df.at[0, 'AbsActualMove']
+    absactualmoveperc = df.at[0, 'AbsActualMovePerc']
+    # return absactualmove, absactualmoveperc
+    df = df.sort_values(['EarningsDate'], ascending=[False])
+    historicaldf = df
+    return historicaldf
 
 @app.route("/search", methods=["POST", "GET"])
 def home():
@@ -220,6 +223,10 @@ def mainroute(routeticker):
     sidebarlist = sidebar()
     company_name, avg_optvol, market_cap, avg_stockvol, sector, industry, address, city, state, zipcode, description, logo, website, exactearningsdate, edatestr, thisticker, bmoamc = maincontent(routeticker)
     ctable = changestable(routeticker)
+    impmove = ctable.at[0, 'Implied Move']
+    # absactualmove, absactualmoveperc = historical(routeticker)
+    historicalresult = historical(routeticker)
+
     # stable = statictable(routeticker)
     
     return render_template('index.html', 
@@ -239,7 +246,11 @@ def mainroute(routeticker):
         description = description,
         logo = logo,
         website = website,
-        ctable = ctable.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True),
+        # absactualmove = round(absactualmove,2),
+        # absactualmoveperc = round(absactualmoveperc,2),
+        impmove = impmove,
+        historicalresult = historicalresult.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True),
+        ctable = ctable.to_html(classes='table table-light', escape=False, index=True, header=True, render_links=True),
         # stable = stable.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True),
         lists = sidebarlist)
 
@@ -253,7 +264,6 @@ def screener():
     df['companyname'] = df['companyname'].str[:40]
     df['ticker'] = '<a href="' + df['ticker'].astype(str) + '" style="color:#FFFFFF;">' + df['ticker'].astype(str) + '</a>'
     df['marketcap'] = df['marketcap'].div(1000000000)
-    
     df['date'] = df['exactearningsdate'].dt.strftime('%-m/%-d/%-y %-H')
     df[['date', 'time']] = df['date'].str.split(' ', n=1, expand=True)
     df['time'] = df['time'].replace('8', 'BMO')

@@ -81,14 +81,23 @@
                 <span class="col-md-3" style="color: white">{{ city }}, {{ state }} {{ zipcode }}</span>
             </div>
             <div>
+                <span class="col-md-3" style="color: white">Abs Avg Move: &plusmn;${{ absactualmove }}</span>
+            </div>
+            <div>
+                <span class="col-md-3" style="color: white">Abs Avg Move: &plusmn;{{ absactualmoveperc }}%</span>
+            </div>
+            <div>
+                <span class="col-md-3" style="color: white">Implied Move: &plusmn;{{ impmove }}%</span>
+            </div>
+            <div>
                 <span class="col-md-3" style="color: white">{{ website|safe }}</span>
             </div></br>
             <div class="table table1">
                 <span class="col-lg-auto" style="color: white">{{ ctable|safe }}</span>
             </div>
-            <div>
-                <span class="col-md-3" style="color: white">{{ website|safe }}</span>
-            </div>
+            <!-- <div class="table table1">
+                <span class="col-lg-auto" style="color: white">{{ historicalresult|safe }}</span>
+            </div> -->
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
