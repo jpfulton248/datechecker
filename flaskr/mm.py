@@ -59,7 +59,12 @@ class earningsdates(db.Model):
     beforedate = db.Column(db.String())
     closebefore = db.Column(db.String())
     afterdate = db.Column(db.String())
+    openafter = db.Column(db.Numeric(20,2))
+    highafter = db.Column(db.Numeric(20,2))
+    lowafter = db.Column(db.Numeric(20,2))
     closeafter = db.Column(db.String())
+    actualmove = db.Column(db.Numeric(20,2))
+    actualmoveperc = db.Column(db.Numeric(20,2))
     averageoptionvol = db.Column(db.Float())
     averagestockvol = db.Column(db.Float())
     marketcap = db.Column(db.Numeric(20,2))
@@ -182,7 +187,7 @@ def statictable(routeticker):
 
 def historical(routeticker):
     eresult = earningsdates.query \
-            .with_entities(earningsdates.ticker, earningsdates.exactearningsdate, earningsdates.theamove, earningsdates.actualmoveperc) \
+            .with_entities(earningsdates.ticker, earningsdates.exactearningsdate, earningsdates.actualmove, earningsdates.actualmoveperc) \
             .filter(earningsdates.ticker == routeticker).all()
     df = pd.DataFrame(eresult, columns=['Ticker', 'EarningsDate', 'ActualMove', 'ActualMovePerc'])
     df = df.sort_values(['EarningsDate'], ascending=[True])
@@ -193,10 +198,10 @@ def historical(routeticker):
     # df = df.groupby('Ticker', as_index=False).mean()
     absactualmove = df.at[0, 'AbsActualMove']
     absactualmoveperc = df.at[0, 'AbsActualMovePerc']
-    # return absactualmove, absactualmoveperc
-    df = df.sort_values(['EarningsDate'], ascending=[False])
-    historicaldf = df
-    return historicaldf
+    return absactualmove, absactualmoveperc
+    # df = df.sort_values(['EarningsDate'], ascending=[False])
+    # historicaldf = df
+    # return historicaldf
 
 @app.route("/search", methods=["POST", "GET"])
 def home():
@@ -264,18 +269,21 @@ def screener():
                 earningsdates.averagestockvol, earningsdates.marketcap, earningsdates.impliedmove) \
             .filter(earningsdates.exactearningsdate > yesterday()).order_by(earningsdates.ticker).all()
     df = pd.DataFrame(l)
-    df['companyname'] = df['companyname'].str[:40]
-    df['ticker'] = '<a href="' + df['ticker'].astype(str) + '" style="color:#FFFFFF;">' + df['ticker'].astype(str) + '</a>'
-    df['marketcap'] = df['marketcap'].div(1000000000)
-    df['date'] = df['exactearningsdate'].dt.strftime('%-m/%-d/%-y %-H')
-    df[['date', 'time']] = df['date'].str.split(' ', n=1, expand=True)
-    df['time'] = df['time'].replace('8', 'BMO')
-    df['time'] = df['time'].replace('16', 'AMC')
-    df = df.sort_values(['date', 'time'], ascending=[True, False])
-    df = df.drop(columns=['exactearningsdate', 'impliedmove'])
-    pd.options.display.float_format = '{:,}'.format 
-    pd.options.display.float_format = '{:,.0f}'.format 
-    return render_template('screener.html', screener=df.to_html(classes='table table-dark sortable table-striped display', table_id='sortit', escape=False, index=False, header=True, render_links=True, justify='left'), lists = sidebar())
+    if df.empty:
+        print('DataFrame is empty!')
+    else:
+        df['companyname'] = df['companyname'].str[:40]
+        df['ticker'] = '<a href="' + df['ticker'].astype(str) + '" style="color:#FFFFFF;">' + df['ticker'].astype(str) + '</a>'
+        df['marketcap'] = df['marketcap'].div(1000000000)
+        df['date'] = df['exactearningsdate'].dt.strftime('%-m/%-d/%-y %-H')
+        df[['date', 'time']] = df['date'].str.split(' ', n=1, expand=True)
+        df['time'] = df['time'].replace('8', 'BMO')
+        df['time'] = df['time'].replace('16', 'AMC')
+        df = df.sort_values(['date', 'time'], ascending=[True, False])
+        df = df.drop(columns=['exactearningsdate', 'impliedmove'])
+        pd.options.display.float_format = '{:,}'.format 
+        pd.options.display.float_format = '{:,.0f}'.format 
+        return render_template('screener.html', screener=df.to_html(classes='table table-dark sortable table-striped display', table_id='sortit', escape=False, index=False, header=True, render_links=True, justify='left'), lists = sidebar())
 
 
 @app.route('/upload', methods=['GET', 'POST'])
