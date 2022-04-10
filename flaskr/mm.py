@@ -232,8 +232,8 @@ def mainroute(routeticker):
         impmove = ctable.at[0, 'Implied Move']
     except:
         impmove = ''
-    # absactualmove, absactualmoveperc = historical(routeticker)
-    # historicalresult = historical(routeticker)
+    absactualmove, absactualmoveperc = historical(routeticker)
+    historicalresult = historical(routeticker)
 
     # stable = statictable(routeticker)
     
@@ -254,8 +254,8 @@ def mainroute(routeticker):
         description = description,
         logo = logo,
         website = website,
-        # absactualmove = round(absactualmove,2),
-        # absactualmoveperc = round(absactualmoveperc,2),
+        absactualmove = round(absactualmove,2),
+        absactualmoveperc = round(absactualmoveperc,2),
         impmove = impmove,
         # historicalresult = historicalresult.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True),
         ctable = ctable.to_html(classes='table table-light', escape=False, index=True, header=True, render_links=True),
