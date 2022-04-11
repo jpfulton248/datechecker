@@ -1,4 +1,5 @@
 from site import setcopyright
+from ssl import ALERT_DESCRIPTION_ACCESS_DENIED
 from flask import Flask, current_app, render_template, url_for, redirect, request
 from flask_sqlalchemy import SQLAlchemy
 from matplotlib import image
@@ -10,6 +11,8 @@ from markupsafe import Markup
 import re
 from dotenv import load_dotenv
 import os
+
+from pymysql import NULL
 load_dotenv
 # USERNAME = os.environ.get('USERNAME')
 # HOST = os.environ.get('HOST')
@@ -187,21 +190,21 @@ def statictable(routeticker):
 
 def historical(routeticker):
     eresult = earningsdates.query \
-            .with_entities(earningsdates.ticker, earningsdates.exactearningsdate, earningsdates.actualmove, earningsdates.actualmoveperc) \
-            .filter(earningsdates.ticker == routeticker).all()
-    df = pd.DataFrame(eresult, columns=['Ticker', 'EarningsDate', 'ActualMove', 'ActualMovePerc'])
+            .with_entities(earningsdates.ticker, earningsdates.exactearningsdate, earningsdates.actualmoveperc) \
+            .filter(earningsdates.ticker == routeticker, earningsdates.closeafter != NULL).all()
+    df = pd.DataFrame(eresult, columns=['Ticker', 'EarningsDate', 'ActualMovePerc'])
+    df = df.sort_values(['EarningsDate'], ascending=[False])
+    df = df.head(12)
     df = df.sort_values(['EarningsDate'], ascending=[True])
-    #make actual move absolute then take cumulative mean
-    df['AbsActualMovePerc'] = df['ActualMovePerc'].astype(float).abs()
-    df['CumulativeActMovePerc'] = df.groupby('Ticker')['AbsActualMovePerc'].expanding().mean().values
-    df['AbsActualMove'] = df['ActualMove'].astype(float).abs()    
-    # df = df.groupby('Ticker', as_index=False).mean()
-    absactualmove = df.at[0, 'AbsActualMove']
-    absactualmoveperc = df.at[0, 'AbsActualMovePerc']
-    return absactualmove, absactualmoveperc
-    # df = df.sort_values(['EarningsDate'], ascending=[False])
-    # historicaldf = df
-    # return historicaldf
+    df.reset_index(drop=True, inplace=True)
+    df['CumulativeActMovePerc'] = df.groupby('Ticker')['ActualMovePerc'].expanding().mean().values
+    # df['StdDev'] = df.groupby('Ticker')['ActualMovePerc'].expanding().std().values
+    df['CumulativeActMovePerc'] = df['CumulativeActMovePerc'].astype(float).abs()
+    df = df.sort_values(['EarningsDate'], ascending=[False])
+    df.reset_index(drop=True, inplace=True)
+    cumabsavgperc = df.at[0, 'CumulativeActMovePerc']
+    print(df)
+    return cumabsavgperc
 
 @app.route("/search", methods=["POST", "GET"])
 def home():
@@ -232,8 +235,8 @@ def mainroute(routeticker):
         impmove = ctable.at[0, 'Implied Move']
     except:
         impmove = ''
-    absactualmove, absactualmoveperc = historical(routeticker)
-    historicalresult = historical(routeticker)
+    cumabsavgperc = historical(routeticker)
+    # historicalresult = historical(routeticker)
 
     # stable = statictable(routeticker)
     
@@ -254,8 +257,7 @@ def mainroute(routeticker):
         description = description,
         logo = logo,
         website = website,
-        absactualmove = round(absactualmove,2),
-        absactualmoveperc = round(absactualmoveperc,2),
+        absactualmoveperc = round(cumabsavgperc,2),
         impmove = impmove,
         # historicalresult = historicalresult.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True),
         ctable = ctable.to_html(classes='table table-light', escape=False, index=True, header=True, render_links=True),
