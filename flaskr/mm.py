@@ -194,7 +194,8 @@ def historical(routeticker):
             .filter(earningsdates.ticker == routeticker, earningsdates.closeafter != NULL).all()
     df = pd.DataFrame(eresult, columns=['Ticker', 'EarningsDate', 'ActualMovePerc'])
     df = df.sort_values(['EarningsDate'], ascending=[False])
-    df = df.head(12)
+    #line below can be used to limit history
+    df = df.head(40)
     df = df.sort_values(['EarningsDate'], ascending=[True])
     df.reset_index(drop=True, inplace=True)
     df['CumulativeActMovePerc'] = df.groupby('Ticker')['ActualMovePerc'].expanding().mean().values
@@ -203,8 +204,8 @@ def historical(routeticker):
     df = df.sort_values(['EarningsDate'], ascending=[False])
     df.reset_index(drop=True, inplace=True)
     cumabsavgperc = df.at[0, 'CumulativeActMovePerc']
-    print(df)
-    return cumabsavgperc
+    countreports = len(df.index)
+    return cumabsavgperc, countreports
 
 @app.route("/search", methods=["POST", "GET"])
 def home():
@@ -235,7 +236,11 @@ def mainroute(routeticker):
         impmove = ctable.at[0, 'Implied Move']
     except:
         impmove = ''
-    cumabsavgperc = historical(routeticker)
+    cumabsavgperc, countreports = historical(routeticker)
+    if impmove != '':
+        underover =  float(cumabsavgperc) - float(impmove)
+    else:
+        underover = ''
     # historicalresult = historical(routeticker)
 
     # stable = statictable(routeticker)
@@ -258,6 +263,8 @@ def mainroute(routeticker):
         logo = logo,
         website = website,
         absactualmoveperc = round(cumabsavgperc,2),
+        countreports = countreports,
+        underover = round(underover,2),
         impmove = impmove,
         # historicalresult = historicalresult.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True),
         ctable = ctable.to_html(classes='table table-light', escape=False, index=True, header=True, render_links=True),
@@ -303,7 +310,8 @@ def upload():
         thedf['Earnings Date'] = thedf['Earnings Date']
         thedf = thedf.drop(columns=['bmoamc'])
         thedf = thedf.rename(columns={'Symbol': 'ticker', 'Avg Option Volume': 'averageoptionvol', 'Earnings Date': 'exactearningsdate', 'Name': 'companyname', 'Avg. Stock Volume': 'averagestockvol', 'MarketCap': 'marketcap'}, errors='raise')
-        thedf.drop(thedf.columns[0], axis = 1) 
+        thedf.drop(thedf.columns[0], axis = 1)
+        
         return render_template('upload.html', tables=[thedf.to_html()], titles=[''])
     return render_template('upload.html')
 

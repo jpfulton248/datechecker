@@ -81,10 +81,20 @@
                 <span class="col-md-3" style="color: white">{{ city }}, {{ state }} {{ zipcode }}</span>
             </div>
             <div>
+                <span class="col-md-3" style="color: white">Number of Earnings Reports: {{ countreports }}</span>
+            </div>
+            <div>
                 <span class="col-md-3" style="color: white">Historical Avg Move: &plusmn;{{ absactualmoveperc }}%</span>
             </div>
             <div>
                 <span class="col-md-3" style="color: white">Implied Move: &plusmn;{{ impmove }}%</span>
+            </div>
+            <div>
+                <span class="col-md-3" style="color: white">
+                    {% if underover > 0 %}Undervalued:{{ underover }}%
+                    {% else %}Overvalued:{{ underover }}%
+                    {% endif %} Relative to {{ countreports }} Qtr Avg
+                </span>
             </div>
             <div>
                 <span class="col-md-3" style="color: white">{{ website|safe }}</span>
