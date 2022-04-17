@@ -25,6 +25,7 @@
 <div class="container-fluid">
     <div class="row content">
         <div class="col-sm-3" style="height: 100vh;">
+            {% block sidebar %}
             <div class=""><a href="/">Weekly Screener</a></div>
             <div class="accordion bg-secondary" id="accordionPanelsStayOpenExample">
 
@@ -49,7 +50,8 @@
                 </div>        
             {% endfor %}    
             </div>
-        </div>{% block main %}
+
+        </div>{% endblock %}{% block main %}
         <div class="col-lg-auto">
             <h3 style="color: white">{{ routeticker }}</h3>
             <h4 style="color: white">{{ earningsdate }} {{ bmoamc }}</h4>
