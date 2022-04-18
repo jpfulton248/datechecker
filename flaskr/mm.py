@@ -322,7 +322,7 @@ def screener():
         df = df.drop(columns=['exactearningsdate'])
         pd.options.display.float_format = '{:,}'.format 
         pd.options.display.float_format = '{:,.0f}'.format 
-        return render_template('screener.html', screener=df.to_html(classes='table table-dark sortable table-striped display', table_id='sortit', escape=False, index=False, header=True, render_links=True, justify='left'))
+        return render_template('screener.html', screener=df.to_html(classes='table table-dark sortable table-striped', table_id='sortit', escape=False, index=False, header=True, render_links=True, justify='left'))
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
