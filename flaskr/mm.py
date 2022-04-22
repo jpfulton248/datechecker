@@ -176,6 +176,7 @@ def changestable(routeticker):
         ctable = changestable
     except:
         ctable = pd.DataFrame()
+        print('changes table failed')
     return ctable
 
 def statictable(routeticker):
@@ -282,6 +283,7 @@ def prepscreener(symbol):
         # df = pd.DataFrame(result, columns=['Time', 'IV', 'Straddle Price', 'Implied Move', 'Stock Price', 'Strike'])
     except:
         ctable = pd.DataFrame()
+        print('prepscreener failed')
     return result
 
 @app.route('/')
@@ -307,9 +309,10 @@ def screener():
             else:
                 df.at[index, 'Valued'] = ''
         except:
+            print('problem with this in screener df.itterows:', row['ticker'])
             pass
     if df.empty:
-        print('DataFrame is empty!')
+        print('screener df is empty')
     else:
         df['companyname'] = df['companyname'].str[:40]
         df['ticker'] = '<a href="' + df['ticker'].astype(str) + '" style="color:#FFFFFF;">' + df['ticker'].astype(str) + '</a>'
@@ -321,7 +324,8 @@ def screener():
         df = df.sort_values(['date', 'time'], ascending=[True, False])
         df = df.drop(columns=['exactearningsdate'])
         pd.options.display.float_format = '{:,}'.format 
-        pd.options.display.float_format = '{:,.0f}'.format 
+        pd.options.display.float_format = '{:,.0f}'.format
+        df = df.head(50)
         return render_template('screener.html', screener=df.to_html(classes='table table-dark sortable table-striped', table_id='sortit', escape=False, index=False, header=True, render_links=True, justify='left'))
 
 @app.route('/upload', methods=['GET', 'POST'])
