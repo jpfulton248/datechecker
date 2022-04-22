@@ -243,7 +243,7 @@ def mainroute(routeticker):
     if impmove != '':
         underover =  float(cumabsavgperc) - float(impmove)
     else:
-        underover = ''
+        underover = 1
     # historicalresult = historical(routeticker)
 
     # stable = statictable(routeticker)
