@@ -286,8 +286,7 @@ def prepscreener(symbol):
         print('prepscreener failed')
     return result
 
-@app.route('/')
-def screener():
+def computescreener():
     l = earningsdates.query \
             .with_entities(earningsdates.ticker, earningsdates.exactearningsdate, earningsdates.companyname, earningsdates.averageoptionvol, \
                 earningsdates.averagestockvol, earningsdates.marketcap) \
@@ -325,8 +324,14 @@ def screener():
         df = df.drop(columns=['exactearningsdate'])
         pd.options.display.float_format = '{:,}'.format 
         pd.options.display.float_format = '{:,.0f}'.format
-        df = df.head(50)
-        return render_template('screener.html', screener=df.to_html(classes='table table-dark sortable table-striped', table_id='sortit', escape=False, index=False, header=True, render_links=True, justify='left'))
+    dfscreenerprepped = df
+    return dfscreenerprepped
+
+@app.route('/')
+def screener():
+    dfscreenerprepped = computescreener()
+    dfscreenerprepped.to_csv('flaskr/static/screener.csv', index='False')
+    return render_template('screener.html', screener=dfscreenerprepped.to_html(classes='table table-dark sortable table-striped', table_id='sortit', escape=False, index=False, header=True, render_links=True, justify='left'))
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
