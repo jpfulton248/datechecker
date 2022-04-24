@@ -1,201 +1,188 @@
 ,ticker,companyname,averageoptionvol,averagestockvol,marketcap,IV,Straddle,Implied Move,Hist Avg,Price,Strike,Valued,date,time
-69,"<a href=""FE"" style=""color:#FFFFFF;"">FE</a>",Firstenergy Corp.,2455.0,4232201.0,27.060789248,20.86%,$2.35,5.07%,3.34%,$46.38,$47.00,-1.73,4/21/22,AMC
-97,"<a href=""ISRG"" style=""color:#FFFFFF;"">ISRG</a>",Intuitive Surgical,5961.0,1969983.0,100.0,63.97%,$5.81,2.25%,6.8%,$258.42,$260.00,4.55,4/21/22,AMC
-159,"<a href=""SNAP"" style=""color:#FFFFFF;"">SNAP</a>",Snap Class A,184345.0,30351968.0,53.910413312,96.02%,$1.07,3.56%,19.63%,$30.02,$30.50,16.07,4/21/22,AMC
-197,"<a href=""XM"" style=""color:#FFFFFF;"">XM</a>",Qualtrics International - Class A,1082.0,1983374.0,15.602624512,62.80%,$3.75,16.35%,10.51%,$22.93,$25.00,-5.84,4/21/22,AMC
-21,"<a href=""AXP"" style=""color:#FFFFFF;"">AXP</a>",American Express Company,19329.0,4153824.0,137.0,39.02%,$2.86,1.56%,4.31%,$183.17,$185.00,2.75,4/22/22,BMO
-42,"<a href=""CLF"" style=""color:#FFFFFF;"">CLF</a>",Cleveland-Cliffs,117323.0,21375836.0,16.17279488,80.64%,$0.88,2.97%,10.6%,$29.66,$30.00,7.63,4/22/22,BMO
-82,"<a href=""HCA"" style=""color:#FFFFFF;"">HCA</a>",Hca Healthcare,1689.0,1513067.0,79.221383168,94.08%,$6.55,2.99%,6.03%,$219.06,$220.00,3.04,4/22/22,BMO
-105,"<a href=""KMB"" style=""color:#FFFFFF;"">KMB</a>",Kimberly-Clark,2461.0,1924285.0,42.573463552,55.15%,$2.60,1.86%,4.0%,$140.00,$140.00,2.14,4/22/22,BMO
-125,"<a href=""NEM"" style=""color:#FFFFFF;"">NEM</a>",Newmont,23591.0,8050081.0,67.180412928,52.47%,$1.38,1.88%,4.62%,$73.55,$74.00,2.74,4/22/22,BMO
-150,"<a href=""RF"" style=""color:#FFFFFF;"">RF</a>",Regions Financial,3110.0,9887709.0,19.52765952,35.81%,$1.77,8.17%,5.31%,$21.66,$22.00,-2.86,4/22/22,BMO
-154,"<a href=""SAP"" style=""color:#FFFFFF;"">SAP</a>",Sap  Se Ads,1172.0,987033.0,123.0,31.41%,$9.22,8.75%,3.97%,$105.40,$110.00,-4.78,4/22/22,BMO
-156,"<a href=""SLB"" style=""color:#FFFFFF;"">SLB</a>",Schlumberger N.V.,34063.0,15000439.0,61.118042112,56.90%,$0.82,1.96%,4.0%,$41.89,$42.00,2.04,4/22/22,BMO
-190,"<a href=""VZ"" style=""color:#FFFFFF;"">VZ</a>",Verizon Communications,67027.0,24417663.0,226.0,28.99%,$0.56,1.08%,2.95%,$51.75,$52.00,1.87,4/22/22,BMO
-18,"<a href=""ATVI"" style=""color:#FFFFFF;"">ATVI</a>",Activision Blizzard,49775.0,11028613.0,61.467619328,20.79%,$1.90,2.41%,7.2%,$78.82,$79.00,4.79,4/25/22,BMO
-106,"<a href=""KO"" style=""color:#FFFFFF;"">KO</a>",Coca-Cola Company,56284.0,18910641.0,287.052,27.59%,$2.11,3.21%,3.06%,$65.75,$66.00,-0.15,4/25/22,BMO
-2,"<a href=""ACC"" style=""color:#FFFFFF;"">ACC</a>",American Campus Communities,1156.0,1346821.0,8.997912576,2.55%,$0.46,0.71%,2.97%,$64.82,$65.00,2.26,4/25/22,AMC
-3,"<a href=""ADM"" style=""color:#FFFFFF;"">ADM</a>",Archer-Daniels Midland,6262.0,3478872.0,53.996101632,44.62%,$4.85,5.17%,4.86%,$93.84,$94.00,-0.31,4/26/22,BMO
-15,"<a href=""ARCC"" style=""color:#FFFFFF;"">ARCC</a>",Ares Capital - Closed End,5813.0,3679481.0,9.543504896,20.84%,$1.24,5.62%,2.76%,$22.07,$23.00,-2.86,4/26/22,BMO
-16,"<a href=""ARCH"" style=""color:#FFFFFF;"">ARCH</a>",Arch Resources Class A,1709.0,708879.0,2.373454336,68.47%,$22.15,15.28%,8.2%,$144.99,$145.00,-7.08,4/26/22,BMO
-46,"<a href=""CNC"" style=""color:#FFFFFF;"">CNC</a>",Centene,3692.0,3131136.0,51.198939136,44.25%,$4.42,5.19%,6.83%,$85.23,$86.00,1.64,4/26/22,BMO
-56,"<a href=""DHI"" style=""color:#FFFFFF;"">DHI</a>",D.R. Horton,6856.0,3796289.0,26.11935232,60.29%,$5.04,6.97%,6.64%,$72.27,$72.50,-0.33,4/26/22,BMO
-60,"<a href=""EDU"" style=""color:#FFFFFF;"">EDU</a>",New Oriental Education & Technology Grou,9625.0,27516191.0,1.72920832,116.92%,$1.30,12.25%,9.28%,$10.61,$11.00,-2.97,4/26/22,BMO
-75,"<a href=""GE"" style=""color:#FFFFFF;"">GE</a>",General Electric Company,25979.0,6337161.0,101.053,52.80%,$5.56,6.17%,5.22%,$90.10,$91.00,-0.95,4/26/22,BMO
-77,"<a href=""GLW"" style=""color:#FFFFFF;"">GLW</a>",Corning,6192.0,4779593.0,29.300226048,50.16%,$2.12,6.22%,6.45%,$34.11,$35.00,0.23,4/26/22,BMO
-78,"<a href=""GM"" style=""color:#FFFFFF;"">GM</a>",General Motors Company,120273.0,19424249.0,59.10521856,59.40%,$2.79,6.92%,5.22%,$40.30,$40.50,-1.7,4/26/22,BMO
-89,"<a href=""HSBC"" style=""color:#FFFFFF;"">HSBC</a>",HSBC Holdings Plc.,4901.0,3321459.0,139.008,42.12%,$1.65,4.90%,1.32%,$33.66,$34.00,-3.58,4/26/22,BMO
-98,"<a href=""IVZ"" style=""color:#FFFFFF;"">IVZ</a>",Invesco,1424.0,4887867.0,9.690694656,41.96%,$1.97,9.40%,4.76%,$20.96,$21.00,-4.64,4/26/22,BMO
-99,"<a href=""JBLU"" style=""color:#FFFFFF;"">JBLU</a>",Jetblue Airways,14619.0,9039390.0,4.332186624,54.39%,$1.78,13.53%,5.51%,$13.16,$14.00,-8.02,4/26/22,BMO
-118,"<a href=""MMM"" style=""color:#FFFFFF;"">MMM</a>",3M Company,10647.0,3119942.0,86.383222784,38.45%,$6.69,4.48%,4.17%,$149.24,$150.00,-0.31,4/26/22,BMO
-132,"<a href=""NVS"" style=""color:#FFFFFF;"">NVS</a>",Novartis Ag,2799.0,2690605.0,201.195,19.95%,$4.10,4.57%,2.73%,$89.80,$90.00,-1.84,4/26/22,BMO
-139,"<a href=""PEP"" style=""color:#FFFFFF;"">PEP</a>",Pepsico,14219.0,5318892.0,241.883,24.84%,$5.08,2.92%,2.62%,$173.98,$175.00,-0.3,4/26/22,BMO
-153,"<a href=""RTX"" style=""color:#FFFFFF;"">RTX</a>",Raytheon Technologies,14032.0,6049503.0,151.605,35.49%,$4.19,4.13%,3.2%,$101.47,$102.00,-0.93,4/26/22,BMO
-180,"<a href=""UBS"" style=""color:#FFFFFF;"">UBS</a>",UBS Group Ag Registered,1687.0,4810234.0,60.263018496,36.46%,$1.43,8.20%,5.05%,$17.43,$17.50,-3.15,4/26/22,BMO
-182,"<a href=""UPS"" style=""color:#FFFFFF;"">UPS</a>",United Parcel Service,21195.0,3063148.0,164.33,62.98%,$13.82,7.29%,5.19%,$189.52,$190.00,-2.1,4/26/22,BMO
-188,"<a href=""VLO"" style=""color:#FFFFFF;"">VLO</a>",Valero Energy,13182.0,4170302.0,42.940043264,44.37%,$5.39,5.15%,4.42%,$104.72,$105.00,-0.73,4/26/22,BMO
-192,"<a href=""WM"" style=""color:#FFFFFF;"">WM</a>",Waste Management,2577.0,1937374.0,66.90715648,31.89%,$5.90,3.69%,3.04%,$159.73,$160.00,-0.65,4/26/22,BMO
-32,"<a href=""BYD"" style=""color:#FFFFFF;"">BYD</a>",Boyd Gaming,1008.0,1129216.0,7.048111104,44.46%,$6.53,10.32%,8.51%,$63.30,$65.00,-1.81,4/26/22,AMC
-45,"<a href=""CMG"" style=""color:#FFFFFF;"">CMG</a>",Chipotle Mexican Grill,5751.0,286763.0,42.639679488,62.19%,$108.55,7.19%,8.95%,$1508.89,$1510.00,1.76,4/26/22,AMC
-47,"<a href=""COF"" style=""color:#FFFFFF;"">COF</a>",Capital One Financial,6523.0,2927743.0,56.785698816,52.04%,$8.30,6.04%,5.41%,$137.43,$138.00,-0.63,4/26/22,AMC
-50,"<a href=""CSGP"" style=""color:#FFFFFF;"">CSGP</a>",Costar Group,1205.0,2454685.0,24.48600064,45.89%,$6.97,11.28%,8.08%,$61.81,$65.00,-3.2,4/26/22,AMC
-62,"<a href=""ENPH"" style=""color:#FFFFFF;"">ENPH</a>",Enphase Energy,16415.0,3005436.0,20.968957952,123.95%,$22.15,14.35%,19.19%,$154.34,$155.00,4.84,4/26/22,AMC
-65,"<a href=""EW"" style=""color:#FFFFFF;"">EW</a>",Edwards Lifesciences,2243.0,2566968.0,78.043578368,57.79%,$8.20,6.77%,7.53%,$121.17,$122.00,0.76,4/26/22,AMC
-66,"<a href=""EXAS"" style=""color:#FFFFFF;"">EXAS</a>",Exact Sciences,2084.0,1930553.0,10.61763072,80.18%,$5.65,9.29%,9.91%,$60.81,$61.00,0.62,4/26/22,AMC
-79,"<a href=""GOOG"" style=""color:#FFFFFF;"">GOOG</a>",Alphabet - Class C Capital Stock,34368.0,1431916.0,1651.61,65.26%,$184.80,7.55%,6.16%,$2447.75,$2450.00,-1.39,4/26/22,AMC
-80,"<a href=""GOOGL"" style=""color:#FFFFFF;"">GOOGL</a>",Alphabet - Class A,61409.0,1775308.0,1649.99,65.05%,$184.30,7.55%,4.97%,$2441.72,$2450.00,-2.58,4/26/22,AMC
-101,"<a href=""JNPR"" style=""color:#FFFFFF;"">JNPR</a>",Juniper Networks,2291.0,4358740.0,11.667720192,52.10%,$2.18,6.11%,8.14%,$35.66,$36.00,2.03,4/26/22,AMC
-117,"<a href=""MDLZ"" style=""color:#FFFFFF;"">MDLZ</a>",Mondelez International - Class A,4789.0,8225242.0,92.032262144,32.63%,$2.50,3.81%,4.04%,$65.62,$66.00,0.23,4/26/22,AMC
-122,"<a href=""MSFT"" style=""color:#FFFFFF;"">MSFT</a>",Microsoft,363573.0,34931527.0,2105.19,50.22%,$16.24,5.82%,4.63%,$278.97,$280.00,-1.19,4/26/22,AMC
-123,"<a href=""MTDR"" style=""color:#FFFFFF;"">MTDR</a>",Matador Resources Company,1535.0,2068345.0,6.401846272,63.64%,$7.85,14.71%,8.84%,$53.37,$55.00,-5.87,4/26/22,AMC
-124,"<a href=""NCR"" style=""color:#FFFFFF;"">NCR</a>",NCR,4320.0,1283503.0,5.707659776,53.44%,$5.00,12.05%,8.9%,$41.50,$42.00,-3.15,4/26/22,AMC
-149,"<a href=""QS"" style=""color:#FFFFFF;"">QS</a>",Quantumscape Class A,35361.0,8159592.0,6.885276672,132.50%,$2.44,15.40%,14.2%,$15.84,$16.00,-1.2,4/26/22,AMC
-152,"<a href=""RRC"" style=""color:#FFFFFF;"">RRC</a>",Range Resources,4104.0,5811885.0,8.299542528,81.18%,$3.05,9.82%,7.0%,$31.07,$32.00,-2.82,4/26/22,AMC
-155,"<a href=""SKX"" style=""color:#FFFFFF;"">SKX</a>",Skechers USA,4203.0,1480926.0,6.425965568,88.18%,$4.22,10.44%,14.09%,$40.41,$41.00,3.65,4/26/22,AMC
-170,"<a href=""TER"" style=""color:#FFFFFF;"">TER</a>",Teradyne,1762.0,1909718.0,18.06076928,56.47%,$14.40,12.94%,9.11%,$111.27,$115.00,-3.83,4/26/22,AMC
-173,"<a href=""TNET"" style=""color:#FFFFFF;"">TNET</a>",Trinet Group,1161.0,468399.0,5.992419328,38.16%,$8.20,8.64%,13.61%,$94.94,$95.00,4.97,4/26/22,AMC
-179,"<a href=""TXN"" style=""color:#FFFFFF;"">TXN</a>",Texas Instruments,12583.0,5857743.0,163.626,49.34%,$10.10,5.73%,4.39%,$176.20,$177.50,-1.34,4/26/22,AMC
-185,"<a href=""V"" style=""color:#FFFFFF;"">V</a>",Visa,44935.0,8663671.0,454.106,44.26%,$10.91,5.15%,4.04%,$211.72,$212.50,-1.11,4/26/22,AMC
-4,"<a href=""ADP"" style=""color:#FFFFFF;"">ADP</a>",Automatic Data Processing,1992.0,1923412.0,96.76767232,43.53%,$11.45,5.04%,3.83%,$227.24,$227.50,-1.21,4/27/22,BMO
-12,"<a href=""AMT"" style=""color:#FFFFFF;"">AMT</a>",American Tower (Reit),3173.0,1958861.0,121.29,25.25%,$15.80,5.98%,3.09%,$264.14,$270.00,-2.89,4/27/22,BMO
-23,"<a href=""BA"" style=""color:#FFFFFF;"">BA</a>",Boeing Company,159347.0,9451931.0,106.871,52.09%,$10.93,6.09%,4.58%,$179.41,$180.00,-1.51,4/27/22,BMO
-25,"<a href=""BG"" style=""color:#FFFFFF;"">BG</a>",Bunge Limited Bunge,2750.0,1418504.0,17.460393984,36.67%,$11.03,9.18%,6.69%,$120.09,$125.00,-2.49,4/27/22,BMO
-29,"<a href=""BSX"" style=""color:#FFFFFF;"">BSX</a>",Boston Scientific,7048.0,8647350.0,66.197692416,55.24%,$2.90,6.54%,5.44%,$44.36,$45.00,-1.1,4/27/22,BMO
-31,"<a href=""BXMT"" style=""color:#FFFFFF;"">BXMT</a>",Blackstone Mortgage Trust,1094.0,1491293.0,5.381970432,18.66%,$1.35,4.27%,4.57%,$31.64,$32.00,0.3,4/27/22,BMO
-44,"<a href=""CME"" style=""color:#FFFFFF;"">CME</a>",Cme Group - Class A,2924.0,1612808.0,82.075648,34.15%,$8.90,3.94%,3.4%,$225.64,$227.50,-0.54,4/27/22,BMO
-51,"<a href=""CSTM"" style=""color:#FFFFFF;"">CSTM</a>",Constellium Se Ordinary Shares (France),1936.0,775960.0,2.405682432,73.70%,$1.43,8.43%,12.76%,$16.97,$17.00,4.33,4/27/22,BMO
-52,"<a href=""CVE"" style=""color:#FFFFFF;"">CVE</a>",Cenovus Energy,8786.0,12008529.0,34.757844992,56.20%,$2.30,13.42%,4.86%,$17.14,$18.00,-8.56,4/27/22,BMO
-54,"<a href=""DB"" style=""color:#FFFFFF;"">DB</a>",Deutsche Bank Ag,11167.0,6054622.0,25.152626688,59.48%,$0.83,6.99%,5.17%,$11.88,$12.00,-1.82,4/27/22,BMO
-70,"<a href=""FISV"" style=""color:#FFFFFF;"">FISV</a>",Fiserv,4336.0,3690529.0,66.15885824,46.78%,$5.43,5.46%,4.44%,$99.38,$100.00,-1.02,4/27/22,BMO
-74,"<a href=""GD"" style=""color:#FFFFFF;"">GD</a>",General Dynamics,2038.0,1412008.0,67.325693952,34.53%,$9.70,4.03%,3.65%,$240.81,$242.50,-0.38,4/27/22,BMO
-81,"<a href=""GSK"" style=""color:#FFFFFF;"">GSK</a>",Glaxosmithkline PLC,6829.0,4694987.0,116.135,32.87%,$1.85,4.09%,2.88%,$45.20,$46.00,-1.21,4/27/22,BMO
-83,"<a href=""HES"" style=""color:#FFFFFF;"">HES</a>",Hess,3075.0,2758292.0,34.291800064,50.02%,$6.24,5.78%,5.13%,$107.91,$108.00,-0.65,4/27/22,BMO
-85,"<a href=""HOG"" style=""color:#FFFFFF;"">HOG</a>",Harley-Davidson,4679.0,2181119.0,6.02061824,83.77%,$3.72,9.70%,9.17%,$38.36,$38.50,-0.53,4/27/22,BMO
-91,"<a href=""HUM"" style=""color:#FFFFFF;"">HUM</a>",Humana,2373.0,1208195.0,57.733971968,39.15%,$20.30,4.54%,4.75%,$446.84,$447.50,0.21,4/27/22,BMO
-103,"<a href=""KHC"" style=""color:#FFFFFF;"">KHC</a>",Kraft Heinz Company,18645.0,7189581.0,53.84456192,44.86%,$2.23,5.11%,6.93%,$43.66,$44.00,1.82,4/27/22,BMO
-130,"<a href=""NSC"" style=""color:#FFFFFF;"">NSC</a>",Norfolk Southern,1428.0,1377349.0,64.696741888,39.49%,$12.05,4.60%,4.41%,$262.13,$262.50,-0.19,4/27/22,BMO
-134,"<a href=""NYCB"" style=""color:#FFFFFF;"">NYCB</a>",New York Community Bancorp,2079.0,7021022.0,4.828621824,31.59%,$1.15,11.30%,4.88%,$10.18,$11.00,-6.42,4/27/22,BMO
-162,"<a href=""SPOT"" style=""color:#FFFFFF;"">SPOT</a>",Spotify Technology S.A.,11969.0,2090832.0,21.572857856,133.67%,$17.25,15.38%,9.67%,$112.13,$113.00,-5.71,4/27/22,BMO
-163,"<a href=""STM"" style=""color:#FFFFFF;"">STM</a>",Stmicroelectronics N.V.,2003.0,3871810.0,34.559909888,46.52%,$4.35,11.44%,7.1%,$38.02,$40.00,-4.34,4/27/22,BMO
-165,"<a href=""STX"" style=""color:#FFFFFF;"">STX</a>",Seagate Tech Hldgs,6069.0,2029375.0,18.45074944,64.41%,$6.16,7.47%,8.83%,$82.46,$83.00,1.36,4/27/22,BMO
-169,"<a href=""TECK"" style=""color:#FFFFFF;"">TECK</a>",Teck Resources,12320.0,5024781.0,21.443018752,63.75%,$2.83,7.40%,6.5%,$38.22,$38.50,-0.9,4/27/22,BMO
-172,"<a href=""TMUS"" style=""color:#FFFFFF;"">TMUS</a>",T-Mobile US,10703.0,5391345.0,165.031,56.73%,$8.55,6.62%,7.91%,$129.18,$130.00,1.29,4/27/22,BMO
-186,"<a href=""VALE"" style=""color:#FFFFFF;"">VALE</a>",Vale S.A.  American Depositary Shares Ea,77574.0,33640174.0,82.963079168,49.15%,$1.02,5.95%,3.75%,$17.13,$17.50,-2.2,4/27/22,BMO
-189,"<a href=""VRT"" style=""color:#FFFFFF;"">VRT</a>",Vertiv Holdings Llc Class A,1139.0,4340244.0,4.673378304,72.81%,$2.03,16.89%,10.24%,$12.02,$12.50,-6.65,4/27/22,BMO
-7,"<a href=""AFL"" style=""color:#FFFFFF;"">AFL</a>",Aflac,3173.0,3082968.0,42.565890048,28.16%,$2.27,3.54%,3.55%,$64.13,$65.00,0.01,4/27/22,AMC
-8,"<a href=""ALGN"" style=""color:#FFFFFF;"">ALGN</a>",Align Technology,2888.0,809049.0,30.359164928,93.95%,$40.65,10.91%,12.71%,$372.56,$375.00,1.8,4/27/22,AMC
-10,"<a href=""AM"" style=""color:#FFFFFF;"">AM</a>",Antero Midstream,1850.0,3637328.0,5.266380288,35.20%,$1.95,18.14%,5.87%,$10.75,$12.50,-12.27,4/27/22,AMC
-11,"<a href=""AMGN"" style=""color:#FFFFFF;"">AMGN</a>",Amgen,8880.0,3067542.0,142.299,31.42%,$9.18,3.64%,4.21%,$252.42,$252.50,0.57,4/27/22,AMC
-14,"<a href=""AR"" style=""color:#FFFFFF;"">AR</a>",Antero Resources,10548.0,7926986.0,10.797586432,68.49%,$5.18,15.48%,7.16%,$33.47,$34.00,-8.32,4/27/22,AMC
-27,"<a href=""BMRN"" style=""color:#FFFFFF;"">BMRN</a>",Biomarin Pharmaceutical,1683.0,1259719.0,14.77717504,49.38%,$9.75,12.08%,5.02%,$80.72,$85.00,-7.06,4/27/22,AMC
-33,"<a href=""CAKE"" style=""color:#FFFFFF;"">CAKE</a>",Cheesecake Factory,1079.0,937559.0,2.019532288,49.74%,$4.60,12.07%,6.69%,$38.12,$40.00,-5.38,4/27/22,AMC
-39,"<a href=""CHRW"" style=""color:#FFFFFF;"">CHRW</a>",C.H. Robinson Worldwide,1934.0,1367356.0,13.066528768,36.92%,$8.70,8.43%,6.83%,$103.22,$105.00,-1.6,4/27/22,AMC
-49,"<a href=""CP"" style=""color:#FFFFFF;"">CP</a>",Canadian Pacific Railway,1218.0,4437787.0,72.116396032,28.56%,$5.20,6.90%,4.14%,$75.41,$77.50,-2.76,4/27/22,AMC
-55,"<a href=""DFS"" style=""color:#FFFFFF;"">DFS</a>",Discover Financial Services,2467.0,1780736.0,32.864733184,50.32%,$6.70,5.87%,4.86%,$114.21,$115.00,-1.01,4/27/22,AMC
-63,"<a href=""EQT"" style=""color:#FFFFFF;"">EQT</a>",Eqt,11982.0,8982564.0,15.808019456,63.55%,$5.95,14.51%,6.76%,$41.01,$42.00,-7.75,4/27/22,AMC
-67,"<a href=""F"" style=""color:#FFFFFF;"">F</a>",Ford Motor Company,541889.0,94902124.0,62.866694144,64.86%,$1.17,7.59%,5.46%,$15.41,$15.50,-2.13,4/27/22,AMC
-68,"<a href=""FB"" style=""color:#FFFFFF;"">FB</a>",Meta Platforms - Class A,489577.0,31901199.0,510.522,110.16%,$23.83,12.82%,9.06%,$185.86,$187.50,-3.76,4/27/22,AMC
-88,"<a href=""HP"" style=""color:#FFFFFF;"">HP</a>",Helmerich & Payne,1704.0,1534065.0,5.092324864,55.13%,$5.85,12.47%,6.29%,$46.91,$47.50,-6.18,4/27/22,AMC
-90,"<a href=""HTZ"" style=""color:#FFFFFF;"">HTZ</a>",Hertz Global Holdings,25667.0,5723380.0,9.822253056,64.09%,$3.78,16.48%,4.29%,$22.93,$25.00,-12.19,4/27/22,AMC
-94,"<a href=""INVH"" style=""color:#FFFFFF;"">INVH</a>",Invitation Homes,1882.0,4536024.0,26.590861312,23.55%,$2.67,6.13%,2.99%,$43.55,$45.00,-3.14,4/27/22,AMC
-107,"<a href=""LC"" style=""color:#FFFFFF;"">LC</a>",Lendingclub,4899.0,2604630.0,1.362071808,104.96%,$3.25,23.62%,16.73%,$13.76,$14.00,-6.89,4/27/22,AMC
-112,"<a href=""LVS"" style=""color:#FFFFFF;"">LVS</a>",Las Vegas Sands Corp.,42949.0,8462454.0,28.422592512,66.93%,$2.92,7.86%,5.35%,$37.17,$37.50,-2.51,4/27/22,AMC
-115,"<a href=""MAT"" style=""color:#FFFFFF;"">MAT</a>",Mattel,2790.0,3154625.0,7.99744768,62.02%,$1.66,7.28%,9.38%,$22.79,$23.00,2.1,4/27/22,AMC
-128,"<a href=""NOVA"" style=""color:#FFFFFF;"">NOVA</a>",Sunnova Energy Intl,4413.0,2919261.0,1.860687232,88.57%,$3.55,22.31%,10.0%,$15.91,$17.50,-12.31,4/27/22,AMC
-129,"<a href=""NOW"" style=""color:#FFFFFF;"">NOW</a>",Servicenow,6691.0,1659369.0,98.333999104,78.89%,$44.30,9.14%,10.01%,$484.78,$485.00,0.87,4/27/22,AMC
-142,"<a href=""PINS"" style=""color:#FFFFFF;"">PINS</a>",Pinterest Class A,53622.0,12277759.0,13.39740672,123.35%,$2.84,14.21%,20.48%,$19.98,$20.00,6.27,4/27/22,AMC
-143,"<a href=""PPC"" style=""color:#FFFFFF;"">PPC</a>",Pilgrims Pride,2622.0,951636.0,6.758363136,38.24%,$2.40,8.67%,8.27%,$27.69,$28.00,-0.4,4/27/22,AMC
-146,"<a href=""PYPL"" style=""color:#FFFFFF;"">PYPL</a>",Paypal Holdings,177279.0,19435060.0,105.021,107.37%,$10.90,12.43%,7.61%,$87.66,$88.00,-4.82,4/27/22,AMC
-147,"<a href=""QCOM"" style=""color:#FFFFFF;"">QCOM</a>",Qualcomm,81512.0,10799211.0,153.396,69.56%,$10.90,8.05%,6.82%,$135.38,$136.00,-1.23,4/27/22,AMC
-148,"<a href=""QGEN"" style=""color:#FFFFFF;"">QGEN</a>",Qiagen N.V. Common Shares,1037.0,718880.0,10.542026752,39.16%,$5.65,12.48%,4.08%,$45.27,$50.00,-8.4,4/27/22,AMC
-167,"<a href=""TDOC"" style=""color:#FFFFFF;"">TDOC</a>",Teladoc Health,25408.0,4315248.0,9.515393024,110.24%,$7.55,12.84%,11.72%,$58.81,$59.00,-1.12,4/27/22,AMC
-176,"<a href=""TROX"" style=""color:#FFFFFF;"">TROX</a>",Tronox Holdings PLC Ordinary Shares (Uk),1470.0,1206894.0,3.121196032,52.57%,$2.30,11.77%,9.46%,$19.54,$20.00,-2.31,4/27/22,AMC
-183,"<a href=""UPWK"" style=""color:#FFFFFF;"">UPWK</a>",Upwork,1967.0,1617656.0,2.456388608,90.37%,$4.00,20.88%,17.19%,$19.16,$20.00,-3.69,4/27/22,AMC
-184,"<a href=""URI"" style=""color:#FFFFFF;"">URI</a>",United Rentals,2145.0,694537.0,24.380704768,57.45%,$21.60,6.65%,9.17%,$324.68,$325.00,2.52,4/27/22,AMC
-6,"<a href=""AEP"" style=""color:#FFFFFF;"">AEP</a>",American Electric Power Company,2361.0,3089698.0,51.52432128,20.49%,$6.18,6.12%,1.97%,$100.91,$105.00,-4.15,4/28/22,BMO
-9,"<a href=""ALNY"" style=""color:#FFFFFF;"">ALNY</a>",Alnylam Pharmaceuticals,1217.0,842970.0,20.28552192,56.15%,$21.25,12.67%,7.75%,$167.67,$170.00,-4.92,4/28/22,BMO
-24,"<a href=""BAX"" style=""color:#FFFFFF;"">BAX</a>",Baxter Intl,1408.0,3067865.0,39.239303168,41.35%,$3.59,4.81%,4.3%,$74.71,$75.00,-0.51,4/28/22,BMO
-30,"<a href=""BTU"" style=""color:#FFFFFF;"">BTU</a>",Peabody Energy Common,20281.0,8743590.0,3.767593216,105.40%,$6.10,23.60%,12.52%,$25.85,$26.00,-11.08,4/28/22,BMO
-34,"<a href=""CARR"" style=""color:#FFFFFF;"">CARR</a>",Carrier Global Common,1513.0,4558336.0,36.63310848,35.42%,$3.37,8.02%,5.24%,$42.00,$42.50,-2.78,4/28/22,BMO
-35,"<a href=""CAT"" style=""color:#FFFFFF;"">CAT</a>",Caterpillar,31031.0,3623133.0,126.821,43.92%,$11.43,5.08%,4.79%,$224.85,$225.00,-0.29,4/28/22,BMO
-38,"<a href=""CG"" style=""color:#FFFFFF;"">CG</a>",Carlyle Group,2072.0,2334778.0,14.994618368,41.23%,$5.38,13.17%,4.95%,$40.84,$45.00,-8.22,4/28/22,BMO
-43,"<a href=""CMCSA"" style=""color:#FFFFFF;"">CMCSA</a>",Comcast - Class A,29226.0,22080596.0,215.656,43.75%,$2.37,5.14%,3.98%,$46.12,$46.50,-1.15,4/28/22,BMO
-58,"<a href=""DPZ"" style=""color:#FFFFFF;"">DPZ</a>",Domino's Pizza,2315.0,483408.0,14.089024512,65.46%,$29.80,7.74%,8.35%,$384.88,$390.00,0.61,4/28/22,BMO
-92,"<a href=""HUN"" style=""color:#FFFFFF;"">HUN</a>",Huntsman,1999.0,2490002.0,7.530937856,38.40%,$3.00,8.66%,6.87%,$34.66,$35.00,-1.79,4/28/22,BMO
-95,"<a href=""IP"" style=""color:#FFFFFF;"">IP</a>",International Paper Company,2845.0,3465959.0,18.628179968,35.96%,$2.08,4.31%,4.43%,$48.31,$49.00,0.12,4/28/22,BMO
-96,"<a href=""IRM"" style=""color:#FFFFFF;"">IRM</a>",Iron Mountain (Delaware)Common Stock REI,2507.0,2198172.0,16.688418816,32.52%,$4.18,7.31%,4.88%,$57.16,$57.50,-2.43,4/28/22,BMO
-100,"<a href=""JKS"" style=""color:#FFFFFF;"">JKS</a>",Jinkosolar Holding Company Limited Ameri,1771.0,1261493.0,2.4225664,86.62%,$10.55,19.63%,10.59%,$53.75,$55.00,-9.04,4/28/22,BMO
-102,"<a href=""KDP"" style=""color:#FFFFFF;"">KDP</a>",Keurig Dr Pepper,1341.0,6236436.0,53.16753408,21.92%,$1.95,5.21%,4.47%,$37.41,$38.00,-0.74,4/28/22,BMO
-108,"<a href=""LH"" style=""color:#FFFFFF;"">LH</a>",Laboratory Of America Holdings,1022.0,906438.0,25.80641792,28.18%,$18.65,6.87%,4.44%,$271.63,$280.00,-2.43,4/28/22,BMO
-109,"<a href=""LIN"" style=""color:#FFFFFF;"">LIN</a>",Linde PLC Ordinary Share,1935.0,2050390.0,170.248,27.38%,$21.20,6.74%,3.31%,$314.54,$320.00,-3.43,4/28/22,BMO
-110,"<a href=""LLY"" style=""color:#FFFFFF;"">LLY</a>",Eli Lilly And Company,7860.0,2978898.0,275.809,42.28%,$13.80,4.87%,3.38%,$283.38,$285.00,-1.49,4/28/22,BMO
-111,"<a href=""LUV"" style=""color:#FFFFFF;"">LUV</a>",Southwest Airlines Company,23555.0,8270569.0,28.65750016,52.55%,$2.89,6.06%,5.18%,$47.66,$48.00,-0.88,4/28/22,BMO
-114,"<a href=""MA"" style=""color:#FFFFFF;"">MA</a>",Mastercard,20433.0,4395601.0,356.232,46.74%,$19.33,5.41%,4.47%,$357.45,$357.50,-0.94,4/28/22,BMO
-116,"<a href=""MCD"" style=""color:#FFFFFF;"">MCD</a>",McDonald's,15403.0,3146758.0,189.8,27.65%,$8.07,3.20%,3.09%,$252.12,$252.50,-0.11,4/28/22,BMO
-119,"<a href=""MO"" style=""color:#FFFFFF;"">MO</a>",Altria Group,39345.0,9241049.0,103.064,28.40%,$1.85,3.30%,2.65%,$56.00,$56.00,-0.65,4/28/22,BMO
-120,"<a href=""MPW"" style=""color:#FFFFFF;"">MPW</a>",Medical Properties Trust,2618.0,4853888.0,12.115948544,27.62%,$1.45,7.61%,3.37%,$19.05,$20.00,-4.24,4/28/22,BMO
-121,"<a href=""MRK"" style=""color:#FFFFFF;"">MRK</a>",Merck Common (New),38792.0,12233725.0,217.812,29.12%,$2.97,3.49%,3.32%,$85.16,$86.00,-0.18,4/28/22,BMO
-126,"<a href=""NOC"" style=""color:#FFFFFF;"">NOC</a>",Northrop Grumman,2352.0,966271.0,69.223391232,38.73%,$20.15,4.49%,3.99%,$448.68,$450.00,-0.5,4/28/22,BMO
-131,"<a href=""NVCR"" style=""color:#FFFFFF;"">NVCR</a>",Novocure Limited -,1026.0,658313.0,8.734683136,75.99%,$13.50,17.14%,11.61%,$78.75,$80.00,-5.53,4/28/22,BMO
-136,"<a href=""OSTK"" style=""color:#FFFFFF;"">OSTK</a>",Overstock.com,9215.0,2256382.0,1.543482112,154.23%,$6.33,18.07%,18.36%,$35.04,$36.00,0.29,4/28/22,BMO
-137,"<a href=""PBF"" style=""color:#FFFFFF;"">PBF</a>",PBF Energy Class A,2346.0,3366521.0,3.295997696,77.67%,$4.85,17.71%,6.2%,$27.38,$28.00,-11.51,4/28/22,BMO
-138,"<a href=""PCG"" style=""color:#FFFFFF;"">PCG</a>",Pg&E,12684.0,17126920.0,27.854319616,45.54%,$0.68,5.54%,3.51%,$12.27,$12.50,-2.03,4/28/22,BMO
-140,"<a href=""PERI"" style=""color:#FFFFFF;"">PERI</a>",Perion Network -,1804.0,546288.0,1.001016832,65.68%,$3.98,17.56%,13.44%,$22.67,$25.00,-4.12,4/28/22,BMO
-141,"<a href=""PHM"" style=""color:#FFFFFF;"">PHM</a>",Pultegroup,4203.0,2893730.0,10.456121344,44.10%,$4.73,11.09%,6.55%,$42.66,$45.00,-4.54,4/28/22,BMO
-145,"<a href=""PTEN"" style=""color:#FFFFFF;"">PTEN</a>",Patterson-Uti Energy,4937.0,3746422.0,3.804598272,59.37%,$2.45,14.16%,7.68%,$17.30,$18.00,-6.48,4/28/22,BMO
-160,"<a href=""SNY"" style=""color:#FFFFFF;"">SNY</a>",Sanofi - American Depositary Shares,1078.0,1919266.0,137.922,25.17%,$3.73,6.82%,3.14%,$54.68,$55.00,-3.68,4/28/22,BMO
-161,"<a href=""SO"" style=""color:#FFFFFF;"">SO</a>",Southern Company,4331.0,5658393.0,81.06496,25.28%,$2.32,3.05%,1.93%,$76.18,$77.00,-1.12,4/28/22,BMO
-164,"<a href=""STNG"" style=""color:#FFFFFF;"">STNG</a>",Scorpio Tankers Common Shares,3945.0,979873.0,1.257279488,60.63%,$3.17,14.40%,6.86%,$22.02,$23.00,-7.54,4/28/22,BMO
-171,"<a href=""TMO"" style=""color:#FFFFFF;"">TMO</a>",Thermo Fisher Scientific,2329.0,1527705.0,227.059,32.08%,$40.85,7.22%,4.45%,$565.78,$570.00,-2.77,4/28/22,BMO
-174,"<a href=""TPX"" style=""color:#FFFFFF;"">TPX</a>",Tempur Sealy Intl,2924.0,3011978.0,5.112276992,59.34%,$4.18,14.85%,10.04%,$28.14,$30.00,-4.81,4/28/22,BMO
-175,"<a href=""TROW"" style=""color:#FFFFFF;"">TROW</a>",T. Rowe Price Group,1192.0,1662192.0,31.797721088,34.21%,$10.85,7.92%,4.48%,$136.94,$140.00,-3.44,4/28/22,BMO
-178,"<a href=""TWTR"" style=""color:#FFFFFF;"">TWTR</a>",Twitter,197222.0,33982832.0,37.694189568,101.20%,$5.69,11.72%,14.73%,$48.55,$49.00,3.01,4/28/22,BMO
-181,"<a href=""UL"" style=""color:#FFFFFF;"">UL</a>",Unilever PLC,3236.0,4355192.0,116.6,24.47%,$3.27,7.17%,3.43%,$45.61,$47.50,-3.74,4/28/22,BMO
-187,"<a href=""VIRT"" style=""color:#FFFFFF;"">VIRT</a>",Virtu Financial - Class A,1302.0,1153182.0,3.812493568,40.64%,$3.17,9.09%,9.37%,$34.88,$35.00,0.28,4/28/22,BMO
-0,"<a href=""AAPL"" style=""color:#FFFFFF;"">AAPL</a>",Apple,1444653.0,94206478.0,2718.37,43.56%,$8.52,5.15%,5.58%,$165.51,$167.50,0.42,4/28/22,AMC
-5,"<a href=""AEM"" style=""color:#FFFFFF;"">AEM</a>",Agnico Eagle Mines,5427.0,3256994.0,28.137033728,42.18%,$5.66,9.46%,6.51%,$59.80,$60.00,-2.95,4/28/22,AMC
-13,"<a href=""AMZN"" style=""color:#FFFFFF;"">AMZN</a>",Amazon.com,265867.0,3562669.0,1508.29,60.35%,$205.86,6.98%,8.37%,$2948.02,$2950.00,1.39,4/28/22,AMC
-17,"<a href=""ATUS"" style=""color:#FFFFFF;"">ATUS</a>",Altice USA Class A,5938.0,5113047.0,5.310363648,72.61%,$2.00,17.56%,9.8%,$11.39,$12.00,-7.76,4/28/22,AMC
-19,"<a href=""AVTR"" style=""color:#FFFFFF;"">AVTR</a>",Avantor,1744.0,4499810.0,19.041703936,39.78%,$3.11,10.10%,7.87%,$30.80,$32.50,-2.23,4/28/22,AMC
-20,"<a href=""AX"" style=""color:#FFFFFF;"">AX</a>",Axos Financial,2315.0,327994.0,2.520813312,54.40%,$5.18,12.25%,6.05%,$42.30,$42.50,-6.2,4/28/22,AMC
-37,"<a href=""CENX"" style=""color:#FFFFFF;"">CENX</a>",Century Aluminum Company,1573.0,1775581.0,2.003446016,87.78%,$4.27,20.14%,12.14%,$21.20,$22.00,-8.0,4/28/22,AMC
-48,"<a href=""COOP"" style=""color:#FFFFFF;"">COOP</a>",Mr. Cooper Group,5469.0,993699.0,3.417345792,68.05%,$3.58,7.86%,8.03%,$45.54,$46.00,0.17,4/28/22,AMC
-57,"<a href=""DLR"" style=""color:#FFFFFF;"">DLR</a>",Digital Realty Trust,1534.0,1520498.0,42.655080448,23.79%,$9.05,6.03%,4.53%,$149.96,$155.00,-1.5,4/28/22,AMC
-59,"<a href=""DXCM"" style=""color:#FFFFFF;"">DXCM</a>",Dexcom,1298.0,825334.0,46.355673088,55.93%,$57.70,12.77%,11.38%,$451.81,$460.00,-1.39,4/28/22,AMC
-61,"<a href=""EGO"" style=""color:#FFFFFF;"">EGO</a>",Eldorado Gold,1382.0,2403213.0,2.118707584,52.20%,$1.47,13.12%,6.54%,$11.20,$12.00,-6.58,4/28/22,AMC
-64,"<a href=""ERJ"" style=""color:#FFFFFF;"">ERJ</a>",Embraer S.A.,1972.0,2607835.0,2.166101504,58.51%,$1.75,15.13%,5.28%,$11.57,$12.50,-9.85,4/28/22,AMC
-71,"<a href=""FIVN"" style=""color:#FFFFFF;"">FIVN</a>",Five9,1646.0,1233597.0,7.141737472,68.48%,$16.00,15.38%,12.32%,$104.05,$105.00,-3.06,4/28/22,AMC
-72,"<a href=""FSLR"" style=""color:#FFFFFF;"">FSLR</a>",First Solar,8366.0,1620120.0,7.93299456,75.26%,$6.35,8.71%,12.08%,$72.90,$73.00,3.37,4/28/22,AMC
-73,"<a href=""FTAI"" style=""color:#FFFFFF;"">FTAI</a>",Fortress Transportation And Infrastructu,2426.0,606139.0,2.419212544,54.28%,$2.92,12.23%,4.76%,$23.88,$24.00,-7.47,4/28/22,AMC
-76,"<a href=""GILD"" style=""color:#FFFFFF;"">GILD</a>",Gilead Sciences,32511.0,10056373.0,80.006250496,31.68%,$2.43,3.85%,5.46%,$63.11,$64.00,1.61,4/28/22,AMC
-84,"<a href=""HIG"" style=""color:#FFFFFF;"">HIG</a>",Hartford Finl Servs Gr,1477.0,1973082.0,24.246695936,33.67%,$2.82,3.90%,4.5%,$72.28,$72.50,0.6,4/28/22,AMC
-87,"<a href=""HOOD"" style=""color:#FFFFFF;"">HOOD</a>",Robinhood Markets - Class A,135037.0,21644181.0,9.061812224,128.33%,$1.54,14.89%,12.9%,$10.34,$10.50,-1.99,4/28/22,AMC
-93,"<a href=""INTC"" style=""color:#FFFFFF;"">INTC</a>",Intel,189617.0,36428028.0,194.213,60.87%,$3.34,7.06%,5.71%,$47.28,$47.50,-1.35,4/28/22,AMC
-104,"<a href=""KLAC"" style=""color:#FFFFFF;"">KLAC</a>",Kla,1754.0,1472239.0,50.638831616,60.75%,$23.35,7.03%,5.61%,$332.30,$332.50,-1.42,4/28/22,AMC
-127,"<a href=""NOV"" style=""color:#FFFFFF;"">NOV</a>",Nov,3074.0,4826676.0,7.637340672,70.75%,$1.60,8.25%,6.53%,$19.39,$19.50,-1.72,4/28/22,AMC
-135,"<a href=""OLN"" style=""color:#FFFFFF;"">OLN</a>",Olin,1483.0,1884139.0,8.794522624,69.25%,$5.02,8.93%,6.96%,$56.22,$57.00,-1.97,4/28/22,AMC
-151,"<a href=""ROKU"" style=""color:#FFFFFF;"">ROKU</a>",Roku - Class A,84711.0,7037042.0,13.469344768,154.56%,$17.62,17.89%,18.76%,$98.50,$99.00,0.87,4/28/22,AMC
-158,"<a href=""SM"" style=""color:#FFFFFF;"">SM</a>",SM Energy Company,3097.0,2579580.0,4.62467072,79.88%,$7.35,20.20%,10.6%,$36.38,$40.00,-9.6,4/28/22,AMC
-166,"<a href=""SYK"" style=""color:#FFFFFF;"">SYK</a>",Stryker,1378.0,1441699.0,101.948,30.49%,$18.20,7.15%,3.83%,$254.56,$260.00,-3.32,4/28/22,AMC
-168,"<a href=""TEAM"" style=""color:#FFFFFF;"">TEAM</a>",Atlassian PLC - Class A,6388.0,1990292.0,64.153464832,100.90%,$29.40,11.69%,11.74%,$251.49,$252.50,0.05,4/28/22,AMC
-177,"<a href=""TRUP"" style=""color:#FFFFFF;"">TRUP</a>",Trupanion,1076.0,420823.0,3.006709504,86.36%,$14.35,19.63%,12.0%,$73.11,$75.00,-7.63,4/28/22,AMC
-191,"<a href=""WDC"" style=""color:#FFFFFF;"">WDC</a>",Western Digital,15310.0,3848137.0,15.511504896,77.39%,$4.48,8.99%,8.98%,$49.83,$50.00,-0.01,4/28/22,AMC
-194,"<a href=""WU"" style=""color:#FFFFFF;"">WU</a>",Western Union Company,2098.0,6438736.0,7.799717376,33.18%,$1.55,8.02%,5.62%,$19.32,$20.00,-2.4,4/28/22,AMC
-196,"<a href=""X"" style=""color:#FFFFFF;"">X</a>",United States Steel,77267.0,17982073.0,9.032487936,93.41%,$3.81,10.87%,9.49%,$35.05,$35.50,-1.38,4/28/22,AMC
-199,"<a href=""ZEN"" style=""color:#FFFFFF;"">ZEN</a>",Zendesk,8966.0,1971277.0,14.976370688,67.53%,$9.60,7.81%,11.58%,$122.87,$123.00,3.77,4/28/22,AMC
-1,"<a href=""ABBV"" style=""color:#FFFFFF;"">ABBV</a>",Abbvie,55424.0,7776453.0,279.992,33.90%,$6.25,4.01%,4.77%,$155.91,$157.50,0.76,4/29/22,BMO
-22,"<a href=""AZN"" style=""color:#FFFFFF;"">AZN</a>",Astrazeneca PLC - American Depositary Sh,8849.0,6846163.0,208.79,35.32%,$2.79,4.21%,3.58%,$66.28,$67.00,-0.63,4/29/22,BMO
-26,"<a href=""BLMN"" style=""color:#FFFFFF;"">BLMN</a>",Bloomin Brands,2118.0,1937544.0,2.013866368,49.34%,$2.48,11.15%,9.46%,$22.24,$22.50,-1.69,4/29/22,BMO
-28,"<a href=""BMY"" style=""color:#FFFFFF;"">BMY</a>",Bristol-Myers Squibb Company,39984.0,14461410.0,164.831,28.93%,$2.56,3.35%,3.42%,$76.38,$77.00,0.07,4/29/22,BMO
-36,"<a href=""CBOE"" style=""color:#FFFFFF;"">CBOE</a>",Cboe Global Markets,2497.0,611845.0,12.259253248,40.43%,$5.42,4.75%,3.81%,$114.14,$115.00,-0.94,4/29/22,BMO
-40,"<a href=""CHTR"" style=""color:#FFFFFF;"">CHTR</a>",Charter Communications - Class A,3567.0,1490710.0,89.657868288,56.92%,$33.45,6.59%,6.05%,$507.77,$510.00,-0.54,4/29/22,BMO
-41,"<a href=""CL"" style=""color:#FFFFFF;"">CL</a>",Colgate-Palmolive Company,4394.0,5329227.0,69.003993088,29.59%,$2.83,3.47%,3.41%,$81.57,$82.00,-0.06,4/29/22,BMO
-53,"<a href=""CVX"" style=""color:#FFFFFF;"">CVX</a>",Chevron,65885.0,15261561.0,320.528,37.14%,$7.26,4.45%,2.9%,$163.03,$165.00,-1.55,4/29/22,BMO
-86,"<a href=""HON"" style=""color:#FFFFFF;"">HON</a>",Honeywell Intl,6451.0,3435740.0,134.89,34.60%,$7.95,4.12%,3.3%,$193.03,$195.00,-0.82,4/29/22,BMO
-113,"<a href=""LYB"" style=""color:#FFFFFF;"">LYB</a>",Lyondellbasell Industries Nv Ordinary Sh,2522.0,2247108.0,36.41124864,35.37%,$8.70,8.01%,4.73%,$108.65,$110.00,-3.28,4/29/22,BMO
-133,"<a href=""NWL"" style=""color:#FFFFFF;"">NWL</a>",Newell Brands,1757.0,3409394.0,9.713230848,41.37%,$2.12,9.26%,8.08%,$22.89,$23.00,-1.18,4/29/22,BMO
-144,"<a href=""PSX"" style=""color:#FFFFFF;"">PSX</a>",Phillips 66,6197.0,4200944.0,48.07675904,42.47%,$4.18,4.93%,3.75%,$84.82,$85.00,-1.18,4/29/22,BMO
-157,"<a href=""SLCA"" style=""color:#FFFFFF;"">SLCA</a>",US Silica Holdings,2648.0,1364860.0,1.472482432,76.72%,$3.45,18.14%,13.97%,$19.02,$20.00,-4.17,4/29/22,BMO
-193,"<a href=""WPC"" style=""color:#FFFFFF;"">WPC</a>",W.P. Carey,1067.0,897359.0,16.354185216,15.61%,$4.30,5.02%,2.8%,$85.58,$90.00,-2.22,4/29/22,BMO
-195,"<a href=""WY"" style=""color:#FFFFFF;"">WY</a>",Weyerhaeuser Company,4355.0,4224712.0,31.144392704,41.09%,$2.00,4.79%,4.23%,$41.75,$42.00,-0.56,4/29/22,BMO
-198,"<a href=""XOM"" style=""color:#FFFFFF;"">XOM</a>",Exxon Mobil,161220.0,29469827.0,367.76,36.89%,$3.75,4.35%,2.85%,$86.12,$87.00,-1.5,4/29/22,BMO
+18,"<a href=""ATVI"" style=""color:#FFFFFF;"">ATVI</a>",Activision Blizzard,49775.0,11028613.0,61.467619328,25.19%,$2.39,3.04%,7.2%,$78.68,$79.00,4.16,4/25/22,BMO
+100,"<a href=""KO"" style=""color:#FFFFFF;"">KO</a>",Coca-Cola Company,56284.0,18910641.0,287.052,26.34%,$2.09,3.21%,3.06%,$65.17,$66.00,-0.15,4/25/22,BMO
+2,"<a href=""ACC"" style=""color:#FFFFFF;"">ACC</a>",American Campus Communities,1156.0,1346821.0,8.997912576,5.99%,$0.48,0.77%,2.97%,$62.53,$65.00,2.2,4/25/22,AMC
+3,"<a href=""ADM"" style=""color:#FFFFFF;"">ADM</a>",Archer-Daniels Midland,6262.0,3478872.0,53.996101632,47.33%,$5.00,5.45%,4.86%,$91.69,$92.50,-0.59,4/26/22,BMO
+15,"<a href=""ARCC"" style=""color:#FFFFFF;"">ARCC</a>",Ares Capital - Closed End,5813.0,3679481.0,9.543504896,23.51%,$1.16,5.27%,2.76%,$22.03,$22.00,-2.51,4/26/22,BMO
+16,"<a href=""ARCH"" style=""color:#FFFFFF;"">ARCH</a>",Arch Resources Class A,1709.0,708879.0,2.373454336,68.71%,$21.20,15.82%,8.2%,$134.00,$135.00,-7.62,4/26/22,BMO
+44,"<a href=""CNC"" style=""color:#FFFFFF;"">CNC</a>",Centene,3692.0,3131136.0,51.198939136,49.31%,$4.88,5.78%,6.83%,$84.41,$85.00,1.05,4/26/22,BMO
+54,"<a href=""DHI"" style=""color:#FFFFFF;"">DHI</a>",D.R. Horton,6856.0,3796289.0,26.11935232,63.58%,$5.21,7.22%,6.64%,$72.19,$72.00,-0.58,4/26/22,BMO
+58,"<a href=""EDU"" style=""color:#FFFFFF;"">EDU</a>",New Oriental Education & Technology Grou,9625.0,27516191.0,1.72920832,90.36%,$1.31,13.10%,9.28%,$10.00,$10.50,-3.82,4/26/22,BMO
+72,"<a href=""GE"" style=""color:#FFFFFF;"">GE</a>",General Electric Company,25979.0,6337161.0,101.053,53.84%,$5.65,6.37%,5.22%,$88.69,$90.00,-1.15,4/26/22,BMO
+74,"<a href=""GLW"" style=""color:#FFFFFF;"">GLW</a>",Corning,6192.0,4779593.0,29.300226048,51.89%,$2.11,6.25%,6.45%,$33.75,$34.00,0.2,4/26/22,BMO
+75,"<a href=""GM"" style=""color:#FFFFFF;"">GM</a>",General Motors Company,120273.0,19424249.0,59.10521856,64.88%,$2.99,7.53%,5.22%,$39.73,$40.00,-2.31,4/26/22,BMO
+85,"<a href=""HSBC"" style=""color:#FFFFFF;"">HSBC</a>",HSBC Holdings Plc.,4901.0,3321459.0,139.008,40.59%,$1.57,4.70%,1.32%,$33.41,$33.50,-3.38,4/26/22,BMO
+93,"<a href=""IVZ"" style=""color:#FFFFFF;"">IVZ</a>",Invesco,1424.0,4887867.0,9.690694656,40.92%,$1.98,14.66%,4.76%,$13.51,$21.00,-9.9,4/26/22,BMO
+94,"<a href=""JBLU"" style=""color:#FFFFFF;"">JBLU</a>",Jetblue Airways,14619.0,9039390.0,4.332186624,55.01%,$1.59,12.32%,5.51%,$12.91,$13.00,-6.81,4/26/22,BMO
+112,"<a href=""MMM"" style=""color:#FFFFFF;"">MMM</a>",3M Company,10647.0,3119942.0,86.383222784,38.43%,$6.75,4.53%,4.17%,$148.91,$150.00,-0.36,4/26/22,BMO
+125,"<a href=""NVS"" style=""color:#FFFFFF;"">NVS</a>",Novartis Ag,2799.0,2690605.0,201.195,15.89%,$3.35,3.76%,2.73%,$89.17,$90.00,-1.03,4/26/22,BMO
+132,"<a href=""PEP"" style=""color:#FFFFFF;"">PEP</a>",Pepsico,14219.0,5318892.0,241.883,26.84%,$5.35,3.12%,2.62%,$171.72,$172.50,-0.5,4/26/22,BMO
+145,"<a href=""RTX"" style=""color:#FFFFFF;"">RTX</a>",Raytheon Technologies,14032.0,6049503.0,151.605,38.66%,$4.51,4.62%,3.2%,$97.72,$101.00,-1.42,4/26/22,BMO
+169,"<a href=""UBS"" style=""color:#FFFFFF;"">UBS</a>",UBS Group Ag Registered,1687.0,4810234.0,60.263018496,36.78%,$1.44,8.33%,5.05%,$17.28,$17.50,-3.28,4/26/22,BMO
+171,"<a href=""UPS"" style=""color:#FFFFFF;"">UPS</a>",United Parcel Service,21195.0,3063148.0,164.33,70.62%,$15.25,8.17%,5.19%,$186.67,$187.50,-2.98,4/26/22,BMO
+177,"<a href=""VLO"" style=""color:#FFFFFF;"">VLO</a>",Valero Energy,13182.0,4170302.0,42.940043264,45.05%,$5.50,5.99%,4.42%,$91.75,$104.00,-1.57,4/26/22,BMO
+180,"<a href=""WM"" style=""color:#FFFFFF;"">WM</a>",Waste Management,2577.0,1937374.0,66.90715648,29.94%,$5.92,7.52%,3.04%,$78.75,$160.00,-4.47,4/26/22,BMO
+31,"<a href=""BYD"" style=""color:#FFFFFF;"">BYD</a>",Boyd Gaming,1008.0,1129216.0,7.048111104,45.32%,$6.65,10.11%,8.51%,$65.75,$65.00,-1.6,4/26/22,AMC
+43,"<a href=""CMG"" style=""color:#FFFFFF;"">CMG</a>",Chipotle Mexican Grill,5751.0,286763.0,42.639679488,62.55%,$107.65,7.29%,8.95%,$1477.01,$1485.00,1.66,4/26/22,AMC
+45,"<a href=""COF"" style=""color:#FFFFFF;"">COF</a>",Capital One Financial,6523.0,2927743.0,56.785698816,54.04%,$8.60,6.36%,5.41%,$135.28,$136.00,-0.95,4/26/22,AMC
+48,"<a href=""CSGP"" style=""color:#FFFFFF;"">CSGP</a>",Costar Group,1205.0,2454685.0,24.48600064,48.14%,$7.42,12.15%,8.08%,$61.09,$65.00,-4.07,4/26/22,AMC
+60,"<a href=""ENPH"" style=""color:#FFFFFF;"">ENPH</a>",Enphase Energy,16415.0,3005436.0,20.968957952,124.75%,$22.28,14.59%,19.19%,$152.74,$155.00,4.6,4/26/22,AMC
+63,"<a href=""EW"" style=""color:#FFFFFF;"">EW</a>",Edwards Lifesciences,2243.0,2566968.0,78.043578368,65.14%,$9.20,7.80%,7.53%,$117.90,$119.00,-0.27,4/26/22,AMC
+64,"<a href=""EXAS"" style=""color:#FFFFFF;"">EXAS</a>",Exact Sciences,2084.0,1930553.0,10.61763072,82.03%,$5.75,9.54%,9.91%,$60.30,$61.00,0.37,4/26/22,AMC
+76,"<a href=""GOOG"" style=""color:#FFFFFF;"">GOOG</a>",Alphabet - Class C Capital Stock,34368.0,1431916.0,1651.61,68.97%,$192.60,8.06%,6.16%,$2390.44,$2400.00,-1.9,4/26/22,AMC
+77,"<a href=""GOOGL"" style=""color:#FFFFFF;"">GOOGL</a>",Alphabet - Class A,61409.0,1775308.0,1649.99,70.04%,$193.10,8.07%,4.97%,$2392.25,$2400.00,-3.1,4/26/22,AMC
+96,"<a href=""JNPR"" style=""color:#FFFFFF;"">JNPR</a>",Juniper Networks,2291.0,4358740.0,11.667720192,54.10%,$2.35,7.69%,8.14%,$30.57,$36.00,0.45,4/26/22,AMC
+111,"<a href=""MDLZ"" style=""color:#FFFFFF;"">MDLZ</a>",Mondelez International - Class A,4789.0,8225242.0,92.032262144,32.25%,$2.57,3.97%,4.04%,$64.73,$66.00,0.07,4/26/22,AMC
+116,"<a href=""MSFT"" style=""color:#FFFFFF;"">MSFT</a>",Microsoft,363573.0,34931527.0,2105.19,55.65%,$17.65,6.47%,4.63%,$272.96,$275.00,-1.84,4/26/22,AMC
+117,"<a href=""MTDR"" style=""color:#FFFFFF;"">MTDR</a>",Matador Resources Company,1535.0,2068345.0,6.401846272,67.42%,$7.85,14.81%,8.84%,$53.00,$52.50,-5.97,4/26/22,AMC
+118,"<a href=""NCR"" style=""color:#FFFFFF;"">NCR</a>",NCR,4320.0,1283503.0,5.707659776,55.31%,$5.05,12.81%,8.9%,$39.41,$41.00,-3.91,4/26/22,AMC
+142,"<a href=""QS"" style=""color:#FFFFFF;"">QS</a>",Quantumscape Class A,35361.0,8159592.0,6.885276672,135.90%,$2.50,15.94%,14.2%,$15.68,$16.00,-1.74,4/26/22,AMC
+144,"<a href=""RRC"" style=""color:#FFFFFF;"">RRC</a>",Range Resources,4104.0,5811885.0,8.299542528,81.75%,$2.93,9.65%,7.0%,$30.35,$31.00,-2.65,4/26/22,AMC
+146,"<a href=""SKX"" style=""color:#FFFFFF;"">SKX</a>",Skechers USA,4203.0,1480926.0,6.425965568,91.11%,$4.22,9.94%,14.09%,$42.44,$40.00,4.15,4/26/22,AMC
+159,"<a href=""TER"" style=""color:#FFFFFF;"">TER</a>",Teradyne,1762.0,1909718.0,18.06076928,57.45%,$14.00,12.56%,9.11%,$111.49,$110.00,-3.45,4/26/22,AMC
+162,"<a href=""TNET"" style=""color:#FFFFFF;"">TNET</a>",Trinet Group,1161.0,468399.0,5.992419328,41.85%,$8.75,17.16%,13.61%,$51.00,$95.00,-3.55,4/26/22,AMC
+168,"<a href=""TXN"" style=""color:#FFFFFF;"">TXN</a>",Texas Instruments,12583.0,5857743.0,163.626,49.90%,$10.25,5.93%,4.39%,$172.98,$175.00,-1.54,4/26/22,AMC
+174,"<a href=""V"" style=""color:#FFFFFF;"">V</a>",Visa,44935.0,8663671.0,454.106,46.15%,$11.30,5.47%,4.04%,$206.58,$210.00,-1.42,4/26/22,AMC
+4,"<a href=""ADP"" style=""color:#FFFFFF;"">ADP</a>",Automatic Data Processing,1992.0,1923412.0,96.76767232,44.47%,$11.45,5.37%,3.83%,$213.32,$225.00,-1.54,4/27/22,BMO
+12,"<a href=""AMT"" style=""color:#FFFFFF;"">AMT</a>",American Tower (Reit),3173.0,1958861.0,121.29,26.07%,$16.95,6.50%,3.09%,$260.75,$270.00,-3.41,4/27/22,BMO
+22,"<a href=""BA"" style=""color:#FFFFFF;"">BA</a>",Boeing Company,159347.0,9451931.0,106.871,53.99%,$11.08,6.29%,4.58%,$176.24,$177.50,-1.71,4/27/22,BMO
+24,"<a href=""BG"" style=""color:#FFFFFF;"">BG</a>",Bunge Limited Bunge,2750.0,1418504.0,17.460393984,39.70%,$10.70,8.97%,6.69%,$119.25,$120.00,-2.28,4/27/22,BMO
+28,"<a href=""BSX"" style=""color:#FFFFFF;"">BSX</a>",Boston Scientific,7048.0,8647350.0,66.197692416,65.24%,$3.20,7.28%,5.44%,$43.95,$44.00,-1.84,4/27/22,BMO
+30,"<a href=""BXMT"" style=""color:#FFFFFF;"">BXMT</a>",Blackstone Mortgage Trust,1094.0,1491293.0,5.381970432,20.07%,$1.48,4.22%,4.57%,$35.05,$32.00,0.35,4/27/22,BMO
+42,"<a href=""CME"" style=""color:#FFFFFF;"">CME</a>",Cme Group - Class A,2924.0,1612808.0,82.075648,36.54%,$9.53,4.31%,3.4%,$221.09,$225.00,-0.91,4/27/22,BMO
+49,"<a href=""CSTM"" style=""color:#FFFFFF;"">CSTM</a>",Constellium Se Ordinary Shares (France),1936.0,775960.0,2.405682432,81.18%,$1.61,16.93%,12.76%,$9.51,$17.00,-4.17,4/27/22,BMO
+50,"<a href=""CVE"" style=""color:#FFFFFF;"">CVE</a>",Cenovus Energy,8786.0,12008529.0,34.757844992,57.31%,$2.30,14.11%,4.86%,$16.30,$18.00,-9.25,4/27/22,BMO
+52,"<a href=""DB"" style=""color:#FFFFFF;"">DB</a>",Deutsche Bank Ag,11167.0,6054622.0,25.152626688,56.22%,$0.80,6.84%,5.17%,$11.69,$12.00,-1.67,4/27/22,BMO
+67,"<a href=""FISV"" style=""color:#FFFFFF;"">FISV</a>",Fiserv,4336.0,3690529.0,66.15885824,51.01%,$6.03,6.30%,4.44%,$95.66,$98.00,-1.86,4/27/22,BMO
+71,"<a href=""GD"" style=""color:#FFFFFF;"">GD</a>",General Dynamics,2038.0,1412008.0,67.325693952,35.80%,$9.70,4.18%,3.65%,$231.96,$240.00,-0.53,4/27/22,BMO
+78,"<a href=""GSK"" style=""color:#FFFFFF;"">GSK</a>",Glaxosmithkline PLC,6829.0,4694987.0,116.135,37.25%,$1.93,4.48%,2.88%,$43.06,$45.00,-1.6,4/27/22,BMO
+79,"<a href=""HES"" style=""color:#FFFFFF;"">HES</a>",Hess,3075.0,2758292.0,34.291800064,50.62%,$6.28,5.92%,5.13%,$106.13,$107.00,-0.79,4/27/22,BMO
+81,"<a href=""HOG"" style=""color:#FFFFFF;"">HOG</a>",Harley-Davidson,4679.0,2181119.0,6.02061824,90.12%,$3.95,10.43%,9.17%,$37.86,$38.00,-1.26,4/27/22,BMO
+87,"<a href=""HUM"" style=""color:#FFFFFF;"">HUM</a>",Humana,2373.0,1208195.0,57.733971968,40.44%,$20.80,4.69%,4.75%,$443.04,$445.00,0.06,4/27/22,BMO
+98,"<a href=""KHC"" style=""color:#FFFFFF;"">KHC</a>",Kraft Heinz Company,18645.0,7189581.0,53.84456192,44.80%,$2.30,5.34%,6.93%,$43.10,$43.50,1.59,4/27/22,BMO
+123,"<a href=""NSC"" style=""color:#FFFFFF;"">NSC</a>",Norfolk Southern,1428.0,1377349.0,64.696741888,41.24%,$12.60,4.82%,4.41%,$261.50,$260.00,-0.41,4/27/22,BMO
+127,"<a href=""NYCB"" style=""color:#FFFFFF;"">NYCB</a>",New York Community Bancorp,2079.0,7021022.0,4.828621824,34.42%,$1.26,12.49%,4.88%,$10.09,$11.00,-7.61,4/27/22,BMO
+151,"<a href=""SPOT"" style=""color:#FFFFFF;"">SPOT</a>",Spotify Technology S.A.,11969.0,2090832.0,21.572857856,134.13%,$17.00,15.52%,9.67%,$109.54,$111.00,-5.85,4/27/22,BMO
+152,"<a href=""STM"" style=""color:#FFFFFF;"">STM</a>",Stmicroelectronics N.V.,2003.0,3871810.0,34.559909888,46.06%,$4.48,11.87%,7.1%,$37.73,$40.00,-4.77,4/27/22,BMO
+154,"<a href=""STX"" style=""color:#FFFFFF;"">STX</a>",Seagate Tech Hldgs,6069.0,2029375.0,18.45074944,65.72%,$6.19,7.56%,8.83%,$81.83,$83.00,1.27,4/27/22,BMO
+158,"<a href=""TECK"" style=""color:#FFFFFF;"">TECK</a>",Teck Resources,12320.0,5024781.0,21.443018752,66.83%,$2.85,13.62%,6.5%,$20.92,$37.50,-7.12,4/27/22,BMO
+161,"<a href=""TMUS"" style=""color:#FFFFFF;"">TMUS</a>",T-Mobile US,10703.0,5391345.0,165.031,58.11%,$8.67,6.79%,7.91%,$127.75,$129.00,1.12,4/27/22,BMO
+175,"<a href=""VALE"" style=""color:#FFFFFF;"">VALE</a>",Vale S.A.  American Depositary Shares Ea,77574.0,33640174.0,82.963079168,55.46%,$1.08,6.48%,3.75%,$16.67,$17.00,-2.73,4/27/22,BMO
+178,"<a href=""VRT"" style=""color:#FFFFFF;"">VRT</a>",Vertiv Holdings Llc Class A,1139.0,4340244.0,4.673378304,74.47%,$2.07,17.47%,10.24%,$11.85,$12.50,-7.23,4/27/22,BMO
+7,"<a href=""AFL"" style=""color:#FFFFFF;"">AFL</a>",Aflac,3173.0,3082968.0,42.565890048,28.99%,$2.22,3.37%,3.55%,$65.86,$64.00,0.18,4/27/22,AMC
+8,"<a href=""ALGN"" style=""color:#FFFFFF;"">ALGN</a>",Align Technology,2888.0,809049.0,30.359164928,100.18%,$43.10,11.89%,12.71%,$362.50,$365.00,0.82,4/27/22,AMC
+10,"<a href=""AM"" style=""color:#FFFFFF;"">AM</a>",Antero Midstream,1850.0,3637328.0,5.266380288,46.41%,$2.18,40.82%,5.87%,$5.34,$12.50,-34.95,4/27/22,AMC
+11,"<a href=""AMGN"" style=""color:#FFFFFF;"">AMGN</a>",Amgen,8880.0,3067542.0,142.299,32.50%,$9.63,3.86%,4.21%,$249.16,$252.50,0.35,4/27/22,AMC
+14,"<a href=""AR"" style=""color:#FFFFFF;"">AR</a>",Antero Resources,10548.0,7926986.0,10.797586432,69.48%,$5.11,11.52%,7.16%,$44.34,$33.00,-4.36,4/27/22,AMC
+26,"<a href=""BMRN"" style=""color:#FFFFFF;"">BMRN</a>",Biomarin Pharmaceutical,1683.0,1259719.0,14.77717504,49.84%,$9.83,12.84%,5.02%,$76.53,$85.00,-7.82,4/27/22,AMC
+32,"<a href=""CAKE"" style=""color:#FFFFFF;"">CAKE</a>",Cheesecake Factory,1079.0,937559.0,2.019532288,50.48%,$4.78,12.76%,6.69%,$37.45,$40.00,-6.07,4/27/22,AMC
+38,"<a href=""CHRW"" style=""color:#FFFFFF;"">CHRW</a>",C.H. Robinson Worldwide,1934.0,1367356.0,13.066528768,36.98%,$8.80,9.24%,6.83%,$95.22,$105.00,-2.41,4/27/22,AMC
+47,"<a href=""CP"" style=""color:#FFFFFF;"">CP</a>",Canadian Pacific Railway,1218.0,4437787.0,72.116396032,33.48%,$5.60,7.49%,4.14%,$74.76,$75.00,-3.35,4/27/22,AMC
+53,"<a href=""DFS"" style=""color:#FFFFFF;"">DFS</a>",Discover Financial Services,2467.0,1780736.0,32.864733184,50.35%,$6.55,8.09%,4.86%,$80.94,$113.00,-3.23,4/27/22,AMC
+61,"<a href=""EQT"" style=""color:#FFFFFF;"">EQT</a>",Eqt,11982.0,8982564.0,15.808019456,65.68%,$5.85,14.75%,6.76%,$39.67,$40.00,-7.99,4/27/22,AMC
+65,"<a href=""F"" style=""color:#FFFFFF;"">F</a>",Ford Motor Company,541889.0,94902124.0,62.866694144,69.68%,$1.29,8.53%,5.46%,$15.12,$15.50,-3.07,4/27/22,AMC
+66,"<a href=""FB"" style=""color:#FFFFFF;"">FB</a>",Meta Platforms - Class A,489577.0,31901199.0,510.522,110.85%,$23.66,12.91%,9.06%,$183.23,$185.00,-3.85,4/27/22,AMC
+84,"<a href=""HP"" style=""color:#FFFFFF;"">HP</a>",Helmerich & Payne,1704.0,1534065.0,5.092324864,56.02%,$6.08,13.29%,6.29%,$45.74,$47.50,-7.0,4/27/22,AMC
+86,"<a href=""HTZ"" style=""color:#FFFFFF;"">HTZ</a>",Hertz Global Holdings,25667.0,5723380.0,9.822253056,63.64%,$3.94,17.47%,4.29%,$22.55,$25.00,-13.18,4/27/22,AMC
+90,"<a href=""INVH"" style=""color:#FFFFFF;"">INVH</a>",Invitation Homes,1882.0,4536024.0,26.590861312,23.66%,$2.95,13.10%,2.99%,$22.52,$45.00,-10.11,4/27/22,AMC
+101,"<a href=""LC"" style=""color:#FFFFFF;"">LC</a>",Lendingclub,4899.0,2604630.0,1.362071808,104.53%,$3.23,25.29%,16.73%,$12.77,$14.00,-8.56,4/27/22,AMC
+106,"<a href=""LVS"" style=""color:#FFFFFF;"">LVS</a>",Las Vegas Sands Corp.,42949.0,8462454.0,28.422592512,69.97%,$2.95,8.66%,5.35%,$34.05,$36.50,-3.31,4/27/22,AMC
+109,"<a href=""MAT"" style=""color:#FFFFFF;"">MAT</a>",Mattel,2790.0,3154625.0,7.99744768,62.48%,$1.70,7.63%,9.38%,$22.29,$23.00,1.75,4/27/22,AMC
+121,"<a href=""NOVA"" style=""color:#FFFFFF;"">NOVA</a>",Sunnova Energy Intl,4413.0,2919261.0,1.860687232,87.13%,$3.50,20.23%,10.0%,$17.30,$17.50,-10.23,4/27/22,AMC
+122,"<a href=""NOW"" style=""color:#FFFFFF;"">NOW</a>",Servicenow,6691.0,1659369.0,98.333999104,83.96%,$45.95,9.81%,10.01%,$468.61,$475.00,0.2,4/27/22,AMC
+135,"<a href=""PINS"" style=""color:#FFFFFF;"">PINS</a>",Pinterest Class A,53622.0,12277759.0,13.39740672,127.24%,$2.92,14.94%,20.48%,$19.55,$20.00,5.54,4/27/22,AMC
+136,"<a href=""PPC"" style=""color:#FFFFFF;"">PPC</a>",Pilgrims Pride,2622.0,951636.0,6.758363136,38.79%,$2.78,10.21%,8.27%,$27.23,$28.00,-1.94,4/27/22,AMC
+139,"<a href=""PYPL"" style=""color:#FFFFFF;"">PYPL</a>",Paypal Holdings,177279.0,19435060.0,105.021,108.88%,$10.87,12.63%,7.61%,$86.07,$87.00,-5.02,4/27/22,AMC
+140,"<a href=""QCOM"" style=""color:#FFFFFF;"">QCOM</a>",Qualcomm,81512.0,10799211.0,153.396,72.00%,$11.07,8.36%,6.82%,$132.34,$133.00,-1.54,4/27/22,AMC
+141,"<a href=""QGEN"" style=""color:#FFFFFF;"">QGEN</a>",Qiagen N.V. Common Shares,1037.0,718880.0,10.542026752,40.80%,$5.95,20.52%,4.08%,$29.00,$50.00,-16.44,4/27/22,AMC
+156,"<a href=""TDOC"" style=""color:#FFFFFF;"">TDOC</a>",Teladoc Health,25408.0,4315248.0,9.515393024,116.46%,$7.95,13.77%,11.72%,$57.75,$59.00,-2.05,4/27/22,AMC
+165,"<a href=""TROX"" style=""color:#FFFFFF;"">TROX</a>",Tronox Holdings PLC Ordinary Shares (Uk),1470.0,1206894.0,3.121196032,52.44%,$2.61,20.47%,9.46%,$12.75,$20.00,-11.01,4/27/22,AMC
+172,"<a href=""UPWK"" style=""color:#FFFFFF;"">UPWK</a>",Upwork,1967.0,1617656.0,2.456388608,92.43%,$4.12,21.35%,17.19%,$19.30,$20.00,-4.16,4/27/22,AMC
+173,"<a href=""URI"" style=""color:#FFFFFF;"">URI</a>",United Rentals,2145.0,694537.0,24.380704768,59.83%,$21.70,7.01%,9.17%,$309.75,$315.00,2.16,4/27/22,AMC
+6,"<a href=""AEP"" style=""color:#FFFFFF;"">AEP</a>",American Electric Power Company,2361.0,3089698.0,51.52432128,20.79%,$6.62,6.57%,1.97%,$100.79,$105.00,-4.6,4/28/22,BMO
+9,"<a href=""ALNY"" style=""color:#FFFFFF;"">ALNY</a>",Alnylam Pharmaceuticals,1217.0,842970.0,20.28552192,55.87%,$21.70,12.73%,7.75%,$170.50,$170.00,-4.98,4/28/22,BMO
+23,"<a href=""BAX"" style=""color:#FFFFFF;"">BAX</a>",Baxter Intl,1408.0,3067865.0,39.239303168,50.27%,$4.31,11.63%,4.3%,$37.05,$74.00,-7.33,4/28/22,BMO
+29,"<a href=""BTU"" style=""color:#FFFFFF;"">BTU</a>",Peabody Energy Common,20281.0,8743590.0,3.767593216,111.06%,$6.15,25.26%,12.52%,$24.35,$25.00,-12.74,4/28/22,BMO
+33,"<a href=""CARR"" style=""color:#FFFFFF;"">CARR</a>",Carrier Global Common,1513.0,4558336.0,36.63310848,36.02%,$3.48,8.38%,5.24%,$41.53,$42.50,-3.15,4/28/22,BMO
+34,"<a href=""CAT"" style=""color:#FFFFFF;"">CAT</a>",Caterpillar,31031.0,3623133.0,126.821,46.56%,$11.70,5.42%,4.79%,$215.93,$217.50,-0.63,4/28/22,BMO
+37,"<a href=""CG"" style=""color:#FFFFFF;"">CG</a>",Carlyle Group,2072.0,2334778.0,14.994618368,44.13%,$4.00,9.97%,4.95%,$40.12,$40.00,-5.02,4/28/22,BMO
+41,"<a href=""CMCSA"" style=""color:#FFFFFF;"">CMCSA</a>",Comcast - Class A,29226.0,22080596.0,215.656,45.42%,$2.41,5.32%,3.98%,$45.30,$45.50,-1.34,4/28/22,BMO
+56,"<a href=""DPZ"" style=""color:#FFFFFF;"">DPZ</a>",Domino's Pizza,2315.0,483408.0,14.089024512,65.63%,$28.50,7.56%,8.35%,$376.85,$380.00,0.79,4/28/22,BMO
+88,"<a href=""HUN"" style=""color:#FFFFFF;"">HUN</a>",Huntsman,1999.0,2490002.0,7.530937856,40.85%,$3.22,9.14%,6.87%,$35.24,$35.00,-2.27,4/28/22,BMO
+91,"<a href=""IP"" style=""color:#FFFFFF;"">IP</a>",International Paper Company,2845.0,3465959.0,18.628179968,36.84%,$2.06,4.22%,4.43%,$48.76,$48.00,0.21,4/28/22,BMO
+92,"<a href=""IRM"" style=""color:#FFFFFF;"">IRM</a>",Iron Mountain (Delaware)Common Stock REI,2507.0,2198172.0,16.688418816,32.13%,$4.21,7.52%,4.88%,$56.00,$57.50,-2.64,4/28/22,BMO
+95,"<a href=""JKS"" style=""color:#FFFFFF;"">JKS</a>",Jinkosolar Holding Company Limited Ameri,1771.0,1261493.0,2.4225664,89.15%,$10.90,21.27%,10.59%,$51.25,$55.00,-10.68,4/28/22,BMO
+97,"<a href=""KDP"" style=""color:#FFFFFF;"">KDP</a>",Keurig Dr Pepper,1341.0,6236436.0,53.16753408,23.24%,$1.93,5.25%,4.47%,$36.75,$37.00,-0.78,4/28/22,BMO
+102,"<a href=""LH"" style=""color:#FFFFFF;"">LH</a>",Laboratory Of America Holdings,1022.0,906438.0,25.80641792,30.48%,$18.20,6.74%,4.44%,$270.00,$270.00,-2.3,4/28/22,BMO
+103,"<a href=""LIN"" style=""color:#FFFFFF;"">LIN</a>",Linde PLC Ordinary Share,1935.0,2050390.0,170.248,31.15%,$21.70,7.05%,3.31%,$307.86,$310.00,-3.74,4/28/22,BMO
+104,"<a href=""LLY"" style=""color:#FFFFFF;"">LLY</a>",Eli Lilly And Company,7860.0,2978898.0,275.809,41.38%,$13.37,9.61%,3.38%,$139.10,$280.00,-6.23,4/28/22,BMO
+105,"<a href=""LUV"" style=""color:#FFFFFF;"">LUV</a>",Southwest Airlines Company,23555.0,8270569.0,28.65750016,54.83%,$2.98,6.43%,5.18%,$46.36,$47.00,-1.25,4/28/22,BMO
+108,"<a href=""MA"" style=""color:#FFFFFF;"">MA</a>",Mastercard,20433.0,4395601.0,356.232,47.86%,$19.68,5.63%,4.47%,$349.50,$352.50,-1.16,4/28/22,BMO
+110,"<a href=""MCD"" style=""color:#FFFFFF;"">MCD</a>",McDonald's,15403.0,3146758.0,189.8,29.90%,$8.80,3.52%,3.09%,$249.87,$252.50,-0.43,4/28/22,BMO
+113,"<a href=""MO"" style=""color:#FFFFFF;"">MO</a>",Altria Group,39345.0,9241049.0,103.064,28.90%,$1.89,3.41%,2.65%,$55.37,$56.00,-0.76,4/28/22,BMO
+114,"<a href=""MPW"" style=""color:#FFFFFF;"">MPW</a>",Medical Properties Trust,2618.0,4853888.0,12.115948544,30.55%,$1.27,6.51%,3.37%,$19.50,$19.00,-3.14,4/28/22,BMO
+115,"<a href=""MRK"" style=""color:#FFFFFF;"">MRK</a>",Merck Common (New),38792.0,12233725.0,217.812,30.41%,$3.00,3.61%,3.32%,$83.06,$85.00,-0.29,4/28/22,BMO
+119,"<a href=""NOC"" style=""color:#FFFFFF;"">NOC</a>",Northrop Grumman,2352.0,966271.0,69.223391232,41.62%,$21.35,4.78%,3.99%,$446.20,$447.50,-0.79,4/28/22,BMO
+124,"<a href=""NVCR"" style=""color:#FFFFFF;"">NVCR</a>",Novocure Limited -,1026.0,658313.0,8.734683136,73.94%,$13.50,16.73%,11.61%,$80.68,$80.00,-5.12,4/28/22,BMO
+129,"<a href=""OSTK"" style=""color:#FFFFFF;"">OSTK</a>",Overstock.com,9215.0,2256382.0,1.543482112,159.41%,$6.19,18.43%,18.36%,$33.59,$34.00,-0.07,4/28/22,BMO
+130,"<a href=""PBF"" style=""color:#FFFFFF;"">PBF</a>",PBF Energy Class A,2346.0,3366521.0,3.295997696,76.78%,$4.40,17.21%,6.2%,$25.57,$27.00,-11.01,4/28/22,BMO
+131,"<a href=""PCG"" style=""color:#FFFFFF;"">PCG</a>",Pg&E,12684.0,17126920.0,27.854319616,45.88%,$0.72,5.90%,3.51%,$12.21,$12.50,-2.39,4/28/22,BMO
+133,"<a href=""PERI"" style=""color:#FFFFFF;"">PERI</a>",Perion Network -,1804.0,546288.0,1.001016832,70.08%,$3.50,15.79%,13.44%,$22.16,$22.50,-2.35,4/28/22,BMO
+134,"<a href=""PHM"" style=""color:#FFFFFF;"">PHM</a>",Pultegroup,4203.0,2893730.0,10.456121344,45.33%,$5.05,16.03%,6.55%,$31.50,$45.00,-9.48,4/28/22,BMO
+138,"<a href=""PTEN"" style=""color:#FFFFFF;"">PTEN</a>",Patterson-Uti Energy,4937.0,3746422.0,3.804598272,64.42%,$2.42,13.99%,7.68%,$17.30,$17.00,-6.31,4/28/22,BMO
+149,"<a href=""SNY"" style=""color:#FFFFFF;"">SNY</a>",Sanofi - American Depositary Shares,1078.0,1919266.0,137.922,28.43%,$4.10,7.41%,3.14%,$55.35,$55.00,-4.27,4/28/22,BMO
+150,"<a href=""SO"" style=""color:#FFFFFF;"">SO</a>",Southern Company,4331.0,5658393.0,81.06496,27.02%,$2.38,3.18%,1.93%,$74.75,$76.00,-1.25,4/28/22,BMO
+153,"<a href=""STNG"" style=""color:#FFFFFF;"">STNG</a>",Scorpio Tankers Common Shares,3945.0,979873.0,1.257279488,63.57%,$3.10,15.09%,6.86%,$20.54,$22.00,-8.23,4/28/22,BMO
+160,"<a href=""TMO"" style=""color:#FFFFFF;"">TMO</a>",Thermo Fisher Scientific,2329.0,1527705.0,227.059,32.71%,$42.00,7.50%,4.45%,$559.88,$570.00,-3.05,4/28/22,BMO
+163,"<a href=""TPX"" style=""color:#FFFFFF;"">TPX</a>",Tempur Sealy Intl,2924.0,3011978.0,5.112276992,60.62%,$4.30,15.46%,10.04%,$27.82,$30.00,-5.42,4/28/22,BMO
+164,"<a href=""TROW"" style=""color:#FFFFFF;"">TROW</a>",T. Rowe Price Group,1192.0,1662192.0,31.797721088,36.60%,$11.00,8.21%,4.48%,$133.92,$135.00,-3.73,4/28/22,BMO
+167,"<a href=""TWTR"" style=""color:#FFFFFF;"">TWTR</a>",Twitter,197222.0,33982832.0,37.694189568,103.78%,$5.88,12.02%,14.73%,$48.91,$49.00,2.71,4/28/22,BMO
+170,"<a href=""UL"" style=""color:#FFFFFF;"">UL</a>",Unilever PLC,3236.0,4355192.0,116.6,24.75%,$3.40,7.53%,3.43%,$45.15,$47.50,-4.1,4/28/22,BMO
+176,"<a href=""VIRT"" style=""color:#FFFFFF;"">VIRT</a>",Virtu Financial - Class A,1302.0,1153182.0,3.812493568,40.54%,$3.20,9.21%,9.37%,$34.73,$35.00,0.16,4/28/22,BMO
+0,"<a href=""AAPL"" style=""color:#FFFFFF;"">AAPL</a>",Apple,1444653.0,94206478.0,2718.37,49.11%,$9.22,5.71%,5.58%,$161.44,$162.50,-0.13,4/28/22,AMC
+5,"<a href=""AEM"" style=""color:#FFFFFF;"">AEM</a>",Agnico Eagle Mines,5427.0,3256994.0,28.137033728,41.76%,$5.60,9.77%,6.51%,$57.34,$60.00,-3.26,4/28/22,AMC
+13,"<a href=""AMZN"" style=""color:#FFFFFF;"">AMZN</a>",Amazon.com,265867.0,3562669.0,1508.29,61.41%,$206.45,7.16%,8.37%,$2881.38,$2890.00,1.21,4/28/22,AMC
+17,"<a href=""ATUS"" style=""color:#FFFFFF;"">ATUS</a>",Altice USA Class A,5938.0,5113047.0,5.310363648,75.86%,$2.06,17.41%,9.8%,$11.83,$12.00,-7.61,4/28/22,AMC
+19,"<a href=""AVTR"" style=""color:#FFFFFF;"">AVTR</a>",Avantor,1744.0,4499810.0,19.041703936,40.76%,$3.51,20.32%,7.87%,$17.27,$32.50,-12.45,4/28/22,AMC
+20,"<a href=""AX"" style=""color:#FFFFFF;"">AX</a>",Axos Financial,2315.0,327994.0,2.520813312,55.73%,$5.23,17.15%,6.05%,$30.50,$42.50,-11.1,4/28/22,AMC
+36,"<a href=""CENX"" style=""color:#FFFFFF;"">CENX</a>",Century Aluminum Company,1573.0,1775581.0,2.003446016,90.20%,$4.20,20.29%,12.14%,$20.70,$21.00,-8.15,4/28/22,AMC
+46,"<a href=""COOP"" style=""color:#FFFFFF;"">COOP</a>",Mr. Cooper Group,5469.0,993699.0,3.417345792,68.77%,$3.62,8.11%,8.03%,$44.61,$45.00,-0.08,4/28/22,AMC
+55,"<a href=""DLR"" style=""color:#FFFFFF;"">DLR</a>",Digital Realty Trust,1534.0,1520498.0,42.655080448,26.84%,$8.85,5.95%,4.53%,$148.85,$150.00,-1.42,4/28/22,AMC
+57,"<a href=""DXCM"" style=""color:#FFFFFF;"">DXCM</a>",Dexcom,1298.0,825334.0,46.355673088,60.61%,$59.55,13.59%,11.38%,$438.20,$450.00,-2.21,4/28/22,AMC
+59,"<a href=""EGO"" style=""color:#FFFFFF;"">EGO</a>",Eldorado Gold,1382.0,2403213.0,2.118707584,52.18%,$1.50,13.43%,6.54%,$11.17,$12.00,-6.89,4/28/22,AMC
+62,"<a href=""ERJ"" style=""color:#FFFFFF;"">ERJ</a>",Embraer S.A.,1972.0,2607835.0,2.166101504,60.72%,$1.83,16.05%,5.28%,$11.40,$12.50,-10.77,4/28/22,AMC
+68,"<a href=""FIVN"" style=""color:#FFFFFF;"">FIVN</a>",Five9,1646.0,1233597.0,7.141737472,68.36%,$15.85,15.47%,12.32%,$102.47,$105.00,-3.15,4/28/22,AMC
+69,"<a href=""FSLR"" style=""color:#FFFFFF;"">FSLR</a>",First Solar,8366.0,1620120.0,7.93299456,74.79%,$6.32,8.74%,12.08%,$72.29,$73.00,3.34,4/28/22,AMC
+70,"<a href=""FTAI"" style=""color:#FFFFFF;"">FTAI</a>",Fortress Transportation And Infrastructu,2426.0,606139.0,2.419212544,53.48%,$3.08,12.18%,4.76%,$25.28,$25.00,-7.42,4/28/22,AMC
+73,"<a href=""GILD"" style=""color:#FFFFFF;"">GILD</a>",Gilead Sciences,32511.0,10056373.0,80.006250496,34.01%,$2.42,3.90%,5.46%,$62.02,$62.50,1.56,4/28/22,AMC
+80,"<a href=""HIG"" style=""color:#FFFFFF;"">HIG</a>",Hartford Finl Servs Gr,1477.0,1973082.0,24.246695936,36.58%,$3.08,4.35%,4.5%,$70.81,$72.00,0.15,4/28/22,AMC
+83,"<a href=""HOOD"" style=""color:#FFFFFF;"">HOOD</a>",Robinhood Markets - Class A,135037.0,21644181.0,9.061812224,130.23%,$1.57,15.24%,12.9%,$10.30,$10.50,-2.34,4/28/22,AMC
+89,"<a href=""INTC"" style=""color:#FFFFFF;"">INTC</a>",Intel,189617.0,36428028.0,194.213,64.64%,$3.50,7.53%,5.71%,$46.47,$47.00,-1.82,4/28/22,AMC
+99,"<a href=""KLAC"" style=""color:#FFFFFF;"">KLAC</a>",Kla,1754.0,1472239.0,50.638831616,62.59%,$23.40,7.27%,5.61%,$321.76,$325.00,-1.66,4/28/22,AMC
+120,"<a href=""NOV"" style=""color:#FFFFFF;"">NOV</a>",Nov,3074.0,4826676.0,7.637340672,69.52%,$1.59,8.37%,6.53%,$19.00,$19.50,-1.84,4/28/22,AMC
+128,"<a href=""OLN"" style=""color:#FFFFFF;"">OLN</a>",Olin,1483.0,1884139.0,8.794522624,70.61%,$4.53,16.52%,6.96%,$27.42,$55.00,-9.56,4/28/22,AMC
+143,"<a href=""ROKU"" style=""color:#FFFFFF;"">ROKU</a>",Roku - Class A,84711.0,7037042.0,13.469344768,156.39%,$17.60,18.16%,18.76%,$96.92,$98.00,0.6,4/28/22,AMC
+148,"<a href=""SM"" style=""color:#FFFFFF;"">SM</a>",SM Energy Company,3097.0,2579580.0,4.62467072,79.07%,$7.57,20.76%,10.6%,$36.47,$40.00,-10.16,4/28/22,AMC
+155,"<a href=""SYK"" style=""color:#FFFFFF;"">SYK</a>",Stryker,1378.0,1441699.0,101.948,36.66%,$20.45,8.24%,3.83%,$248.25,$250.00,-4.41,4/28/22,AMC
+157,"<a href=""TEAM"" style=""color:#FFFFFF;"">TEAM</a>",Atlassian PLC - Class A,6388.0,1990292.0,64.153464832,103.26%,$29.60,12.21%,11.74%,$242.50,$247.50,-0.47,4/28/22,AMC
+166,"<a href=""TRUP"" style=""color:#FFFFFF;"">TRUP</a>",Trupanion,1076.0,420823.0,3.006709504,89.18%,$14.95,21.21%,12.0%,$70.47,$75.00,-9.21,4/28/22,AMC
+179,"<a href=""WDC"" style=""color:#FFFFFF;"">WDC</a>",Western Digital,15310.0,3848137.0,15.511504896,78.69%,$4.49,9.12%,8.98%,$49.25,$49.50,-0.14,4/28/22,AMC
+182,"<a href=""WU"" style=""color:#FFFFFF;"">WU</a>",Western Union Company,2098.0,6438736.0,7.799717376,34.46%,$1.68,8.83%,5.62%,$19.02,$20.00,-3.21,4/28/22,AMC
+184,"<a href=""X"" style=""color:#FFFFFF;"">X</a>",United States Steel,77267.0,17982073.0,9.032487936,96.80%,$3.79,11.35%,9.49%,$33.39,$34.00,-1.86,4/28/22,AMC
+186,"<a href=""ZEN"" style=""color:#FFFFFF;"">ZEN</a>",Zendesk,8966.0,1971277.0,14.976370688,72.47%,$10.20,9.23%,11.58%,$110.50,$121.00,2.35,4/28/22,AMC
+1,"<a href=""ABBV"" style=""color:#FFFFFF;"">ABBV</a>",Abbvie,55424.0,7776453.0,279.992,34.55%,$6.25,4.04%,4.77%,$154.56,$155.00,0.73,4/29/22,BMO
+21,"<a href=""AZN"" style=""color:#FFFFFF;"">AZN</a>",Astrazeneca PLC - American Depositary Sh,8849.0,6846163.0,208.79,35.78%,$2.76,4.21%,3.58%,$65.54,$66.00,-0.63,4/29/22,BMO
+25,"<a href=""BLMN"" style=""color:#FFFFFF;"">BLMN</a>",Bloomin Brands,2118.0,1937544.0,2.013866368,49.20%,$2.50,11.54%,9.46%,$21.67,$22.50,-2.08,4/29/22,BMO
+27,"<a href=""BMY"" style=""color:#FFFFFF;"">BMY</a>",Bristol-Myers Squibb Company,39984.0,14461410.0,164.831,32.26%,$2.89,4.26%,3.42%,$67.78,$76.00,-0.84,4/29/22,BMO
+35,"<a href=""CBOE"" style=""color:#FFFFFF;"">CBOE</a>",Cboe Global Markets,2497.0,611845.0,12.259253248,44.78%,$6.73,5.88%,3.81%,$114.37,$115.00,-2.07,4/29/22,BMO
+39,"<a href=""CHTR"" style=""color:#FFFFFF;"">CHTR</a>",Charter Communications - Class A,3567.0,1490710.0,89.657868288,57.86%,$34.40,7.39%,6.05%,$465.50,$515.00,-1.34,4/29/22,BMO
+40,"<a href=""CL"" style=""color:#FFFFFF;"">CL</a>",Colgate-Palmolive Company,4394.0,5329227.0,69.003993088,29.45%,$2.86,3.54%,3.41%,$80.78,$82.00,-0.13,4/29/22,BMO
+51,"<a href=""CVX"" style=""color:#FFFFFF;"">CVX</a>",Chevron,65885.0,15261561.0,320.528,38.28%,$7.24,4.51%,2.9%,$160.70,$162.50,-1.61,4/29/22,BMO
+82,"<a href=""HON"" style=""color:#FFFFFF;"">HON</a>",Honeywell Intl,6451.0,3435740.0,134.89,37.80%,$8.45,4.44%,3.3%,$190.31,$192.50,-1.14,4/29/22,BMO
+107,"<a href=""LYB"" style=""color:#FFFFFF;"">LYB</a>",Lyondellbasell Industries Nv Ordinary Sh,2522.0,2247108.0,36.41124864,36.22%,$9.27,8.62%,4.73%,$107.50,$110.00,-3.89,4/29/22,BMO
+126,"<a href=""NWL"" style=""color:#FFFFFF;"">NWL</a>",Newell Brands,1757.0,3409394.0,9.713230848,41.66%,$2.15,9.31%,8.08%,$23.10,$23.00,-1.23,4/29/22,BMO
+137,"<a href=""PSX"" style=""color:#FFFFFF;"">PSX</a>",Phillips 66,6197.0,4200944.0,48.07675904,43.53%,$4.17,5.01%,3.75%,$83.28,$84.00,-1.26,4/29/22,BMO
+147,"<a href=""SLCA"" style=""color:#FFFFFF;"">SLCA</a>",US Silica Holdings,2648.0,1364860.0,1.472482432,79.22%,$3.33,18.20%,13.97%,$18.30,$19.00,-4.23,4/29/22,BMO
+181,"<a href=""WPC"" style=""color:#FFFFFF;"">WPC</a>",W.P. Carey,1067.0,897359.0,16.354185216,16.97%,$5.13,5.81%,2.8%,$88.34,$90.00,-3.01,4/29/22,BMO
+183,"<a href=""WY"" style=""color:#FFFFFF;"">WY</a>",Weyerhaeuser Company,4355.0,4224712.0,31.144392704,42.60%,$2.07,5.04%,4.23%,$41.10,$42.00,-0.81,4/29/22,BMO
+185,"<a href=""XOM"" style=""color:#FFFFFF;"">XOM</a>",Exxon Mobil,161220.0,29469827.0,367.76,37.84%,$3.82,4.50%,2.85%,$84.97,$86.00,-1.65,4/29/22,BMO

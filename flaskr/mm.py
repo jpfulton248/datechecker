@@ -11,7 +11,7 @@ from markupsafe import Markup
 import re
 from dotenv import load_dotenv
 import os
-from .myfunx import genbefaf, histurl
+from .myfunx import genbefaf, histurl, getcurrent
 import requests
 
 from pymysql import NULL
@@ -21,7 +21,10 @@ load_dotenv
 # DATABASE = os.environ.get('DATABASE')
 # PASSWORD = os.environ.get('PASSWORD')
 # PORT = os.environ.get('PORT')
-SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')
+#production
+# SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')
+#local
+SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI_DEBUG')
 f_api_key = os.environ.get('f_api_key')
 # SQLALCHEMY_DATABASE_URI=str('mysql+pymysql://') + USERNAME + str(':') + PASSWORD + str('@') + HOST + str(':') + PORT + str('/') + DATABASE
 app=Flask(__name__, instance_relative_config=True)
@@ -102,6 +105,27 @@ class ridingstraddle(db.Model):
     underlying = db.Column(db.Numeric(10,2))
     staticstrike = db.Column(db.Numeric(10,2))
     dated = db.Column(db.String())
+
+class screener(db.Model):
+    screenerid = db.Column(db.Integer(), primary_key=True)
+    ticker = db.Column(db.String(15))
+    tickerlink = db.Column(db.String(255))
+    companyname = db.Column(db.String(100))
+    averageoptionvol = db.Column(db.Float())
+    averagestockvol = db.Column(db.Float())
+    marketcap = db.Column(db.Numeric(20,2))
+    iv = db.Column(db.Numeric(20,5))
+    straddle = db.Column(db.Numeric(20,5))
+    impliedmove = db.Column(db.Numeric(20,5))
+    historicavg = db.Column(db.Numeric(20,5))
+    staticunderlying = db.Column(db.Numeric(10,2))
+    price = db.Column(db.Numeric(20,2))
+    strike = db.Column(db.Numeric(20,2))
+    valued = db.Column(db.Numeric(20,5))
+    ivcrushto = db.Column(db.Numeric(20,2))
+    edate = db.Column(db.String())
+    etime = db.Column(db.String())
+    updated = db.Column(db.String())
 
 def now():
     now = datetime.datetime.now()
@@ -197,19 +221,25 @@ def historical(routeticker):
             .with_entities(earningsdates.ticker, earningsdates.exactearningsdate, earningsdates.actualmoveperc) \
             .filter(earningsdates.ticker == routeticker, earningsdates.closeafter != NULL).all()
     df = pd.DataFrame(eresult, columns=['Ticker', 'EarningsDate', 'ActualMovePerc'])
-    df = df.sort_values(['EarningsDate'], ascending=[False])
-    #line below can be used to limit history
-    df = df.head(48)
-    df = df.sort_values(['EarningsDate'], ascending=[True])
-    df.reset_index(drop=True, inplace=True)
-    df['CumulativeActMovePerc'] = df.groupby('Ticker')['ActualMovePerc'].expanding().mean().values
-    # df['StdDev'] = df.groupby('Ticker')['ActualMovePerc'].expanding().std().values
-    df['CumulativeActMovePerc'] = df['CumulativeActMovePerc'].astype(float).abs()
-    df = df.sort_values(['EarningsDate'], ascending=[False])
-    df.reset_index(drop=True, inplace=True)
-    cumabsavgperc = df.at[0, 'CumulativeActMovePerc']
-    countreports = len(df.index)
-    return cumabsavgperc, countreports
+    if df.empty == True:
+        print('historical df empty on', routeticker)
+        cumabsavgperc = 0
+        countreports = 0
+        return cumabsavgperc, countreports
+    else:
+        df = df.sort_values(['EarningsDate'], ascending=[False])
+        #line below can be used to limit history
+        df = df.head(48)
+        df = df.sort_values(['EarningsDate'], ascending=[True])
+        df.reset_index(drop=True, inplace=True)
+        df['CumulativeActMovePerc'] = df.groupby('Ticker')['ActualMovePerc'].expanding().mean().values
+        # df['StdDev'] = df.groupby('Ticker')['ActualMovePerc'].expanding().std().values
+        df['CumulativeActMovePerc'] = df['CumulativeActMovePerc'].astype(float).abs()
+        df = df.sort_values(['EarningsDate'], ascending=[False])
+        df.reset_index(drop=True, inplace=True)
+        cumabsavgperc = df.at[0, 'CumulativeActMovePerc']
+        countreports = len(df.index)
+        return cumabsavgperc, countreports
 
 @app.route("/search", methods=["POST", "GET"])
 def home():
@@ -314,6 +344,7 @@ def computescreener():
         print('screener df is empty')
     else:
         df['companyname'] = df['companyname'].str[:40]
+        df['symbol'] = df['ticker']
         df['ticker'] = '<a href="' + df['ticker'].astype(str) + '" style="color:#FFFFFF;">' + df['ticker'].astype(str) + '</a>'
         df['marketcap'] = df['marketcap'].div(1000000000)
         df['date'] = df['exactearningsdate'].dt.strftime('%-m/%-d/%-y %-H')
@@ -330,6 +361,7 @@ def computescreener():
 @app.route('/')
 def screener():
     dfscreenerprepped = computescreener()
+    dfscreenerprepped.drop(columns=['symbol'], inplace=True)
     dfscreenerprepped.to_csv('flaskr/static/screener.csv', index='False')
     return render_template('screener.html', screener=dfscreenerprepped.to_html(classes='table table-dark sortable table-striped', table_id='sortit', escape=False, index=False, header=True, render_links=True, justify='left'))
 
@@ -339,19 +371,24 @@ def upload():
     if request.method == 'POST':
         file = request.files['file']        
         thedf = pd.read_csv(file)
-        thedfprepped = prepimport(thedf)
-        return render_template('upload.html', tables=[thedfprepped.to_html()], titles=[''])
+        foredatesdf, forscreenerdf = prepimport()
+        forscreenerdf.to_sql('screener', con=db.engine, if_exists='replace', index=False)    
+        foredatesdf.to_sql('earningsdates', con=db.engine, if_exists='append', index=False) 
+        return render_template('upload.html')
     return render_template('upload.html')
 
-def prepimport(thedf):
+def prepimport():
     thedfprepped = thedf
     thedfprepped.reset_index
+    thedfprepped['Name'] = thedfprepped['Name'].str[:40]
     thedfprepped = thedfprepped.drop(columns=['Implied Move', 'Implied Move Relative to 4-Qtr Avg', 'Implied Move Relative to 12-Qtr Avg', 'Implied Move Relative to 12-Qtr Median', 'Abs. Avg Implied Move', 'Abs. Avg Actual Move', 'Abs. Max Actual Move', 'Abs. Min Actual Move', 'Abs. Avg Implied Move.1', 'Abs. Avg Actual Move.1', 'Abs. Median Actual Move', 'Abs. Max Actual Move.1', 'Abs. Min Actual Move.1', 'Current Price', 'InWatchlist', 'EtfHoldingsList', 'Sector', 'Industry', 'Diff_ImpliedVsLast4AvgImplied', 'Diff_ImpliedVsLast12AvgImplied'])
     thedfprepped[['beforedate', 'afterdate']] = '',''
+    thedfprepped[['edate2', 'bmoamc2']] = thedfprepped[['Earnings Date', 'bmoamc']]
     thedfprepped['Earnings Date'] = pd.to_datetime(thedfprepped['Earnings Date'])
     thedfprepped['bmoamc'] = thedfprepped['bmoamc'].replace('BMO', '8:00:00')
     thedfprepped['bmoamc'] = thedfprepped['bmoamc'].replace('AMC', '16:00:00')
     thedfprepped['Earnings Date'] = thedfprepped['Earnings Date'].astype(str) + ' ' + thedfprepped['bmoamc'].astype(str)
+    thedfprepped[['expiry', 'strike', 'iv', 'straddlemid', 'impliedmove', 'underlyingprice', 'histavg', 'cntreports','tickerlink']] = '','','','','','', '', '',''
     for index, row in thedfprepped.iterrows():
         targetdate = row['Earnings Date']
         targetdate = datetime.datetime.strptime(targetdate, '%Y-%m-%d %H:%M:%S')
@@ -359,15 +396,42 @@ def prepimport(thedf):
         beforedate, afterdate = genbefaf(targetdate)
         thedfprepped.at[index, 'beforedate'] = beforedate
         thedfprepped.at[index, 'afterdate'] = afterdate
-    thedfprepped['Earnings Date'] = thedfprepped['Earnings Date']
-    thedfprepped = thedfprepped.drop(columns=['bmoamc'])
-    thedfprepped = thedfprepped.rename(columns={'Symbol': 'ticker', 'Avg Option Volume': 'averageoptionvol', 'Earnings Date': 'exactearningsdate', 'Name': 'companyname', 'Avg. Stock Volume': 'averagestockvol', 'MarketCap': 'marketcap'}, errors='raise')
-    # thedfprepped.drop(thedf.columns[0], axis = 1)
-    return thedfprepped
+    for index, row in thedfprepped.iterrows():
+        targetdate = row['Earnings Date']
+        theticker = row['Symbol']
+        expiry, strike, iv, straddlemid, impliedmove, underlyingprice = getcurrent(theticker, row['beforedate'])
+        thedfprepped.at[index, 'expiry'] = expiry
+        thedfprepped.at[index, 'strike'] = strike
+        thedfprepped.at[index, 'iv'] = iv
+        thedfprepped.at[index, 'straddlemid'] = straddlemid
+        thedfprepped.at[index, 'impliedmove'] = impliedmove
+        thedfprepped.at[index, 'underlyingprice'] = underlyingprice
+        print(row['Symbol'])
+    for index, row in thedfprepped.iterrows():
+        print("hist", row['Symbol'])
+        cumabsavgperc, countreports = historical(row['Symbol'])
+        thedfprepped.at[index, 'histavg'] = cumabsavgperc
+        thedfprepped.at[index, 'cntreports'] = countreports
+        thedfprepped.at[index, 'tickerlink'] = '<a href="' + row['Symbol'] + '" style="color:#FFFFFF;">' + row['Symbol'] + '</a>'
 
-@app.route('/importit', methods=['GET', 'POST'])
-def importit():
-    thedfprepped = prepimport(thedf)
-    thedfprepped.to_sql('earningsdates', con=db.engine, if_exists='append', index=False)
-    success = str('Success')
-    return render_template('import.html', tables=[thedfprepped.to_html()], titles=[''], success=success)
+    #df for importing into exactearningsdates
+    foredatesdf = thedfprepped.rename(columns={'Symbol': 'ticker', 'Avg Option Volume': 'averageoptionvol', 'Earnings Date': 'exactearningsdate', 'Name': 'companyname', 'Avg. Stock Volume': 'averagestockvol', 'MarketCap': 'marketcap', 'histavg': 'actualmoveperc', 'iv': 'staticiv', 'expiry': 'staticexpiry'}, errors='raise')
+    foredatesdf = foredatesdf[['ticker', 'companyname', 'exactearningsdate', 'beforedate', 'afterdate','averageoptionvol', 'averagestockvol', 'marketcap', 'impliedmove', 'staticexpiry']]
+
+    #df for importing into screener
+    forscreenerdf = thedfprepped[['Symbol','tickerlink', 'Name', 'Avg Option Volume', 'Avg. Stock Volume', 'MarketCap', 'iv', 'straddlemid', 'impliedmove', 'histavg', 'underlyingprice', 'strike', 'edate2', 'bmoamc2']]
+    forscreenerdf = forscreenerdf.rename(columns={'Symbol': 'ticker', 'edate2': 'edate', 'bmoamc2': 'bmoamc', 'Name': 'companyname', 'Avg Option Volume': 'averageoptionvol', 'Avg. Stock Volume': 'averagestockvol', 'MarketCap': 'marketcap'}, errors='raise')
+    forscreenerdf = forscreenerdf.sort_values(['edate', 'bmoamc'], ascending=[True, False])
+    return foredatesdf, forscreenerdf
+    
+    # success = str('Success')
+    # return render_template('import.html', tables=[forscreenerdf.to_html()], titles=[''], success=success)
+
+# @app.route('/importit', methods=['GET', 'POST'])
+# def importit():
+#     foredatesdf, forscreenerdf = prepimport()
+#     # foredatesdf.to_sql('earningsdates', con=db.engine, if_exists='append', index=False)
+#     forscreenerdf.to_sql('screener', con=db.engine, if_exists='replace', index=False)    
+#     foredatesdf.to_sql('earningsdates', con=db.engine, if_exists='append', index=False)    
+#     success = str('Success')
+#     return render_template('import.html', tables=[forscreenerdf.to_html()], titles=[''], success=success)

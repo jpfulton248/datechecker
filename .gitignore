@@ -10,3 +10,5 @@ flaskr/.env
 flaskr/.flaskenv
 .flaskenv
 .env
+credentials/
+td_state.json
