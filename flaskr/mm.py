@@ -309,6 +309,7 @@ def computescreener():
     s = Screener.query.with_entities(Screener.ticker, Screener.companyname, Screener.averageoptionvol, Screener.averagestockvol, Screener.marketcap, Screener.iv, Screener.straddlemid, Screener.impliedmove, Screener.histavg, Screener.underlyingprice, Screener.strike, Screener.valued, Screener.ivcrushto, Screener.edate, Screener.etime, Screener.exactearningsdate).all()
     df = pd.DataFrame(s)
     if df.empty == False:
+        df['valued'] = df['impliedmove'] - df['histavg']
         df = df.sort_values(['exactearningsdate'], ascending=[True])
         df = df.drop(columns=['exactearningsdate'])
         df['iv'] = df['iv'].astype(str) + '%'
