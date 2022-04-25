@@ -355,7 +355,7 @@ def prepimport():
     thedfprepped['bmoamc'] = thedfprepped['bmoamc'].replace('BMO', '8:00:00')
     thedfprepped['bmoamc'] = thedfprepped['bmoamc'].replace('AMC', '16:00:00')
     thedfprepped['Earnings Date'] = thedfprepped['Earnings Date'].astype(str) + ' ' + thedfprepped['bmoamc'].astype(str)
-    thedfprepped[['expiry', 'strike', 'iv', 'straddlemid', 'impliedmove', 'underlyingprice', 'histavg', 'cntreports' 'ivcrushto', 'valued']] = '','','','','','', '', '','',''
+    thedfprepped[['expiry', 'strike', 'iv', 'straddlemid', 'impliedmove', 'underlyingprice', 'histavg', 'cntreports', 'ivcrushto', 'valued']] = '','','','','','','','','',''
     i = len(thedfprepped.index) + 1
     for index, row in thedfprepped.iterrows():
         i -= 1

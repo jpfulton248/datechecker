@@ -89,8 +89,8 @@ def getcurrent(ticker, beforedate):
     option_type=None)
     assert r.status_code == 200, r.raise_for_status()
     time.sleep(.4)
-    # try:
     expiry = list(r.json()["putExpDateMap"])[0]
+    print(expiry)
     strike = list(r.json()["putExpDateMap"][expiry])[0]
     callbid = r.json()["callExpDateMap"][expiry][strike][0]["bid"]
     callask = r.json()["callExpDateMap"][expiry][strike][0]["ask"]
@@ -152,6 +152,7 @@ def getcurrent(ticker, beforedate):
     currentchain = prettyexpiry, strike, iv, straddlemid, impliedmove, underlyingprice
     # except:
     #     print('problem getting option chain so currentchain is blank')
+
     return currentchain
 
 def getiv(theticker):
