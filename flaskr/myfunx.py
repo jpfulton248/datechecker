@@ -70,6 +70,7 @@ def histurl(histticker, fromdate, todate):
 def getcurrent(ticker, beforedate):
     beforedate = datetime.datetime.strptime(beforedate, "%Y-%m-%d")
     beforedate40 = beforedate + datetime.timedelta(days=40)
+    print('getting option chain for', ticker)
     r = c.get_option_chain(ticker,
     contract_type=None,
     strike_count=1,
@@ -88,44 +89,69 @@ def getcurrent(ticker, beforedate):
     option_type=None)
     assert r.status_code == 200, r.raise_for_status()
     time.sleep(.4)
+    # try:
+    expiry = list(r.json()["putExpDateMap"])[0]
+    strike = list(r.json()["putExpDateMap"][expiry])[0]
+    callbid = r.json()["callExpDateMap"][expiry][strike][0]["bid"]
+    callask = r.json()["callExpDateMap"][expiry][strike][0]["ask"]
     try:
-        expiry = list(r.json()["putExpDateMap"])[0]
-        strike = list(r.json()["putExpDateMap"][expiry])[0]
-        callbid = r.json()["callExpDateMap"][expiry][strike][0]["bid"]
-        callask = r.json()["callExpDateMap"][expiry][strike][0]["ask"]
         callmid = (callbid + callask)/2
         callmid = round(callmid,2)
-        # callspread = round(((1-(callbid/callask))*100), 2)
-        putbid = r.json()["putExpDateMap"][expiry][strike][0]["bid"]
-        putask = r.json()["putExpDateMap"][expiry][strike][0]["ask"]
+    except:
+        callmid = 0
+    # callspread = round(((1-(callbid/callask))*100), 2)
+    putbid = r.json()["putExpDateMap"][expiry][strike][0]["bid"]
+    putask = r.json()["putExpDateMap"][expiry][strike][0]["ask"]
+    try:
         putmid = (putbid + putask)/2
         putmid = round(putmid,2)
-        # putspread = round(((1-(putbid/putask))*100), 2)
+    except:
+        putmid = 0
+    # putspread = round(((1-(putbid/putask))*100), 2)
 
-        #this is IV of the ATM call option for expiration immediately following next earnings date
+    #this is IV of the ATM call option for expiration immediately following next earnings date
+    try:
         ivc = round(r.json()["callExpDateMap"][expiry][strike][0]["volatility"], 2)
+    except:
+        ivc = 0
+    try:
         ivp = round(r.json()["putExpDateMap"][expiry][strike][0]["volatility"], 2)
+    except:
+        ivp = 0
+    
+    try:
         iv = ((ivc + ivp)/2)
+    except:
+        iv = 0
 
-        #price of the underlying here... I've seen bad data come from TD for this which sucks.
+    #price of the underlying here... I've seen bad data come from TD for this which sucks.
+    try:
         underlyingprice = r.json()["underlyingPrice"]
         underlyingprice = round(underlyingprice, 2)
+    except:
+        underlyingprice = 0
 
-        #mid price of straddle. Using mid vs last since some tickers can have very little volume. At least this will provide more data. Might change to last.
+    #mid price of straddle. Using mid vs last since some tickers can have very little volume. At least this will provide more data. Might change to last.
+    try:
         straddlemid = round(putmid+callmid, 2)
+    except:
+        straddlemid = 0
 
-        #calculate implied move
+    #calculate implied move
+    try:
         impliedmove = ((straddlemid/underlyingprice)*100)
         impliedmove = round(impliedmove, 2)
-
-        #make the exipration date more human readable
-        prettyexpiry = expiry.split(':')[0]
-        prettyexpiry = datetime.datetime.strptime(prettyexpiry, '%Y-%m-%d')
-        prettyexpiry = datetime.datetime.strftime(prettyexpiry, '%Y-%m-%d')
-        currentchain = []
-        currentchain = prettyexpiry, strike, iv, straddlemid, impliedmove, underlyingprice
     except:
-        print('problem getting option chain so currentchain is blank')
+        impliedmove = 0
+
+    #make the exipration date more human readable
+    prettyexpiry = expiry.split(':')[0]
+    prettyexpiry = datetime.datetime.strptime(prettyexpiry, '%Y-%m-%d')
+    prettyexpiry = datetime.datetime.strftime(prettyexpiry, '%Y-%m-%d')
+    currentchain = []
+    currentchain = prettyexpiry, strike, iv, straddlemid, impliedmove, underlyingprice
+    # except:
+    #     print('problem getting option chain so currentchain is blank')
     return currentchain
 
 def getiv(theticker):

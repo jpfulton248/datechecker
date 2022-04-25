@@ -420,7 +420,7 @@ def prepimport():
     foredatesdf = foredatesdf[['ticker', 'companyname', 'exactearningsdate', 'beforedate', 'afterdate','averageoptionvol', 'averagestockvol', 'marketcap', 'impliedmove', 'staticexpiry']]
 
     #df for importing into screener
-    forscreenerdf = thedfprepped[['Symbol','tickerlink', 'Name', 'Avg Option Volume', 'Avg. Stock Volume', 'MarketCap', 'iv', 'straddlemid', 'impliedmove', 'histavg', 'underlyingprice', 'strike', 'edate2', 'bmoamc2', 'Earnings Date', 'ivcrushto']]
+    forscreenerdf = thedfprepped[['Symbol', 'Name', 'Avg Option Volume', 'Avg. Stock Volume', 'MarketCap', 'iv', 'straddlemid', 'impliedmove', 'histavg', 'underlyingprice', 'strike', 'edate2', 'bmoamc2', 'Earnings Date', 'ivcrushto']]
     forscreenerdf = forscreenerdf.rename(columns={'Symbol': 'ticker', 'edate2': 'edate', 'bmoamc2': 'bmoamc', 'Name': 'companyname', 'Avg Option Volume': 'averageoptionvol', 'Avg. Stock Volume': 'averagestockvol', 'MarketCap': 'marketcap', 'Earnings Date': 'exactearningsdate', 'bmoamc2': 'etime'}, errors='raise')
     forscreenerdf = forscreenerdf.sort_values(['exactearningsdate'], ascending=[True])
     return foredatesdf, forscreenerdf
