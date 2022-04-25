@@ -306,42 +306,20 @@ def mainroute(routeticker):
         lists = sidebarlist)
 
 def computescreener():
-    s = Screener.query.with_entities(Screener.tickerlink, Screener.companyname, Screener.averageoptionvol, Screener.averagestockvol, Screener.marketcap, Screener.iv, Screener.straddlemid, Screener.impliedmove, Screener.histavg, Screener.underlyingprice, Screener.strike, Screener.valued, Screener.ivcrushto, Screener.edate, Screener.etime, Screener.exactearningsdate).all()
+    s = Screener.query.with_entities(Screener.ticker, Screener.companyname, Screener.averageoptionvol, Screener.averagestockvol, Screener.marketcap, Screener.iv, Screener.straddlemid, Screener.impliedmove, Screener.histavg, Screener.underlyingprice, Screener.strike, Screener.valued, Screener.ivcrushto, Screener.edate, Screener.etime, Screener.exactearningsdate).all()
     df = pd.DataFrame(s)
     if df.empty == False:
         df = df.sort_values(['exactearningsdate'], ascending=[True])
         df = df.drop(columns=['exactearningsdate'])
-
-        # for index, row in df.iterrows():
-        #     try:
-        #         df.at[index, 'IV'] = str(result[0])+str("%")
-        #         df.at[index, 'Straddle'] = str("$") + str(result[1])
-        #         df.at[index, 'Implied Move'] = str(result[2])+str("%")
-        #         df.at[index, 'Hist Avg'] = str(round(avg,2))+str("%")
-        #         df.at[index, 'Price'] = str("$") + str(result[3])
-        #         df.at[index, 'Strike'] = str("$") + str(result[4])
-        #         if result[0] != '':
-        #             df.at[index, 'Valued'] = str(round((float(avg) - float(result[2])),2))
-        #         else:
-        #             df.at[index, 'Valued'] = ''
-        #     except:
-        #         print('problem with this in screener df.itterows:', row['ticker'])
-        #         pass
-        # if df.empty:
-        #     print('screener df is empty')
-        # else:
-        #     df['companyname'] = df['companyname'].str[:40]
-        #     df['symbol'] = df['ticker']
-        #     df['ticker'] = '<a href="' + df['ticker'].astype(str) + '" style="color:#FFFFFF;">' + df['ticker'].astype(str) + '</a>'
-        #     df['marketcap'] = df['marketcap'].div(1000000000)
-        #     df['date'] = df['exactearningsdate'].dt.strftime('%-m/%-d/%-y %-H')
-        #     df[['date', 'time']] = df['date'].str.split(' ', n=1, expand=True)
-        #     df['time'] = df['time'].replace('8', 'BMO')
-        #     df['time'] = df['time'].replace('16', 'AMC')
-        #     df = df.sort_values(['date', 'time'], ascending=[True, False])
-        #     df = df.drop(columns=['exactearningsdate'])
-        #     pd.options.display.float_format = '{:,}'.format 
-        #     pd.options.display.float_format = '{:,.0f}'.format
+        df['iv'] = df['iv'].astype(str) + '%'
+        df['straddlemid'] = '$' + df['straddlemid'].astype(str)
+        df['impliedmove'] = df['impliedmove'].astype(str) + '%'
+        df['histavg'] = df['histavg'].astype(str) + '%'
+        df['underlyingprice'] = '$' + df['underlyingprice'].astype(str)
+        df['strike'] = '$' + df['strike'].astype(str)
+        df['ticker'] = '<a href="' + df['ticker'].astype(str) + '" style="color:#FFFFFF;">' + df['ticker'].astype(str) + '</a>'
+        pd.options.display.float_format = '{:,}'.format 
+        pd.options.display.float_format = '{:,.0f}'.format
     computedscreenerdf = df
     return computedscreenerdf
 
@@ -377,7 +355,7 @@ def prepimport():
     thedfprepped['bmoamc'] = thedfprepped['bmoamc'].replace('BMO', '8:00:00')
     thedfprepped['bmoamc'] = thedfprepped['bmoamc'].replace('AMC', '16:00:00')
     thedfprepped['Earnings Date'] = thedfprepped['Earnings Date'].astype(str) + ' ' + thedfprepped['bmoamc'].astype(str)
-    thedfprepped[['expiry', 'strike', 'iv', 'straddlemid', 'impliedmove', 'underlyingprice', 'histavg', 'cntreports','tickerlink', 'ivcrushto']] = '','','','','','', '', '','',''
+    thedfprepped[['expiry', 'strike', 'iv', 'straddlemid', 'impliedmove', 'underlyingprice', 'histavg', 'cntreports' 'ivcrushto', 'valued']] = '','','','','','', '', '','',''
     i = len(thedfprepped.index) + 1
     for index, row in thedfprepped.iterrows():
         i -= 1
@@ -407,7 +385,6 @@ def prepimport():
         cumabsavgperc, countreports = historical(row['Symbol'])
         thedfprepped.at[index, 'histavg'] = cumabsavgperc
         thedfprepped.at[index, 'cntreports'] = countreports
-        thedfprepped.at[index, 'tickerlink'] = '<a href="' + row['Symbol'] + '" style="color:#FFFFFF;">' + row['Symbol'] + '</a>'
         print('getting historical', i)
     i = len(thedfprepped.index) + 1
     for index, row in thedfprepped.iterrows():
@@ -420,7 +397,9 @@ def prepimport():
     foredatesdf = foredatesdf[['ticker', 'companyname', 'exactearningsdate', 'beforedate', 'afterdate','averageoptionvol', 'averagestockvol', 'marketcap', 'impliedmove', 'staticexpiry']]
 
     #df for importing into screener
-    forscreenerdf = thedfprepped[['Symbol', 'Name', 'Avg Option Volume', 'Avg. Stock Volume', 'MarketCap', 'iv', 'straddlemid', 'impliedmove', 'histavg', 'underlyingprice', 'strike', 'edate2', 'bmoamc2', 'Earnings Date', 'ivcrushto']]
+    forscreenerdf = thedfprepped[['Symbol', 'Name', 'Avg Option Volume', 'Avg. Stock Volume', 'MarketCap', 'iv', 'straddlemid', 'impliedmove', 'histavg', 'underlyingprice', 'strike', 'valued', 'edate2', 'bmoamc2', 'Earnings Date', 'ivcrushto']]
     forscreenerdf = forscreenerdf.rename(columns={'Symbol': 'ticker', 'edate2': 'edate', 'bmoamc2': 'bmoamc', 'Name': 'companyname', 'Avg Option Volume': 'averageoptionvol', 'Avg. Stock Volume': 'averagestockvol', 'MarketCap': 'marketcap', 'Earnings Date': 'exactearningsdate', 'bmoamc2': 'etime'}, errors='raise')
+    forscreenerdf['valued'] = forscreenerdf['impliedmove'] - forscreenerdf['histavg']
+    forscreenerdf['marketcap'] = forscreenerdf['marketcap'].div(1000000000)
     forscreenerdf = forscreenerdf.sort_values(['exactearningsdate'], ascending=[True])
     return foredatesdf, forscreenerdf
