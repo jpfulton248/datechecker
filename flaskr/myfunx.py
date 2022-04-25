@@ -4,6 +4,7 @@ import os
 import time
 from tda import auth, client
 import mysql.connector as mysql
+import pandas as pd
 load_dotenv
 
 f_api_key = os.environ.get('f_api_key')
@@ -86,7 +87,7 @@ def getcurrent(ticker, beforedate):
     exp_month=None,
     option_type=None)
     assert r.status_code == 200, r.raise_for_status()
-    time.sleep(1)
+    time.sleep(.4)
     try:
         expiry = list(r.json()["putExpDateMap"])[0]
         strike = list(r.json()["putExpDateMap"][expiry])[0]
@@ -126,3 +127,54 @@ def getcurrent(ticker, beforedate):
     except:
         print('problem getting option chain so currentchain is blank')
     return currentchain
+
+def getiv(theticker):
+#this gets the date 90 days from today. I reference later with futuredate.year, futuredate.month, futuredate.day
+    futuredate = datetime.date.today() + datetime.timedelta(days=150)
+    # try:
+    r = c.get_option_chain(theticker,
+    contract_type=None,
+    strike_count=1,
+    include_quotes=None,
+    strategy=client.Client.Options.Strategy.ANALYTICAL,
+    interval=None,
+    strike=None,
+    strike_range=None,
+    from_date=datetime.date(year=datetime.date.today().year, month=datetime.date.today().month, day=datetime.date.today().day),
+    to_date=datetime.date(year=futuredate.year, month=futuredate.month, day=futuredate.day),
+    volatility=None,
+    underlying_price=None,
+    interest_rate=None,
+    days_to_expiration=None,
+    exp_month=None,
+    option_type=None)
+    assert r.status_code == 200, r.raise_for_status()
+    exptier = list(r.json()["putExpDateMap"])
+    df2 = pd.DataFrame(exptier, columns=['expirykey'])
+    df2['expirys'] = df2['expirykey'].str.slice(start=0, stop=10)
+    mydict = {"Ticker":[],"Expiration":[],"IV":[],"Strike":[]}
+    for index, row in df2.iterrows():
+        strike = list(r.json()["putExpDateMap"][row['expirykey']])[0]
+        ivc = round(r.json()["callExpDateMap"][row['expirykey']][strike][0]["volatility"], 2)
+        ivp = round(r.json()["putExpDateMap"][row['expirykey']][strike][0]["volatility"], 2)
+        iv = ((ivc + ivp)/2)
+        mydict["IV"].append(iv)
+        mydict["Expiration"].append(row['expirys'])
+        mydict["Ticker"].append(theticker)
+        mydict["Strike"].append(strike)
+    df3 = pd.DataFrame.from_dict(mydict)
+    df3.reset_index(drop=True, inplace=True)
+    if (datetime.datetime.strptime(df3.loc[1,'Expiration'], '%Y-%m-%d') - datetime.datetime.strptime(df3.loc[0,'Expiration'], '%Y-%m-%d')).days >= 14:
+        ivcrushto = df3.at[2, 'IV']
+    elif (datetime.datetime.strptime(df3.loc[1,'Expiration'], '%Y-%m-%d') - datetime.datetime.strptime(df3.loc[0,'Expiration'], '%Y-%m-%d')).days < 14:
+        ivcrushto = df3.at[5, 'IV']
+    else:
+        print('Expirations are neither greater than 14, or less than 14 days apart')
+        ivcrushto = 0
+        pass
+    if ivcrushto == -999:
+        ivcrushto = 0
+    time.sleep(.5)
+    return ivcrushto
+
+    
