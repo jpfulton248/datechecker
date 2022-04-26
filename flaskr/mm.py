@@ -11,7 +11,7 @@ from markupsafe import Markup
 import re
 from dotenv import load_dotenv
 import os
-from .myfunx import genbefaf, histurl, getcurrent, getiv
+from .myfunx import genbefaf, histurl, getcurrent, getiv, now, yesterday
 import requests
 
 from pymysql import NULL
@@ -127,14 +127,6 @@ class Screener(db.Model):
     etime = db.Column(db.String())
     updated = db.Column(db.String())
 
-def now():
-    now = datetime.datetime.now()
-    return now
-
-def yesterday():
-    yesterday = now() - datetime.timedelta(days=1)
-    return yesterday
-
 def sidebar():
     try:
         eresult = earningsdates.query \
@@ -241,26 +233,6 @@ def historical(routeticker):
         countreports = len(df.index)
         return cumabsavgperc, countreports
 
-@app.route("/search", methods=["POST", "GET"])
-def home():
-    if request.method == "GET":
-        thechoices = Main.query.with_entities(Main.ticker).all()
-        thechoices = pd.DataFrame(thechoices, columns=['choice'], index=None)
-        choiceoption = thechoices['choice'].tolist()
-    return render_template("search.html", languages=choiceoption)
-
-@app.route("/search", methods=["GET", "POST"])
-def home2():
-    if request.method == "POST":
-        text = request.form['text']
-        processed_text = text.upper()
-        print(processed_text)
-        return processed_text
-
-    #changestable
-    ctable = changestable()
-    # cdf.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True)
-
 @app.route('/<string:routeticker>', methods=['POST', 'GET'])
 def mainroute(routeticker):
     sidebarlist = sidebar()
@@ -327,7 +299,10 @@ def computescreener():
 @app.route('/')
 def screener():
     computedscreenerdf = computescreener()
-    computedscreenerdf.to_csv('flaskr/static/screener.csv', index='False')
+    exportdf = computedscreenerdf.copy(deep=True)
+    exportdf['ticker'].replace('<a href="[A-Z]*" style="color:#FFFFFF;">','',regex=True,inplace=True)
+    exportdf['ticker'].replace('<\/a>','',regex=True,inplace=True)
+    exportdf.to_csv('flaskr/static/screener.csv', index=False)
     return render_template('screener.html', screener=computedscreenerdf.to_html(classes='table table-dark sortable table-striped', table_id='sortit', escape=False, index=False, header=True, render_links=True, justify='left'))
 
 @app.route('/upload', methods=['GET', 'POST'])
@@ -398,7 +373,7 @@ def prepimport():
     foredatesdf = foredatesdf[['ticker', 'companyname', 'exactearningsdate', 'beforedate', 'afterdate','averageoptionvol', 'averagestockvol', 'marketcap', 'impliedmove', 'staticexpiry']]
 
     #df for importing into screener
-    forscreenerdf = thedfprepped[['Symbol', 'Name', 'Avg Option Volume', 'Avg. Stock Volume', 'MarketCap', 'iv', 'straddlemid', 'impliedmove', 'histavg', 'underlyingprice', 'strike', 'valued', 'edate2', 'bmoamc2', 'Earnings Date', 'ivcrushto']]
+    forscreenerdf = thedfprepped[['edate2','bmoamc2','Symbol', 'Name', 'Avg Option Volume', 'Avg. Stock Volume', 'MarketCap', 'iv', 'straddlemid', 'impliedmove', 'histavg', 'underlyingprice', 'strike', 'valued', 'Earnings Date', 'ivcrushto']]
     forscreenerdf = forscreenerdf.rename(columns={'Symbol': 'ticker', 'edate2': 'edate', 'bmoamc2': 'bmoamc', 'Name': 'companyname', 'Avg Option Volume': 'averageoptionvol', 'Avg. Stock Volume': 'averagestockvol', 'MarketCap': 'marketcap', 'Earnings Date': 'exactearningsdate', 'bmoamc2': 'etime'}, errors='raise')
     forscreenerdf['valued'] = forscreenerdf['impliedmove'] - forscreenerdf['histavg']
     forscreenerdf['marketcap'] = forscreenerdf['marketcap'].div(1000000000)

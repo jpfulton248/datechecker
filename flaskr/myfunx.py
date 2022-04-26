@@ -204,4 +204,12 @@ def getiv(theticker):
     time.sleep(.5)
     return ivcrushto
 
+def now():
+    now = datetime.datetime.now()
+    return now
+
+def yesterday():
+    yesterday = now() - datetime.timedelta(days=1)
+    return yesterday
+
     
