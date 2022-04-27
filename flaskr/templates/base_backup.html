@@ -1,43 +1,120 @@
 <!doctype html>
 <html>
 <head>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <link href="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" custom.css>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body class="bg-dark">
 <div class="container-fluid">
     <div class="row content">
-        <div class="col-sm-3 sidenav hidden-xs">
-            {{ tables }}
-        </div>
-        <div class="col-sm-9 text-light">
-            <h1>Company Name: {{ companyname }}</h1>
-            <h3>Symbol: {{ theticker }}</h3>
-            <h3>Average Option Volume: {{ avg_optvol }}</h3>
-            <h3>Market Cap: {{ market_cap }}</h3>
-            <h3>Average Stock Volume: {{ avg_stockvol }}</h3>
-            <h3>Earnings Date: {{ earningsdate }}</h3>
-            <h3>Now: {{ thedate }}</h3>
-        </div>
-        <div class="vstack gap-3">
-            {% for key,value in df.iterrows() %}
-                <div class="exactearningsdatestr">{{ value['exactearningsdatestr'] }}</div>
-            {% for key,value in df.iterrows() %}
-                <div class="time">{{ value['time'] }}</div>
-            {% for key,value in df.iterrows() %}
-                <div><a href="{{ '%s' %value['ticker']|safe }}" class="ticker"> {{value['ticker']}} </a></div>
-            {% endfor %}
-            {% endfor %}
-            {% endfor %}
-        </div>
+        <div class="col-sm-3" style="height: 100vh;">
+            {% block sidebar %}
+            <div class=""><a href="/">Weekly Screener</a></div>
+            <div class="accordion bg-secondary" id="accordionPanelsStayOpenExample">
+
+{% for list, items in lists.items() %}
+
+                <div class="accordion-item bg-secondary">
+                  <div class="accordion-header bg-secondary" id="panelsStayOpen-heading{{ list }}"></div>
+                 <div class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse{{ list }}" aria-expanded="false" aria-controls="panelsStayOpen-collapse{{ list }}">
+                   {{ list }}</div>
+                  </h2>
+                  <div id="panelsStayOpen-collapse{{ list }}" class="accordion-collapse collapse show bg-dark" aria-labelledby="panelsStayOpen-heading{{ list }}">
+                    <div class="accordion-body">
+                        {% for item in items %}
+                        <div>
+                        <a href="{{ item['ticker'] }}" style="width: 100%"  class="btn btn-dark">{{ item['time'] }}: {{ item['ticker'] }}<br/>
+                        {{ item['companyname'] }}</a>
+                        </div>
+                        <hr class="bg-light" />
+                        {% endfor %}
+                    </div>
+                  </div>
+                </div>        
+            {% endfor %}    
+            </div>
+
+        </div>{% endblock %}{% block main %}
+        <div>
+            <h3 style="color: white">{{ routeticker }}</h3>
+            <h4 style="color: white">{{ earningsdate }} {{ bmoamc }}</h4>
+            <div>
+                <span class="col-md-3" style="color: white">{{ companyname }}</span>
+            </div>   
+            <div>
+                <span class="col-md-3" style="color: white">Avg Opt Vol:</span>
+                <span class="col-md-3" style="color: white">{{ avg_optvol }}</span>
+           </div>
+           <div>
+                <span class="col-md-3" style="color: white">Market Cap:</span>
+                <span class="col-md-3" style="color: white">{{ market_cap }} Billion</span>
+           </div>
+           <div>
+                <span class="col-md-3" style="color: white">Avg Vol:</span>
+                <span class="col-md-3" style="color: white">{{ avg_stockvol }}</span>
+            </div>
+            <div>
+                <span class="col-md-3" style="color: white">{{ sector }}</span>
+            </div>
+            <div>
+                <span class="col-md-3" style="color: white">{{ industry }}</span>
+            </div>
+            <div>
+                <span class="col-md-3" style="color: white">{{ address }}</span>
+            </div>
+            <div>
+                <span class="col-md-3" style="color: white">{{ city }}, {{ state }} {{ zipcode }}</span>
+            </div>
+            <div>
+                <span class="col-md-3" style="color: white">Number of Earnings Reports: {{ countreports }}</span>
+            </div>
+            <div>
+                <span class="col-md-3" style="color: white">Historical Avg Move: &plusmn;{{ absactualmoveperc }}%</span>
+            </div>
+            <div>
+                <span class="col-md-3" style="color: white">Implied Move: &plusmn;{{ impmove }}%</span>
+            </div>
+            <div>
+                <span class="col-md-3" style="color: white">
+                    {% if underover > 0 %}Undervalued:{{ underover }}%
+                    {% else %}Overvalued:{{ underover }}%
+                    {% endif %} Relative to {{ countreports }} Qtr Avg
+                </span>
+            </div>
+            <div>
+                <span class="col-md-3" style="color: white">{{ website|safe }}</span>
+            </div></br>
+            <div class="table table1">
+                <span class="col-lg-auto" style="color: white">{{ ctable|safe }}</span>
+            </div>
+            <!-- <div class="table table1">
+                <span class="col-lg-auto" style="color: white">{{ historicalresult|safe }}</span>
+            </div> -->
         </div>
     </div>
-</div>
-    {% block content %}
-    {% endblock %}
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    <script>
+        $( function() {
+          var availableTags = [
+              {% for language in languages %}
+                  "{{language}}",
+              {% endfor %}
+          ];
+          $( "#tags" ).autocomplete({
+            source: availableTags
+          });
+        } );
+    </script>
+{% endblock %}
 </body>
 </html>
