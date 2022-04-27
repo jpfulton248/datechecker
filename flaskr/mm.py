@@ -278,19 +278,20 @@ def mainroute(routeticker):
         lists = sidebarlist)
 
 def computescreener():
-    s = Screener.query.with_entities(Screener.ticker, Screener.companyname, Screener.averageoptionvol, Screener.averagestockvol, Screener.marketcap, Screener.iv, Screener.straddlemid, Screener.impliedmove, Screener.histavg, Screener.underlyingprice, Screener.strike, Screener.valued, Screener.ivcrushto, Screener.edate, Screener.etime, Screener.exactearningsdate).all()
-    df = pd.DataFrame(s)
+    s = Screener.query.with_entities(Screener.ticker, Screener.companyname, Screener.edate, Screener.etime, Screener.averageoptionvol, Screener.averagestockvol, Screener.marketcap, Screener.underlyingprice, Screener.strike, Screener.straddlemid, Screener.histavg, Screener.impliedmove, Screener.valued, Screener.iv, Screener.ivcrushto, Screener.exactearningsdate).all()
+    df = pd.DataFrame(s, columns=['Ticker', 'Name', 'Edate', 'Etime', 'AvgOptVol', 'AvgStockVol', 'MCap', 'StockPrice', 'Strike', 'Straddle', 'HistAvg', 'ExpMove', 'Valued', 'IV', 'IVCrushTo', 'exactearningsdate'])
     if df.empty == False:
-        df['valued'] = df['impliedmove'] - df['histavg']
+        df['Valued'] = df['ExpMove'] - df['HistAvg']
+        df['Range'] = "$" + ((df['StockPrice'] - ((df['ExpMove'] / 100) * df['StockPrice'])).astype(int)).astype(str) + "/$" + ((df['StockPrice'] + ((df['ExpMove'] / 100) * df['StockPrice'])).astype(int)).astype(str)
         df = df.sort_values(['exactearningsdate'], ascending=[True])
         df = df.drop(columns=['exactearningsdate'])
-        df['iv'] = df['iv'].astype(str) + '%'
-        df['straddlemid'] = '$' + df['straddlemid'].astype(str)
-        df['impliedmove'] = df['impliedmove'].astype(str) + '%'
-        df['histavg'] = df['histavg'].astype(str) + '%'
-        df['underlyingprice'] = '$' + df['underlyingprice'].astype(str)
-        df['strike'] = '$' + df['strike'].astype(str)
-        df['ticker'] = '<a href="' + df['ticker'].astype(str) + '" style="color:#FFFFFF;">' + df['ticker'].astype(str) + '</a>'
+        df['IV'] = df['IV'].astype(str) + '%'
+        df['Straddle'] = '$' + df['Straddle'].astype(str)
+        df['ExpMove'] = df['ExpMove'].astype(str) + '%'
+        df['HistAvg'] = df['HistAvg'].astype(str) + '%'
+        df['StockPrice'] = '$' + df['StockPrice'].astype(str)
+        df['Strike'] = '$' + df['Strike'].astype(str)
+        df['Ticker'] = '<a href="' + df['Ticker'].astype(str) + '" style="color:#FFFFFF;">' + df['Ticker'].astype(str) + '</a>'
         pd.options.display.float_format = '{:,}'.format 
         pd.options.display.float_format = '{:,.0f}'.format
     computedscreenerdf = df
@@ -300,8 +301,8 @@ def computescreener():
 def screener():
     computedscreenerdf = computescreener()
     exportdf = computedscreenerdf.copy(deep=True)
-    exportdf['ticker'].replace('<a href="[A-Z]*" style="color:#FFFFFF;">','',regex=True,inplace=True)
-    exportdf['ticker'].replace('<\/a>','',regex=True,inplace=True)
+    exportdf['Ticker'].replace('<a href="[A-Z]*" style="color:#FFFFFF;">','',regex=True,inplace=True)
+    exportdf['Ticker'].replace('<\/a>','',regex=True,inplace=True)
     exportdf.to_csv('flaskr/static/screener.csv', index=False)
     return render_template('screener.html', screener=computedscreenerdf.to_html(classes='table table-dark sortable table-striped', table_id='sortit', escape=False, index=False, header=True, render_links=True, justify='left'))
 
