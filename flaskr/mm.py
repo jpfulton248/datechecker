@@ -11,7 +11,7 @@ from markupsafe import Markup
 import re
 from dotenv import load_dotenv
 import os
-from .myfunx import genbefaf, histurl, getcurrent, getiv, now, yesterday
+from .myfunx import genbefaf, histurl, getcurrent, getiv, now, yesterday, fourhrsago, screenerend
 import requests
 
 from pymysql import NULL
@@ -278,7 +278,7 @@ def mainroute(routeticker):
         lists = sidebarlist)
 
 def computescreener():
-    s = Screener.query.with_entities(Screener.ticker, Screener.companyname, Screener.edate, Screener.etime, Screener.averageoptionvol, Screener.averagestockvol, Screener.marketcap, Screener.underlyingprice, Screener.strike, Screener.straddlemid, Screener.histavg, Screener.impliedmove, Screener.valued, Screener.iv, Screener.ivcrushto, Screener.exactearningsdate).all()
+    s = Screener.query.with_entities(Screener.ticker, Screener.companyname, Screener.edate, Screener.etime, Screener.averageoptionvol, Screener.averagestockvol, Screener.marketcap, Screener.underlyingprice, Screener.strike, Screener.straddlemid, Screener.histavg, Screener.impliedmove, Screener.valued, Screener.iv, Screener.ivcrushto, Screener.exactearningsdate).filter(Screener.exactearningsdate > fourhrsago(), Screener.exactearningsdate < screenerend()).all()
     df = pd.DataFrame(s, columns=['Ticker', 'Name', 'Edate', 'Etime', 'AvgOptVol', 'AvgStockVol', 'MCap', 'StockPrice', 'Strike', 'Straddle', 'HistAvg', 'ExpMove', 'Valued', 'IV', 'IVCrushTo', 'exactearningsdate'])
     if df.empty == False:
         df['Valued'] = df['ExpMove'] - df['HistAvg']

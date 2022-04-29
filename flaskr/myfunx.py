@@ -212,4 +212,30 @@ def yesterday():
     yesterday = now() - datetime.timedelta(days=1)
     return yesterday
 
+def fourhrsago():
+    fourhrsago = now() - datetime.timedelta(hours=4)
+    return fourhrsago
+
+def screenerend():
+    #Monday is 0
+    if datetime.datetime.today().weekday() == 0:
+        screenerend = now() + datetime.timedelta(days=5)
     
+    #Tuesday
+    if datetime.datetime.today().weekday() == 1:
+        screenerend = now() + datetime.timedelta(days=4)
+    
+    #Wednesday
+    if datetime.datetime.today().weekday() == 2:
+        screenerend = now() + datetime.timedelta(days=3)
+    
+    #Thursday
+    if datetime.datetime.today().weekday() == 3:
+        screenerend = now() + datetime.timedelta(days=2)
+    
+    #If Friday. Saturday, Sunday
+    if datetime.datetime.today().weekday() > 3:
+        screenerend = now() + datetime.timedelta(days=8)
+    else:
+        screenerend = now() + datetime.timedelta(days=8)
+    return screenerend
