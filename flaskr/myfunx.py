@@ -139,7 +139,7 @@ def getcurrent(ticker, beforedate):
 
     #calculate implied move
     try:
-        impliedmove = ((straddlemid/underlyingprice)*100)
+        impliedmove = (straddlemid*.85*100)
         impliedmove = round(impliedmove, 2)
     except:
         impliedmove = 0
