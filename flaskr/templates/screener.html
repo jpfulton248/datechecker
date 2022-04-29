@@ -7,10 +7,21 @@
 <div class="col-lg-auto">
 {{ screener|safe }}
 </div>
-<script type="text/javascript">$(document).ready(function(){$('table').DataTable({
+<script type="text/javascript">
+
+$(document).ready(function(){$('table').DataTable({
     "pageLength": 100,
     "order": [[ 2, 'asc' ], [ 3, 'desc' ]],
     fixedHeader: true,
+
     buttons: [ 'colvis' ],
-});});</script>
+    rowReorder: {
+    selector: 'td:nth-child(2)'
+        },
+        responsive: true
+
+    });
+});
+
+</script>
 {% endblock %}
