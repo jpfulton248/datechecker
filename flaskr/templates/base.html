@@ -84,8 +84,8 @@
             </div>
             <div>
                 <span class="col-md-3" style="color: white">
-                    {% if underover > 0 %}Undervalued:{{ abs(underover) }}%
-                    {% else %}Overvalued:{{ abs(underover) }}%
+                    {% if underover > 0 %}Undervalued: {{ underover|abs }}%
+                    {% else %}Overvalued: {{ underover|abs }}%
                     {% endif %} Relative to {{ countreports }} Qtr Avg
                 </span>
             </div>
