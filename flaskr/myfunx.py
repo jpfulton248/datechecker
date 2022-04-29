@@ -88,7 +88,7 @@ def getcurrent(ticker, beforedate):
     exp_month=None,
     option_type=None)
     assert r.status_code == 200, r.raise_for_status()
-    time.sleep(.4)
+    time.sleep(1)
     expiry = list(r.json()["putExpDateMap"])[0]
     print(expiry)
     strike = list(r.json()["putExpDateMap"][expiry])[0]
@@ -176,6 +176,7 @@ def getiv(theticker):
     exp_month=None,
     option_type=None)
     assert r.status_code == 200, r.raise_for_status()
+    time.sleep(1)
     exptier = list(r.json()["putExpDateMap"])
     df2 = pd.DataFrame(exptier, columns=['expirykey'])
     df2['expirys'] = df2['expirykey'].str.slice(start=0, stop=10)
@@ -201,7 +202,6 @@ def getiv(theticker):
         pass
     if ivcrushto == -999:
         ivcrushto = 0
-    time.sleep(.5)
     return ivcrushto
 
 def now():

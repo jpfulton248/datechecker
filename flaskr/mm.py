@@ -109,7 +109,6 @@ class ridingstraddle(db.Model):
 class Screener(db.Model):
     screenerid = db.Column(db.Integer(), primary_key=True)
     ticker = db.Column(db.String(255))
-    tickerlink = db.Column(db.String(255))
     companyname = db.Column(db.String(255))
     averageoptionvol = db.Column(db.String(255))
     averagestockvol = db.Column(db.String(255))
@@ -125,6 +124,7 @@ class Screener(db.Model):
     exactearningsdate = db.Column(db.String())
     edate = db.Column(db.String())
     etime = db.Column(db.String())
+    expiry = db.Column(db.String())
     updated = db.Column(db.String())
 
 def sidebar():
@@ -278,8 +278,8 @@ def mainroute(routeticker):
         lists = sidebarlist)
 
 def computescreener():
-    s = Screener.query.with_entities(Screener.ticker, Screener.companyname, Screener.edate, Screener.etime, Screener.averageoptionvol, Screener.averagestockvol, Screener.marketcap, Screener.underlyingprice, Screener.strike, Screener.straddlemid, Screener.histavg, Screener.impliedmove, Screener.valued, Screener.iv, Screener.ivcrushto, Screener.exactearningsdate).filter(Screener.exactearningsdate > fourhrsago(), Screener.exactearningsdate < screenerend()).all()
-    df = pd.DataFrame(s, columns=['Ticker', 'Name', 'Edate', 'Etime', 'AvgOptVol', 'AvgStockVol', 'MCap', 'StockPrice', 'Strike', 'Straddle', 'HistAvg', 'ExpMove', 'Valued', 'IV', 'IVCrushTo', 'exactearningsdate'])
+    s = Screener.query.with_entities(Screener.ticker, Screener.companyname, Screener.edate, Screener.etime, Screener.averageoptionvol, Screener.averagestockvol, Screener.marketcap, Screener.underlyingprice, Screener.strike, Screener.straddlemid, Screener.histavg, Screener.impliedmove, Screener.valued, Screener.iv, Screener.ivcrushto, Screener.exactearningsdate, Screener.expiry).filter(Screener.exactearningsdate > fourhrsago(), Screener.exactearningsdate < screenerend()).all()
+    df = pd.DataFrame(s, columns=['Ticker', 'Name', 'Edate', 'Etime', 'AvgOptVol', 'AvgStockVol', 'MCap', 'StockPrice', 'Strike', 'Straddle', 'HistAvg', 'ExpMove', 'Valued', 'IV', 'IVCrushTo', 'exactearningsdate', 'Expiration'])
     if df.empty == False:
         df['Valued'] = df['ExpMove'] - df['HistAvg']
         df['Range'] = "$" + ((df['StockPrice'] - ((df['ExpMove'] / 100) * df['StockPrice'])).astype(int)).astype(str) + "/$" + ((df['StockPrice'] + ((df['ExpMove'] / 100) * df['StockPrice'])).astype(int)).astype(str)
@@ -289,6 +289,7 @@ def computescreener():
         df['Straddle'] = '$' + df['Straddle'].astype(str)
         df['ExpMove'] = df['ExpMove'].astype(str) + '%'
         df['HistAvg'] = df['HistAvg'].astype(str) + '%'
+        df['IVCrushTo'] = df['IVCrushTo'].astype(str) + '%'
         df['StockPrice'] = '$' + df['StockPrice'].astype(str)
         df['Strike'] = '$' + df['Strike'].astype(str)
         df['Ticker'] = '<a href="' + df['Ticker'].astype(str) + '" style="color:#FFFFFF;">' + df['Ticker'].astype(str) + '</a>'
@@ -342,7 +343,7 @@ def prepimport():
         beforedate, afterdate = genbefaf(targetdate)
         thedfprepped.at[index, 'beforedate'] = beforedate
         thedfprepped.at[index, 'afterdate'] = afterdate
-        print('getting before/after dates', i)
+        print('Step 1 of 4: getting before/after dates', i)
     i = len(thedfprepped.index) + 1
     for index, row in thedfprepped.iterrows():
         i -= 1
@@ -355,26 +356,26 @@ def prepimport():
         thedfprepped.at[index, 'straddlemid'] = straddlemid
         thedfprepped.at[index, 'impliedmove'] = impliedmove
         thedfprepped.at[index, 'underlyingprice'] = underlyingprice
-        print('getting option chain', i)
+        print('Step 2 of 4: getting option chain', i)
     i = len(thedfprepped.index) + 1
     for index, row in thedfprepped.iterrows():
         i -= 1
         cumabsavgperc, countreports = historical(row['Symbol'])
         thedfprepped.at[index, 'histavg'] = cumabsavgperc
         thedfprepped.at[index, 'cntreports'] = countreports
-        print('getting historical', i)
+        print('Step 3 of 4: getting historical', i)
     i = len(thedfprepped.index) + 1
     for index, row in thedfprepped.iterrows():
         i -= 1
         thedfprepped.at[index, 'ivcrushto'] = getiv(row['Symbol'])
-        print('getting iv crush', i)
+        print('Step 4 of 4: getting iv crush', i)
 
     #df for importing into exactearningsdates
     foredatesdf = thedfprepped.rename(columns={'Symbol': 'ticker', 'Avg Option Volume': 'averageoptionvol', 'Earnings Date': 'exactearningsdate', 'Name': 'companyname', 'Avg. Stock Volume': 'averagestockvol', 'MarketCap': 'marketcap', 'histavg': 'actualmoveperc', 'iv': 'staticiv', 'expiry': 'staticexpiry'}, errors='raise')
     foredatesdf = foredatesdf[['ticker', 'companyname', 'exactearningsdate', 'beforedate', 'afterdate','averageoptionvol', 'averagestockvol', 'marketcap', 'impliedmove', 'staticexpiry']]
 
     #df for importing into screener
-    forscreenerdf = thedfprepped[['edate2','bmoamc2','Symbol', 'Name', 'Avg Option Volume', 'Avg. Stock Volume', 'MarketCap', 'iv', 'straddlemid', 'impliedmove', 'histavg', 'underlyingprice', 'strike', 'valued', 'Earnings Date', 'ivcrushto']]
+    forscreenerdf = thedfprepped[['edate2','bmoamc2','Symbol', 'Name', 'Avg Option Volume', 'Avg. Stock Volume', 'MarketCap', 'iv', 'straddlemid', 'impliedmove', 'histavg', 'underlyingprice', 'strike', 'valued', 'Earnings Date', 'ivcrushto', 'expiry']]
     forscreenerdf = forscreenerdf.rename(columns={'Symbol': 'ticker', 'edate2': 'edate', 'bmoamc2': 'bmoamc', 'Name': 'companyname', 'Avg Option Volume': 'averageoptionvol', 'Avg. Stock Volume': 'averagestockvol', 'MarketCap': 'marketcap', 'Earnings Date': 'exactearningsdate', 'bmoamc2': 'etime'}, errors='raise')
     forscreenerdf['valued'] = forscreenerdf['impliedmove'] - forscreenerdf['histavg']
     forscreenerdf['marketcap'] = forscreenerdf['marketcap'].div(1000000000)
