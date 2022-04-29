@@ -10,5 +10,7 @@
 <script type="text/javascript">$(document).ready(function(){$('table').DataTable({
     "pageLength": 100,
     "order": [[ 2, 'asc' ], [ 3, 'desc' ]],
+    fixedHeader: true,
+    buttons: [ 'colvis' ],
 });});</script>
 {% endblock %}
