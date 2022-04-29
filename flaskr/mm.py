@@ -11,7 +11,7 @@ from markupsafe import Markup
 import re
 from dotenv import load_dotenv
 import os
-from .myfunx import genbefaf, histurl, getcurrent, getiv, now, yesterday, fourhrsago, screenerend
+from .myfunx import calcabsavg, genbefaf, histurl, getcurrent, getiv, now, yesterday, fourhrsago, screenerend
 import requests
 
 from pymysql import NULL
@@ -219,19 +219,10 @@ def historical(routeticker):
         countreports = 0
         return cumabsavgperc, countreports
     else:
-        df = df.sort_values(['EarningsDate'], ascending=[False])
-        #line below can be used to limit history
-        df = df.head(48)
-        df = df.sort_values(['EarningsDate'], ascending=[True])
-        df.reset_index(drop=True, inplace=True)
-        df['CumulativeActMovePerc'] = df.groupby('Ticker')['ActualMovePerc'].expanding().mean().values
-        # df['StdDev'] = df.groupby('Ticker')['ActualMovePerc'].expanding().std().values
-        df['CumulativeActMovePerc'] = df['CumulativeActMovePerc'].astype(float).abs()
-        df = df.sort_values(['EarningsDate'], ascending=[False])
-        df.reset_index(drop=True, inplace=True)
-        cumabsavgperc = df.at[0, 'CumulativeActMovePerc']
-        countreports = len(df.index)
-        return cumabsavgperc, countreports
+        cumabsavgperc, countreports = calcabsavg(df, 48)
+        cap12, cr12 = calcabsavg(df, 12)
+        cap4, cr4 = calcabsavg(df, 4)
+        return cumabsavgperc, countreports, cap12, cr12, cap4, cr4
 
 @app.route('/<string:routeticker>', methods=['POST', 'GET'])
 def mainroute(routeticker):
@@ -242,7 +233,7 @@ def mainroute(routeticker):
         impmove = ctable.at[0, 'Implied Move']
     except:
         impmove = ''
-    cumabsavgperc, countreports = historical(routeticker)
+    cumabsavgperc, countreports, cap12, cr12, cap4, cr4 = historical(routeticker)
     if impmove != '':
         underover =  float(cumabsavgperc) - float(impmove)
     else:
@@ -271,6 +262,10 @@ def mainroute(routeticker):
         absactualmoveperc = round(cumabsavgperc,2),
         countreports = countreports,
         underover = round(underover,2),
+        cap12 = round(cap12,2),
+        cr12 = cr12,
+        cap4 = round(cap4,2),
+        cr4 = cr4,
         impmove = impmove,
         # historicalresult = historicalresult.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True),
         ctable = ctable.to_html(classes='table table-light', escape=False, index=True, header=True, render_links=True),
@@ -367,7 +362,7 @@ def prepimport():
     i = len(thedfprepped.index) + 1
     for index, row in thedfprepped.iterrows():
         i -= 1
-        thedfprepped.at[index, 'ivcrushto'] = getiv(row['Symbol'])
+        thedfprepped.at[index, 'ivcrushto'] = getiv(row['Symbol'], row['beforedate'])
         print('Step 4 of 4: getting iv crush', i)
 
     #df for importing into exactearningsdates

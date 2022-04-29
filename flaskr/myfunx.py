@@ -139,7 +139,8 @@ def getcurrent(ticker, beforedate):
 
     #calculate implied move
     try:
-        impliedmove = (straddlemid*.85*100)
+        impliedmove = (straddlemid*.85)
+        impliedmove = (impliedmove / underlyingprice)*100
         impliedmove = round(impliedmove, 2)
     except:
         impliedmove = 0
@@ -155,7 +156,7 @@ def getcurrent(ticker, beforedate):
 
     return currentchain
 
-def getiv(theticker):
+def getiv(theticker, beforedate):
 #this gets the date 90 days from today. I reference later with futuredate.year, futuredate.month, futuredate.day
     futuredate = datetime.date.today() + datetime.timedelta(days=150)
     # try:
@@ -167,7 +168,7 @@ def getiv(theticker):
     interval=None,
     strike=None,
     strike_range=None,
-    from_date=datetime.date(year=datetime.date.today().year, month=datetime.date.today().month, day=datetime.date.today().day),
+    from_date=datetime.date(year=beforedate.year, month=beforedate.month, day=beforedate.day),
     to_date=datetime.date(year=futuredate.year, month=futuredate.month, day=futuredate.day),
     volatility=None,
     underlying_price=None,
@@ -239,3 +240,18 @@ def screenerend():
     else:
         screenerend = now() + datetime.timedelta(days=8)
     return screenerend
+
+def calcabsavg(df, cnt):
+    df = df.sort_values(['EarningsDate'], ascending=[False])
+    #line below can be used to limit history
+    df = df.head(cnt)
+    df = df.sort_values(['EarningsDate'], ascending=[True])
+    df.reset_index(drop=True, inplace=True)
+    df['CumulativeActMovePerc'] = df.groupby('Ticker')['ActualMovePerc'].expanding().mean().values
+    # df['StdDev'] = df.groupby('Ticker')['ActualMovePerc'].expanding().std().values
+    df['CumulativeActMovePerc'] = df['CumulativeActMovePerc'].astype(float).abs()
+    df = df.sort_values(['EarningsDate'], ascending=[False])
+    df.reset_index(drop=True, inplace=True)
+    cumabsavgperc = df.at[0, 'CumulativeActMovePerc']
+    countreports = len(df.index)
+    return cumabsavgperc, countreports
