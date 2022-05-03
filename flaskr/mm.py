@@ -13,6 +13,7 @@ from dotenv import load_dotenv
 import os
 from .myfunx import calcabsavg, genbefaf, histurl, getcurrent, getiv, now, yesterday, fourhrsago, screenerend
 import requests
+from .bs import straddlebe
 
 from pymysql import NULL
 load_dotenv
@@ -125,6 +126,8 @@ class Screener(db.Model):
     edate = db.Column(db.String())
     etime = db.Column(db.String())
     expiry = db.Column(db.String())
+    nextexpiry = db.Column(db.String())
+    mw = db.Column(db.String())
     updated = db.Column(db.String())
 
 def sidebar():
@@ -273,8 +276,8 @@ def mainroute(routeticker):
         lists = sidebarlist)
 
 def computescreener():
-    s = Screener.query.with_entities(Screener.ticker, Screener.companyname, Screener.edate, Screener.etime, Screener.averageoptionvol, Screener.averagestockvol, Screener.marketcap, Screener.underlyingprice, Screener.strike, Screener.straddlemid, Screener.histavg, Screener.impliedmove, Screener.valued, Screener.iv, Screener.ivcrushto, Screener.exactearningsdate, Screener.expiry).filter(Screener.exactearningsdate > fourhrsago(), Screener.exactearningsdate < screenerend()).all()
-    df = pd.DataFrame(s, columns=['Ticker', 'Name', 'Edate', 'Etime', 'AvgOptVol', 'AvgStockVol', 'MCap', 'StockPrice', 'Strike', 'Straddle', 'HistAvg', 'ExpMove', 'Valued', 'IV', 'IVCrushTo', 'exactearningsdate', 'Expiration'])
+    s = Screener.query.with_entities(Screener.ticker, Screener.companyname, Screener.edate, Screener.etime, Screener.averageoptionvol, Screener.averagestockvol, Screener.marketcap, Screener.underlyingprice, Screener.strike, Screener.straddlemid, Screener.histavg, Screener.impliedmove, Screener.valued, Screener.iv, Screener.ivcrushto, Screener.exactearningsdate, Screener.expiry, Screener.mw).filter(Screener.exactearningsdate > fourhrsago(), Screener.exactearningsdate < screenerend()).all()
+    df = pd.DataFrame(s, columns=['Ticker', 'Name', 'Edate', 'Etime', 'AvgOptVol', 'AvgStockVol', 'MCap', 'StockPrice', 'Strike', 'Straddle', 'HistAvg', 'ExpMove', 'Valued', 'IV', 'IVCrushTo', 'exactearningsdate', 'Expiration', 'MW'])
     if df.empty == False:
         df['Valued'] = df['ExpMove'] - df['HistAvg']
         df['Range'] = "$" + ((df['StockPrice'] - ((df['ExpMove'] / 100) * df['StockPrice'])).astype(int)).astype(str) + "/$" + ((df['StockPrice'] + ((df['ExpMove'] / 100) * df['StockPrice'])).astype(int)).astype(str)

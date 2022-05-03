@@ -255,3 +255,9 @@ def calcabsavg(df, cnt):
     cumabsavgperc = df.at[0, 'CumulativeActMovePerc']
     countreports = len(df.index)
     return cumabsavgperc, countreports
+
+def dayste(begin, expiration):
+    delta = expiration - begin
+    delta_hours = (delta.days * 24) + (delta.seconds / 3600)
+    delta = delta_hours / 24
+    return delta
