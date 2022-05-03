@@ -225,9 +225,9 @@ def historical(routeticker):
         return cumabsavgperc, countreports, stddevi
     else:
         cumabsavgperc, countreports, stddevi = calcabsavg(df, 48)
-        cap12, cr12 = calcabsavg(df, 12)
-        cap4, cr4 = calcabsavg(df, 4)
-        return cumabsavgperc, countreports, cap12, cr12, cap4, cr4, stddevi
+        cap12, cr12, stddevi12 = calcabsavg(df, 12)
+        cap4, cr4, stddevi4 = calcabsavg(df, 4)
+        return cumabsavgperc, countreports, cap12, cr12, cap4, cr4, stddevi, stddevi12, stddevi4
 
 @app.route('/<string:routeticker>', methods=['POST', 'GET'])
 def mainroute(routeticker):
@@ -238,7 +238,7 @@ def mainroute(routeticker):
         impmove = ctable.at[0, 'Implied Move']
     except:
         impmove = ''
-    cumabsavgperc, countreports, cap12, cr12, cap4, cr4, stddevi = historical(routeticker)
+    cumabsavgperc, countreports, cap12, cr12, cap4, cr4, stddevi, stddevi12, stddevi4 = historical(routeticker)
     if impmove != '':
         underover =  float(cumabsavgperc) - float(impmove)
     else:
