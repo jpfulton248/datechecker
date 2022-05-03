@@ -13,12 +13,15 @@ $(document).ready(function(){$('table').DataTable({
     "pageLength": 100,
     "order": [[ 2, 'asc' ], [ 3, 'desc' ]],
     fixedHeader: true,
-
-    buttons: [ 'colvis' ],
+    stateSave: true,
+    dom: 'Bfrtip',
+        buttons: [
+            'columnsToggle'
+        ],
     rowReorder: {
     selector: 'td:nth-child(2)'
         },
-        responsive: true
+    responsive: true
 
     });
 });
