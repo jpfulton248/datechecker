@@ -20,8 +20,6 @@ except mysql.connector.FileNotFoundError:
         c = auth.client_from_login_flow(
             driver, tdapi_key, redirect_uri, token_path)
 
-
-
 # THESE ARE FUNCTIONS I'VE MADE THAT COULD BE REUSED
 
 #convert to HH-MM-SS string
@@ -248,13 +246,14 @@ def calcabsavg(df, cnt):
     df = df.sort_values(['EarningsDate'], ascending=[True])
     df.reset_index(drop=True, inplace=True)
     df['CumulativeActMovePerc'] = df.groupby('Ticker')['ActualMovePerc'].expanding().mean().values
-    # df['StdDev'] = df.groupby('Ticker')['ActualMovePerc'].expanding().std().values
+    df['StdDev'] = df.groupby('Ticker')['ActualMovePerc'].expanding().std().values
     df['CumulativeActMovePerc'] = df['CumulativeActMovePerc'].astype(float).abs()
     df = df.sort_values(['EarningsDate'], ascending=[False])
     df.reset_index(drop=True, inplace=True)
     cumabsavgperc = df.at[0, 'CumulativeActMovePerc']
+    stddevi = df.at[0, 'StdDev']
     countreports = len(df.index)
-    return cumabsavgperc, countreports
+    return cumabsavgperc, countreports, stddevi
 
 def dayste(begin, expiration):
     delta = expiration - begin

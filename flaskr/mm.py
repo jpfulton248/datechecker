@@ -128,6 +128,7 @@ class Screener(db.Model):
     expiry = db.Column(db.String())
     nextexpiry = db.Column(db.String())
     mw = db.Column(db.String())
+    stddevi = db.Column(db.Numeric(10,2))
     updated = db.Column(db.String())
 
 def sidebar():
@@ -220,12 +221,13 @@ def historical(routeticker):
         print('historical df empty on', routeticker)
         cumabsavgperc = 0
         countreports = 0
-        return cumabsavgperc, countreports
+        stddevi = 0
+        return cumabsavgperc, countreports, stddevi
     else:
-        cumabsavgperc, countreports = calcabsavg(df, 48)
+        cumabsavgperc, countreports, stddevi = calcabsavg(df, 48)
         cap12, cr12 = calcabsavg(df, 12)
         cap4, cr4 = calcabsavg(df, 4)
-        return cumabsavgperc, countreports, cap12, cr12, cap4, cr4
+        return cumabsavgperc, countreports, cap12, cr12, cap4, cr4, stddevi
 
 @app.route('/<string:routeticker>', methods=['POST', 'GET'])
 def mainroute(routeticker):
@@ -236,7 +238,7 @@ def mainroute(routeticker):
         impmove = ctable.at[0, 'Implied Move']
     except:
         impmove = ''
-    cumabsavgperc, countreports, cap12, cr12, cap4, cr4 = historical(routeticker)
+    cumabsavgperc, countreports, cap12, cr12, cap4, cr4, stddevi = historical(routeticker)
     if impmove != '':
         underover =  float(cumabsavgperc) - float(impmove)
     else:
@@ -276,8 +278,8 @@ def mainroute(routeticker):
         lists = sidebarlist)
 
 def computescreener():
-    s = Screener.query.with_entities(Screener.ticker, Screener.companyname, Screener.edate, Screener.etime, Screener.averageoptionvol, Screener.averagestockvol, Screener.marketcap, Screener.underlyingprice, Screener.strike, Screener.straddlemid, Screener.histavg, Screener.impliedmove, Screener.valued, Screener.iv, Screener.ivcrushto, Screener.exactearningsdate, Screener.expiry, Screener.mw).filter(Screener.exactearningsdate > fourhrsago(), Screener.exactearningsdate < screenerend()).all()
-    df = pd.DataFrame(s, columns=['Ticker', 'Name', 'Edate', 'Etime', 'AvgOptVol', 'AvgStockVol', 'MCap', 'StockPrice', 'Strike', 'Straddle', 'HistAvg', 'ExpMove', 'Valued', 'IV', 'IVCrushTo', 'exactearningsdate', 'Expiration', 'MW'])
+    s = Screener.query.with_entities(Screener.ticker, Screener.companyname, Screener.edate, Screener.etime, Screener.averageoptionvol, Screener.averagestockvol, Screener.marketcap, Screener.underlyingprice, Screener.strike, Screener.straddlemid, Screener.histavg, Screener.impliedmove, Screener.valued, Screener.iv, Screener.ivcrushto, Screener.exactearningsdate, Screener.expiry, Screener.mw, Screener.stddevi).filter(Screener.exactearningsdate > fourhrsago(), Screener.exactearningsdate < screenerend()).all()
+    df = pd.DataFrame(s, columns=['Ticker', 'Name', 'Edate', 'Etime', 'AvgOptVol', 'AvgStockVol', 'MCap', 'StockPrice', 'Strike', 'Straddle', 'HistAvg', 'ExpMove', 'Valued', 'IV', 'IVCrushTo', 'exactearningsdate', 'Expiration', 'MW', 'StdDev'])
     if df.empty == False:
         df['Valued'] = df['ExpMove'] - df['HistAvg']
         df['Range'] = "$" + ((df['StockPrice'] - ((df['ExpMove'] / 100) * df['StockPrice'])).astype(int)).astype(str) + "/$" + ((df['StockPrice'] + ((df['ExpMove'] / 100) * df['StockPrice'])).astype(int)).astype(str)
@@ -288,6 +290,7 @@ def computescreener():
         df['ExpMove'] = df['ExpMove'].astype(str) + '%'
         df['HistAvg'] = df['HistAvg'].astype(str) + '%'
         df['IVCrushTo'] = df['IVCrushTo'].astype(str) + '%'
+        df['StdDev'] = df['StdDev'].astype(str) + '%'
         df['StockPrice'] = '$' + df['StockPrice'].astype(str)
         df['Strike'] = '$' + df['Strike'].astype(str)
         df['Ticker'] = '<a href="' + df['Ticker'].astype(str) + '" style="color:#FFFFFF;">' + df['Ticker'].astype(str) + '</a>'
@@ -358,7 +361,7 @@ def prepimport():
     i = len(thedfprepped.index) + 1
     for index, row in thedfprepped.iterrows():
         i -= 1
-        cumabsavgperc, countreports = historical(row['Symbol'])
+        cumabsavgperc, countreports, cap12, cr12, cap4, cr4, stddevi = historical(row['Symbol'])
         thedfprepped.at[index, 'histavg'] = cumabsavgperc
         thedfprepped.at[index, 'cntreports'] = countreports
         print('Step 3 of 4: getting historical', i)
