@@ -344,7 +344,7 @@ def screener():
     exportdf['Ticker'].replace('<a href="[A-Z]*" style="color:#FFFFFF;">','',regex=True,inplace=True)
     exportdf['Ticker'].replace('<\/a>','',regex=True,inplace=True)
     exportdf.to_csv('flaskr/static/screener.csv', index=False)
-    return render_template('screener.html', screener=computedscreenerdf.to_html(classes='table table-dark sortable table-striped', table_id='sortit', escape=False, index=False, header=True, render_links=True, justify='left'))
+    return render_template('screener.html', screener=computedscreenerdf.to_html(classes='display table table-dark sortable table-striped', table_id='sortit', escape=False, index=False, col_space=0, header=True, render_links=True, justify='center'))
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
