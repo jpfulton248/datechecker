@@ -211,28 +211,28 @@ def yesterday():
     yesterday = now() - datetime.timedelta(days=1)
     return yesterday
 
-def fourhrsago():
-    fourhrsago = now() - datetime.timedelta(hours=4)
-    return fourhrsago
+def sxtnhrsago():
+    sxtnhrsago = now() - datetime.timedelta(hours=16)
+    return sxtnhrsago
 
 def screenerend():
-    #Monday is 0
+    #If today is monday show screener up to Saturday
     if datetime.datetime.today().weekday() == 0:
         screenerend = now() + datetime.timedelta(days=5)
     
-    #Tuesday
+    #If today is Tuesday show screener up to Saturday
     if datetime.datetime.today().weekday() == 1:
         screenerend = now() + datetime.timedelta(days=4)
     
-    #Wednesday
+    #If today is Wednesdsay show screener up to Saturday
     if datetime.datetime.today().weekday() == 2:
         screenerend = now() + datetime.timedelta(days=3)
     
-    #Thursday
+    #If today is Thursday show screener up to Saturday
     if datetime.datetime.today().weekday() == 3:
         screenerend = now() + datetime.timedelta(days=2)
     
-    #If Friday. Saturday, Sunday
+    #If today is Friday, Saturday or Sunday show screener for 8 more days
     if datetime.datetime.today().weekday() > 3:
         screenerend = now() + datetime.timedelta(days=8)
     else:

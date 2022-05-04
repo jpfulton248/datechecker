@@ -89,8 +89,11 @@
                     {% endif %} Relative to {{ countreports }} Qtr Avg
                 </span>
             </div>
-                <span class="col-md-3" style="color: white">{{ website|safe }}</span>
+                <span class="col-md-3" style="color: white"><a style="color: white" href="{{ website|safe }}">{{ website }}</a></span>
             </br>
+            <div>
+                <span class="col-md-3" style="color: white"><a style="color: white" href="{{ oslink|safe }}">{{ oslink }}</a></span>
+            </div>
             {% block table %}
             <div class="table table1">
                 <span class="col-lg-auto" style="color: white">{{ ctable|safe }}</span>
