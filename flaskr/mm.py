@@ -287,9 +287,7 @@ def mainroute(routeticker):
 def computemain(routeticker):
     s = Screener.query.with_entities(Screener.underlyingprice, Screener.strike, Screener.straddlemid, Screener.impliedmove, Screener.iv, Screener.ivcrushto, Screener.expiry, Screener.mw, Screener.stddevi, Screener.exactearningsdate).filter(Screener.ticker==routeticker).all()
     cmdf = pd.DataFrame(s)
-    if 1 == 1:
-
-    # if cmdf.empty == true:
+    if cmdf.empty == false:
         underlyingprice = cmdf.at[0, 'underlyingprice']
         strike = cmdf.at[0, 'strike']
         straddlemid = cmdf.at[0, 'straddlemid']
