@@ -353,9 +353,9 @@ def upload():
         file = request.files['file']        
         thedf = pd.read_csv(file)
         foredatesdf, forscreenerdf = prepimport()
-        these = Screener.query.all()
-        db.session.query(Screener).delete()
-        db.session.commit()
+        # these = Screener.query.all()
+        # db.session.query(Screener).delete()
+        # db.session.commit()
         forscreenerdf.to_sql('screener', con=db.engine, if_exists='append', index=False)    
         foredatesdf.to_sql('earningsdates', con=db.engine, if_exists='append', index=False) 
         return render_template('upload.html')
@@ -420,3 +420,9 @@ def prepimport():
     forscreenerdf['marketcap'] = forscreenerdf['marketcap'].div(1000000000)
     forscreenerdf = forscreenerdf.sort_values(['exactearningsdate'], ascending=[True])
     return foredatesdf, forscreenerdf
+
+@app.route('/migratescreener', methods=['POST', 'GET'])
+def migrate():
+    s = Screener.query.with_entities(Screener.ticker, earningsdates.exactearningsdate, Screener.companyname, Screener.edate, Screener.etime, Screener.averageoptionvol, Screener.averagestockvol, Screener.marketcap, Screener.underlyingprice, Screener.strike, Screener.straddlemid, Screener.histavg, Screener.impliedmove, Screener.valued, Screener.iv, Screener.ivcrushto, Screener.exactearningsdate, Screener.expiry, Screener.mw, Screener.stddevi).filter(Screener.exactearningsdate > sxtnhrsago(), Screener.exactearningsdate < screenerend()).all()
+    df = pd.DataFrame(s)
+    print(df)
