@@ -1,5 +1,6 @@
 from site import setcopyright
 from ssl import ALERT_DESCRIPTION_ACCESS_DENIED
+from token import EXACT_TOKEN_TYPES
 from flask import Flask, current_app, render_template, url_for, redirect, request
 from flask_sqlalchemy import SQLAlchemy
 from matplotlib import image
@@ -11,7 +12,9 @@ from markupsafe import Markup
 import re
 from dotenv import load_dotenv
 import os
-from .myfunx import calcabsavg, genbefaf, histurl, getcurrent, getiv, now, yesterday, fourhrsago, screenerend
+
+from sqlalchemy import false, true
+from .myfunx import calcabsavg, genbefaf, histurl, getcurrent, getiv, now, yesterday, sxtnhrsago, screenerend
 import requests
 from .bs import straddlebe
 
@@ -155,35 +158,6 @@ def sidebar():
         noearnings = str('no earnings yet')
         return noearnings
 
-def maincontent(routeticker):
-    try:
-        mresult = Main.query.filter(Main.ticker==routeticker).first()
-        company_name = mresult.company_name
-        avg_optvol = mresult.avg_optvol
-        market_cap = round((mresult.market_cap/1000000000), 2)
-        avg_stockvol = mresult.avg_stockvol
-    #   theticker = mresult.ticker
-        sector = mresult.sector
-        industry = mresult.industry
-        address = mresult.address
-        city = mresult.city
-        state = mresult.state
-        zipcode = mresult.zipcode
-        description = mresult.description
-        logo = mresult.logo
-        website = mresult.website
-        website = '<a href="' + str(website) + '">' + str(website) + '</a>'
-    except:
-        pass
-    edate = earningsdates.query.filter(earningsdates.ticker==routeticker).order_by(earningsdates.exactearningsdate.desc()).first()
-    exactearningsdate = edate.exactearningsdate
-    edatestr = datetime.datetime.strftime(exactearningsdate,'%-m/%-d/%Y %-H')
-    edatestr, bmoamc = edatestr.split()
-    bmoamc = bmoamc.replace('8', 'Before Market Open')
-    bmoamc = bmoamc.replace('16', 'After Market Close')
-    maincontentvars = [company_name, avg_optvol, market_cap, avg_stockvol, sector, industry, address, city, state, zipcode, description, logo, website, edatestr, bmoamc]
-    return maincontentvars
-
 def changestable(routeticker):
     try:
         cresult = changes.query \
@@ -228,12 +202,44 @@ def historical(routeticker):
         cap12, cr12, stddevi12 = calcabsavg(df, 12)
         cap4, cr4, stddevi4 = calcabsavg(df, 4)
         return cumabsavgperc, countreports, cap12, cr12, cap4, cr4, stddevi, stddevi12, stddevi4
+def maincontent(routeticker):
+    try:
+        mresult = Main.query.filter(Main.ticker==routeticker).first()
+        company_name = mresult.company_name
+        avg_optvol = mresult.avg_optvol
+        market_cap = round((mresult.market_cap/1000000000), 2)
+        avg_stockvol = mresult.avg_stockvol
+    #   theticker = mresult.ticker
+        sector = mresult.sector
+        industry = mresult.industry
+        address = mresult.address
+        city = mresult.city
+        state = mresult.state
+        zipcode = mresult.zipcode
+        description = mresult.description
+        logo = mresult.logo
+        website = mresult.website
+        website = website
+    except:
+        pass
+    edate = earningsdates.query.with_entities(earningsdates.exactearningsdate) \
+            .filter(earningsdates.ticker==routeticker).order_by(earningsdates.exactearningsdate.desc()).first()
+    exactearningsdate = edate.exactearningsdate
+    edatestr = datetime.datetime.strftime(exactearningsdate,'%-m/%-d/%Y %-H')
+    edatestr, bmoamc = edatestr.split()
+    bmoamc = bmoamc.replace('8', 'Before Market Open')
+    bmoamc = bmoamc.replace('16', 'After Market Close')
+    maincontentvars = [company_name, avg_optvol, market_cap, avg_stockvol, sector, industry, address, city, state, zipcode, description, logo, website, edatestr, bmoamc]
+    return maincontentvars
 
 @app.route('/<string:routeticker>', methods=['POST', 'GET'])
 def mainroute(routeticker):
+    routeticker = str.capitalize(routeticker)
     sidebarlist = sidebar()
-    company_name, avg_optvol, market_cap, avg_stockvol, sector, industry, address, city, state, zipcode, description, logo, website, edatestr, bmoamc = maincontent(routeticker)
+    company_name, avg_optvol, market_cap, avg_stockvol, sector, industry, address, city, state, zipcode, description, logo, website, edatestr, bmoamc = maincontent(routeticker) 
     ctable = changestable(routeticker)
+    underlyingprice, strike, straddlemid, impliedmove, iv, ivcrushto, expiry, mw, stddevi, oslink = computemain(routeticker)
+    print(oslink)
     try:
         impmove = ctable.at[0, 'Implied Move']
     except:
@@ -248,7 +254,7 @@ def mainroute(routeticker):
     # stable = statictable(routeticker)
     
     return render_template('index.html', 
-        routeticker = routeticker,
+        routeticker = str.upper(routeticker),
         companyname = company_name,
         avg_optvol = f'{int(avg_optvol):,}',
         market_cap = market_cap,
@@ -272,13 +278,47 @@ def mainroute(routeticker):
         cap4 = round(cap4,2),
         cr4 = cr4,
         impmove = impmove,
+        oslink = oslink,
         # historicalresult = historicalresult.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True),
         ctable = ctable.to_html(classes='table table-light', escape=False, index=True, header=True, render_links=True),
         # stable = stable.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True),
         lists = sidebarlist)
 
+def computemain(routeticker):
+    s = Screener.query.with_entities(Screener.underlyingprice, Screener.strike, Screener.straddlemid, Screener.impliedmove, Screener.iv, Screener.ivcrushto, Screener.expiry, Screener.mw, Screener.stddevi, Screener.exactearningsdate).filter(Screener.ticker==routeticker).all()
+    cmdf = pd.DataFrame(s)
+    if 1 == 1:
+
+    # if cmdf.empty == true:
+        underlyingprice = cmdf.at[0, 'underlyingprice']
+        strike = cmdf.at[0, 'strike']
+        straddlemid = cmdf.at[0, 'straddlemid']
+        impliedmove = cmdf.at[0, 'impliedmove']
+        iv = cmdf.at[0, 'iv']
+        ivcrushto = cmdf.at[0, 'ivcrushto']
+        expiry = cmdf.at[0, 'expiry']
+        mw = cmdf.at[0, 'mw']
+        stddevi = cmdf.at[0, 'stddevi']
+        expiry = cmdf.at[0, 'expiry']
+        expiry = datetime.datetime.strftime(expiry, '%y%m%d')
+        strike = str(strike).replace('.00', '')
+        oslink = 'https://optionstrat.com/build/straddle/' + str.upper(routeticker) + '/' + expiry + 'P' + str(strike) + ',' + expiry + 'C' + str(strike)
+    else:
+        underlyingprice = ''
+        strike = ''
+        straddlemid = ''
+        impliedmove = ''
+        iv = ''
+        ivcrushto = ''
+        expiry = ''
+        mw = ''
+        stddevi = ''
+        exactearningsdate = ''
+        oslink = ''
+    return underlyingprice, strike, straddlemid, impliedmove, iv, ivcrushto, expiry, mw, stddevi, oslink
+
 def computescreener():
-    s = Screener.query.with_entities(Screener.ticker, Screener.companyname, Screener.edate, Screener.etime, Screener.averageoptionvol, Screener.averagestockvol, Screener.marketcap, Screener.underlyingprice, Screener.strike, Screener.straddlemid, Screener.histavg, Screener.impliedmove, Screener.valued, Screener.iv, Screener.ivcrushto, Screener.exactearningsdate, Screener.expiry, Screener.mw, Screener.stddevi).filter(Screener.exactearningsdate > fourhrsago(), Screener.exactearningsdate < screenerend()).all()
+    s = Screener.query.with_entities(Screener.ticker, Screener.companyname, Screener.edate, Screener.etime, Screener.averageoptionvol, Screener.averagestockvol, Screener.marketcap, Screener.underlyingprice, Screener.strike, Screener.straddlemid, Screener.histavg, Screener.impliedmove, Screener.valued, Screener.iv, Screener.ivcrushto, Screener.exactearningsdate, Screener.expiry, Screener.mw, Screener.stddevi).filter(Screener.exactearningsdate > sxtnhrsago(), Screener.exactearningsdate < screenerend()).all()
     df = pd.DataFrame(s, columns=['Ticker', 'Name', 'Edate', 'Etime', 'AvgOptVol', 'AvgStockVol', 'MCap', 'StockPrice', 'Strike', 'Straddle', 'HistAvg', 'ExpMove', 'Valued', 'IV', 'IVCrushTo', 'exactearningsdate', 'Expiration', 'MW', 'StdDev'])
     if df.empty == False:
         df['Valued'] = df['ExpMove'] - df['HistAvg']
