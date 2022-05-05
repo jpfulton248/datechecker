@@ -1,7 +1,8 @@
+from random import randint
 from site import setcopyright
-from ssl import ALERT_DESCRIPTION_ACCESS_DENIED
+from ssl import ALERT_DESCRIPTION_ACCESS_DENIED, CHANNEL_BINDING_TYPES
 from token import EXACT_TOKEN_TYPES
-from flask import Flask, current_app, render_template, url_for, redirect, request
+from flask import Flask, current_app, render_template, url_for, redirect, request, Response
 from flask_sqlalchemy import SQLAlchemy
 from matplotlib import image
 from numpy import logical_or
@@ -12,11 +13,13 @@ from markupsafe import Markup
 import re
 from dotenv import load_dotenv
 import os
-
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+from matplotlib.figure import Figure
 from sqlalchemy import false, true
 from .myfunx import calcabsavg, genbefaf, histurl, getcurrent, getiv, now, yesterday, sxtnhrsago, screenerend
 import requests
 from .bs import straddlebe
+import io
 
 from pymysql import NULL
 load_dotenv
@@ -209,7 +212,6 @@ def maincontent(routeticker):
         avg_optvol = mresult.avg_optvol
         market_cap = round((mresult.market_cap/1000000000), 2)
         avg_stockvol = mresult.avg_stockvol
-    #   theticker = mresult.ticker
         sector = mresult.sector
         industry = mresult.industry
         address = mresult.address
@@ -237,9 +239,9 @@ def mainroute(routeticker):
     routeticker = str.capitalize(routeticker)
     sidebarlist = sidebar()
     company_name, avg_optvol, market_cap, avg_stockvol, sector, industry, address, city, state, zipcode, description, logo, website, edatestr, bmoamc = maincontent(routeticker) 
-    ctable = changestable(routeticker)
     underlyingprice, strike, straddlemid, impliedmove, iv, ivcrushto, expiry, mw, stddevi, oslink = computemain(routeticker)
     print(oslink)
+    ctable = changestable(routeticker)
     try:
         impmove = ctable.at[0, 'Implied Move']
     except:
@@ -249,8 +251,10 @@ def mainroute(routeticker):
         underover =  float(cumabsavgperc) - float(impmove)
     else:
         underover = 1
+    edatelst, mvlst = gen_histchart(routeticker)
     # historicalresult = historical(routeticker)
 
+    
     # stable = statictable(routeticker)
     
     return render_template('index.html', 
@@ -279,8 +283,10 @@ def mainroute(routeticker):
         cr4 = cr4,
         impmove = impmove,
         oslink = oslink,
+        edatelst = edatelst,
+        mvlst = mvlst,
         # historicalresult = historicalresult.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True),
-        ctable = ctable.to_html(classes='table table-light', escape=False, index=True, header=True, render_links=True),
+        # ctable = ctable.to_html(classes='table table-light', escape=False, index=True, header=True, render_links=True),
         # stable = stable.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True),
         lists = sidebarlist)
 
@@ -426,3 +432,12 @@ def migrate():
     s = Screener.query.with_entities(Screener.ticker, earningsdates.exactearningsdate, Screener.companyname, Screener.edate, Screener.etime, Screener.averageoptionvol, Screener.averagestockvol, Screener.marketcap, Screener.underlyingprice, Screener.strike, Screener.straddlemid, Screener.histavg, Screener.impliedmove, Screener.valued, Screener.iv, Screener.ivcrushto, Screener.exactearningsdate, Screener.expiry, Screener.mw, Screener.stddevi).filter(Screener.exactearningsdate > sxtnhrsago(), Screener.exactearningsdate < screenerend()).all()
     df = pd.DataFrame(s)
     print(df)
+
+def gen_histchart(routeticker):
+    q = earningsdates.query.with_entities(earningsdates.ticker, earningsdates.actualmoveperc, earningsdates.exactearningsdate).filter(earningsdates.ticker == routeticker).order_by(earningsdates.exactearningsdate.asc()).all()
+    df = pd.DataFrame(q, columns=['Ticker', 'Move', 'Earnings Date'])
+    df['Earnings Date'] = df['Earnings Date'].dt.strftime('%-m-%-d-%y')
+    df['Move'] = df['Move'].astype(float).round(2)
+    edatelst = df['Earnings Date'].values.tolist()
+    mvlst = df['Move'].values.tolist()
+    return edatelst, mvlst
