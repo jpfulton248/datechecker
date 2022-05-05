@@ -436,7 +436,7 @@ def migrate():
 def gen_histchart(routeticker):
     q = earningsdates.query.with_entities(earningsdates.ticker, earningsdates.actualmoveperc, earningsdates.exactearningsdate).filter(earningsdates.ticker == routeticker).order_by(earningsdates.exactearningsdate.asc()).all()
     df = pd.DataFrame(q, columns=['Ticker', 'Move', 'Earnings Date'])
-    df['Earnings Date'] = df['Earnings Date'].dt.strftime('%-m-%-d-%y')
+    df['Earnings Date'] = df['Earnings Date'].dt.strftime('%-m/%-d/%y')
     df['Move'] = df['Move'].astype(float).round(2)
     edatelst = df['Earnings Date'].values.tolist()
     mvlst = df['Move'].values.tolist()
