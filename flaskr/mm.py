@@ -306,6 +306,8 @@ def mainroute(routeticker):
         mvlst = mvlst,
         impmvlst = impmvlst,
         mw = mw,
+        iv = iv,
+        ivcrushto = ivcrushto,
         # historicalresult = historicalresult.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True),
         # ctable = ctable.to_html(classes='table table-light', escape=False, index=True, header=True, render_links=True),
         # stable = stable.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True),
@@ -335,6 +337,7 @@ def computemain(routeticker):
         histdown = (cmdf.at[0, 'underlyingprice'] - ((cmdf.at[0, 'HistAvg'] / 100) * cmdf.at[0, 'underlyingprice']))
         beup = cmdf.at[0, 'BreakevenUp']
         bedown = cmdf.at[0, 'BreakevenDown']
+        ivcrushto = cmdf.at[0, 'ivcrushto']
     else:
         underlyingprice = 0
         strike = ''
@@ -353,6 +356,7 @@ def computemain(routeticker):
         histdown = 0
         beup = 0
         bedown = 0
+        ivcrushto = 0
         #
     return underlyingprice, strike, straddlemid, impliedmove, iv, ivcrushto, expiry, mw, stddevi, oslink, impliedup, implieddown, histup, histdown, beup, bedown
 

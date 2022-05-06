@@ -96,8 +96,18 @@
                             </p>
                         </div>
                       </div>
-                </div>     
-              <div class="col-md-3">
+                </div>
+                <div class="col-md-4">
+                  <div class="card">
+                      <h5 class="card-header">Implied Volatility</h5>
+                      <div class="card-body">
+                        <h5 class="card-title">Current IV: {{ iv }}</h5>
+                        <p class="card-text">IV Crush to: {{ ivcrushto }}</p>
+                      </div>
+                    </div>
+              </div>
+          </div>   
+              <!-- <div class="col-md-3">
                   <div class="card text-center">
                       <h5 class="card-header"></h5>
                       <div class="card-body">
@@ -107,7 +117,7 @@
                       </div>
                     </div>
               </div>     
-          </div>
+          </div> -->
             {% block table %}
             <div class="table table1">
                 <span class="col-lg-auto" style="color: white">{{ ctable|safe }}</span>
