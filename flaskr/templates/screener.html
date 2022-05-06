@@ -38,15 +38,45 @@
     <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.11.5/sorting/datetime-moment.js"></script>
     <title>Screener</title>
 </head>
-<body>
-<div class="container">
-<div class="content">
+<body class="bg-light">
+<div class="container-fluid main-container">
+<div class="row justify-content-center">
+<div class="col-md-10 content">
 <div class="" style="color: white;"><a href="../static/screener.csv">Export</a></div>
+<!-- <div>
+<button type="button" id="filteropt" class="btn btn-primary">OptVol > 2,500</button>
+<button type="button" id="clearoptvol" class="btn btn-primary">Show All OptVol</button>  
+</div> -->
 <div class="dataTables_wrapper">
 {{ screener|safe }}
 </div>
+</div>
 <script type="text/javascript">
-
+    $.fn.dataTable.ext.search.push(
+    function( settings, data, dataIndex ) {
+        var min = parseInt( 2500 );
+        var max = parseInt( 1000000000000000 );
+        var age = parseFloat( data[4] ) || 0; // use data for the avgoptvol column
+        if ( ( isNaN( min ) && isNaN( max ) ) ||
+             ( isNaN( min ) && age <= max ) ||
+             ( min <= age   && isNaN( max ) ) ||
+             ( min <= age   && age <= max ) )
+        {
+            return true;
+        }
+        return false;
+    }
+    );
+    $.fn.dataTable.ext.search.push(
+    function( settings, data, dataIndex ) {
+        var optvol = parseFloat( data[4] ) || 0; // use data for the avgoptvol column
+        if ( ( 0 <= optvol && optvol <= 1000000000000000 ) )
+        {
+            return true;
+        }
+        return false;
+    }
+    );
 $(document).ready(function(){
     $.fn.dataTable.moment( 'D/M/YYYY' );
     $('table').DataTable({
@@ -91,8 +121,17 @@ $(document).ready(function(){
         selector: 'td:nth-child(2)'
             },
         responsive: true,
-        
         });
+    var table = $('#sortit').DataTable();
+    $('#filteropt').click( function() {
+        table.draw();
+    } );
+    $('#clearoptvol').click( function() {
+        table.draw();
+    } );
+    var table = $('#sortit').DataTable();
+    table.buttons().container()
+        .appendTo( '#dataTables_wrapper .col-md-6:eq(0)' );
 });
 
 

@@ -17,22 +17,22 @@
 <!-- <body class="bg-dark"> -->
 <body class="bg-dark">
 <div class="container-fluid main-container">
-<div class="row align-items-center">
-<div class="col-md-offset-1 col-md-10 content">
+<div class="row justify-content-center">
+<div class="col-md-10 content">
 <div class=""><a href="/">Weekly Screener</a></div>
        {% block main %}
             <div class="row my-4">
-                <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
+                <div class="col-md-4">
                     <div class="card">
                         <h5 class="card-header">{{ earningsdate }} {{ bmoamc }}</h5>
                         <div class="card-body">
                             <h5 class="card-title"> {{ routeticker }}<br/>
-                            {{ companyname }}<br/>
-                            <img src="{{ logo|safe }}"></img></h5>
+                            {{ companyname }}</h5>
+                            <p class="card-text">{{ mw }}</p>
                         </div>
                       </div>
                 </div>
-                <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
+                <div class="col-md-4">
                     <div class="card">
                         <h5 class="card-header">Implied Move</h5>
                         <div class="card-body">
@@ -43,7 +43,7 @@
                         </div>
                       </div>
                 </div>
-                <div class="col-12 col-md-6 mb-4 mb-lg-0 col-lg-3">
+                <div class="col-md-4">
                     <div class="card">
                         <h5 class="card-header">Historic Move Averages</h5>
                         <div class="card-body">
@@ -55,7 +55,7 @@
                 </div>
             </div>
             <div class="row my-4">
-                <div class="col-12 col-md-6 mb-4 mb-lg-0 col-lg-3">
+                <div class="col-md-4">
                     <div class="card">
                         <h5 class="card-header">Profile</h5>
                         <div class="card-body">
@@ -65,7 +65,7 @@
                         </div>
                       </div>
                 </div>
-                <div class="col-12 col-md-6 mb-4 mb-lg-0 col-lg-3">
+                <div class="col-md-4">
                     <div class="card">
                         <h5 class="card-header">Volumes</h5>
                         <div class="card-body">
@@ -75,11 +75,21 @@
                         </div>
                       </div>
                 </div>
+                <div class="col-md-4">
+                  <div class="card">
+                      <h5 class="card-header">Predicted Ranges</h5>
+                      <div class="card-body">
+                        <p class="card-text">ImpMove: ${{ implieddown }} / ${{ impliedup }}<br/>
+                             HistMove: ${{ histdown }} / ${{ histup }}<br/>
+                              Breakseven: ${{ bedown }} / ${{ beup }}</p>
+                      </div>
+                    </div>
               </div>
+              </div> <!-- This is the closing div for the second row of cards -->
               <div class="row my-4">
-                <div class="col-md-6">
+                <div class="col-md-8">
                     <div class="card">
-                        <h5 class="card-header">Historic Moves</h5>
+                        <h5 class="card-header">Historic Moves for {{ routeticker }}</h5>
                         <div class="card-body">
                             <p class="card-text">
                                 <canvas id="myChart"></canvas>
@@ -87,7 +97,17 @@
                         </div>
                       </div>
                 </div>     
-            </div>
+              <div class="col-md-3">
+                  <div class="card text-center">
+                      <h5 class="card-header"></h5>
+                      <div class="card-body">
+                          <p class="card-text">
+                            <img src="{{ logo|safe }}"></img>
+                          </p>
+                      </div>
+                    </div>
+              </div>     
+          </div>
             {% block table %}
             <div class="table table1">
                 <span class="col-lg-auto" style="color: white">{{ ctable|safe }}</span>
@@ -111,9 +131,13 @@
             backgroundColor: 'rgb(255, 99, 132)',
             borderColor: 'rgb(255, 99, 132)',
             data: {{ mvlst|tojson }},
-          }]
+          }, {
+            label: 'Current Implied Move %',
+            borderColor: 'rgb(54,162,235)',
+            data: [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+            type: 'line',
+        }]
         };
-      
         const config = {
           type: 'bar',
           data: data,

@@ -135,6 +135,8 @@ class Screener(db.Model):
     nextexpiry = db.Column(db.String())
     mw = db.Column(db.String())
     stddevi = db.Column(db.Numeric(10,2))
+    beup = db.Column(db.Numeric(10,2))
+    bedown = db.Column(db.Numeric(10,2))
     updated = db.Column(db.String())
 
 def sidebar():
@@ -245,7 +247,7 @@ def mainroute(routeticker):
     routeticker = str.capitalize(routeticker)
     sidebarlist = sidebar()
     company_name, avg_optvol, market_cap, avg_stockvol, sector, industry, address, city, state, zipcode, description, logo, website, edatestr, bmoamc = maincontent(routeticker) 
-    underlyingprice, strike, straddlemid, impliedmove, iv, ivcrushto, expiry, mw, stddevi, oslink = computemain(routeticker)
+    underlyingprice, strike, straddlemid, impliedmove, iv, ivcrushto, expiry, mw, stddevi, oslink, impliedup, implieddown, histup, histdown, beup, bedown = computemain(routeticker)
     print(oslink)
     ctable = changestable(routeticker)
     try:
@@ -259,7 +261,12 @@ def mainroute(routeticker):
         underover = 1
     edatelst, mvlst, impmvlst = gen_histchart(routeticker)
     # historicalresult = historical(routeticker)
-
+    if mw == 'monthly':
+        mw = 'Monthly Expirations'
+    elif mw == 'weekly':
+        mw = 'Weekly Expirations'
+    else:
+        mw = ''
     
     # stable = statictable(routeticker)
     
@@ -290,18 +297,26 @@ def mainroute(routeticker):
         impmove = impmove,
         oslink = oslink,
         edatelst = edatelst,
+        impliedup = round(impliedup, 2),
+        implieddown = round(implieddown, 2),
+        histup = round(histup, 2),
+        histdown = round(histdown, 2),
+        beup = round(beup, 2),
+        bedown = round(bedown, 2),
         mvlst = mvlst,
         impmvlst = impmvlst,
+        mw = mw,
         # historicalresult = historicalresult.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True),
         # ctable = ctable.to_html(classes='table table-light', escape=False, index=True, header=True, render_links=True),
         # stable = stable.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True),
         lists = sidebarlist)
 
 def computemain(routeticker):
-    s = Screener.query.with_entities(Screener.underlyingprice, Screener.strike, Screener.straddlemid, Screener.impliedmove, Screener.iv, Screener.ivcrushto, Screener.expiry, Screener.mw, Screener.stddevi, Screener.exactearningsdate).filter(Screener.ticker==routeticker).all()
-    cmdf = pd.DataFrame(s)
-    if cmdf.empty == false:
+    s = Screener.query.with_entities(Screener.underlyingprice, Screener.strike, Screener.straddlemid, Screener.impliedmove, Screener.iv, Screener.ivcrushto, Screener.expiry, Screener.mw, Screener.stddevi, Screener.exactearningsdate, Screener.histavg,Screener.beup, Screener.bedown).filter(Screener.ticker==routeticker).all()
+    cmdf = pd.DataFrame(s, columns=['underlyingprice', 'strike', 'straddlemid', 'impliedmove', 'iv', 'ivcrushto', 'expiry', 'mw', 'stddevi', 'exactearningsdate', 'HistAvg', 'BreakevenUp', 'BreakevenDown'])
+    if not cmdf.empty:
         underlyingprice = cmdf.at[0, 'underlyingprice']
+        print('=====================================', underlyingprice)
         strike = cmdf.at[0, 'strike']
         straddlemid = cmdf.at[0, 'straddlemid']
         impliedmove = cmdf.at[0, 'impliedmove']
@@ -314,25 +329,41 @@ def computemain(routeticker):
         expiry = datetime.datetime.strftime(expiry, '%y%m%d')
         strike = str(strike).replace('.00', '')
         oslink = 'https://optionstrat.com/build/straddle/' + str.upper(routeticker) + '/' + expiry + 'P' + str(strike) + ',' + expiry + 'C' + str(strike)
+        impliedup = (cmdf.at[0, 'underlyingprice'] + ((cmdf.at[0, 'impliedmove'] / 100) * cmdf.at[0, 'underlyingprice']))
+        implieddown = (cmdf.at[0, 'underlyingprice'] - ((cmdf.at[0, 'impliedmove'] / 100) * cmdf.at[0, 'underlyingprice']))
+        histup = (cmdf.at[0, 'underlyingprice'] + ((cmdf.at[0, 'HistAvg'] / 100) * cmdf.at[0, 'underlyingprice']))
+        histdown = (cmdf.at[0, 'underlyingprice'] - ((cmdf.at[0, 'HistAvg'] / 100) * cmdf.at[0, 'underlyingprice']))
+        beup = cmdf.at[0, 'BreakevenUp']
+        bedown = cmdf.at[0, 'BreakevenDown']
     else:
-        underlyingprice = ''
+        underlyingprice = 0
         strike = ''
-        straddlemid = ''
-        impliedmove = ''
-        iv = ''
-        ivcrushto = ''
+        straddlemid = 0
+        impliedmove = 0
+        iv = 0
+        ivcrushto = 0
         expiry = ''
         mw = ''
-        stddevi = ''
+        stddevi = 0
         exactearningsdate = ''
         oslink = ''
-    return underlyingprice, strike, straddlemid, impliedmove, iv, ivcrushto, expiry, mw, stddevi, oslink
+        impliedup = 0
+        implieddown = 0
+        histup = 0
+        histdown = 0
+        beup = 0
+        bedown = 0
+    return underlyingprice, strike, straddlemid, impliedmove, iv, ivcrushto, expiry, mw, stddevi, oslink, impliedup, implieddown, histup, histdown, beup, bedown
 
 def computescreener():
-    s = Screener.query.with_entities(Screener.ticker, Screener.companyname, Screener.edate, Screener.etime, Screener.averageoptionvol, Screener.averagestockvol, Screener.marketcap, Screener.underlyingprice, Screener.strike, Screener.straddlemid, Screener.histavg, Screener.impliedmove, Screener.valued, Screener.iv, Screener.ivcrushto, Screener.exactearningsdate, Screener.expiry, Screener.mw, Screener.stddevi).filter(Screener.exactearningsdate > sxtnhrsago(), Screener.exactearningsdate < screenerend()).all()
-    df = pd.DataFrame(s, columns=['Ticker', 'Name', 'Edate', 'Etime', 'AvgOptVol', 'AvgStockVol', 'MCap', 'StockPrice', 'Strike', 'Straddle', 'HistAvg', 'ExpMove', 'Valued', 'IV', 'IVCrushTo', 'exactearningsdate', 'Expiration', 'MW', 'StdDev'])
+    s = Screener.query.with_entities(Screener.ticker, Screener.companyname, Screener.edate, Screener.etime, Screener.averageoptionvol, Screener.averagestockvol, Screener.marketcap, Screener.underlyingprice, Screener.strike, Screener.straddlemid, Screener.histavg, Screener.impliedmove, Screener.valued, Screener.iv, Screener.ivcrushto, Screener.exactearningsdate, Screener.expiry, Screener.mw, Screener.stddevi, Screener.beup, Screener.bedown).filter(Screener.exactearningsdate > sxtnhrsago(), Screener.exactearningsdate < screenerend()).all()
+    df = pd.DataFrame(s, columns=['Ticker', 'Name', 'Edate', 'Etime', 'AvgOptVol', 'AvgStockVol', 'MCap', 'StockPrice', 'Strike', 'Straddle', 'HistAvg', 'ExpMove', 'Valued', 'IV', 'IVCrushTo', 'exactearningsdate', 'Expiration', 'MW', 'StdDev', 'BreakevenUp', 'BreakevenDown'])
     if df.empty == False:
         df['Valued'] = df['ExpMove'] - df['HistAvg']
+        df['ImpliedUp'] = (df['StockPrice'] + ((df['ExpMove'] / 100) * df['StockPrice']))
+        df['ImpliedDown'] = (df['StockPrice'] - ((df['ExpMove'] / 100) * df['StockPrice']))
+        df['HistUp'] = (df['StockPrice'] + ((df['HistAvg'] / 100) * df['StockPrice']))
+        df['HistDown'] = (df['StockPrice'] - ((df['HistAvg'] / 100) * df['StockPrice']))
         df['Range'] = "$" + ((df['StockPrice'] - ((df['ExpMove'] / 100) * df['StockPrice'])).astype(int)).astype(str) + "/$" + ((df['StockPrice'] + ((df['ExpMove'] / 100) * df['StockPrice'])).astype(int)).astype(str)
         df = df.sort_values(['exactearningsdate'], ascending=[True])
         df = df.drop(columns=['exactearningsdate'])
@@ -448,7 +479,10 @@ def gen_histchart(routeticker):
     df = pd.DataFrame(q, columns=['Ticker', 'Move', 'Earnings Date'])
     im = Screener.query.with_entities(Screener.impliedmove).filter(Screener.ticker == routeticker)
     imdf = pd.DataFrame(im, columns=['Implied Move'])
-    impliedmove = imdf.at[0, 'Implied Move']
+    if not imdf.empty:
+        impliedmove = imdf.at[0, 'Implied Move']
+    else:
+        impliedmove = 0
     df['Implied Move'] = impliedmove
     df['Earnings Date'] = df['Earnings Date'].dt.strftime('%-m/%-d/%y')
     df['Move'] = df['Move'].astype(float).round(2)
@@ -456,3 +490,4 @@ def gen_histchart(routeticker):
     edatelst = df['Earnings Date'].values.tolist()
     mvlst = df['Move'].values.tolist()
     return edatelst, mvlst, impliedmovelst
+
