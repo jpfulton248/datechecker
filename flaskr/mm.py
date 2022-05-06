@@ -257,7 +257,7 @@ def mainroute(routeticker):
         underover =  float(cumabsavgperc) - float(impmove)
     else:
         underover = 1
-    edatelst, mvlst = gen_histchart(routeticker)
+    edatelst, mvlst, impmvlst = gen_histchart(routeticker)
     # historicalresult = historical(routeticker)
 
     
@@ -291,6 +291,7 @@ def mainroute(routeticker):
         oslink = oslink,
         edatelst = edatelst,
         mvlst = mvlst,
+        impmvlst = impmvlst,
         # historicalresult = historicalresult.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True),
         # ctable = ctable.to_html(classes='table table-light', escape=False, index=True, header=True, render_links=True),
         # stable = stable.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True),
@@ -445,8 +446,13 @@ def migrate():
 def gen_histchart(routeticker):
     q = earningsdates.query.with_entities(earningsdates.ticker, earningsdates.actualmoveperc, earningsdates.exactearningsdate).filter(earningsdates.ticker == routeticker).order_by(earningsdates.exactearningsdate.asc()).all()
     df = pd.DataFrame(q, columns=['Ticker', 'Move', 'Earnings Date'])
+    im = Screener.query.with_entities(Screener.impliedmove).filter(Screener.ticker == routeticker)
+    imdf = pd.DataFrame(im, columns=['Implied Move'])
+    impliedmove = imdf.at[0, 'Implied Move']
+    df['Implied Move'] = impliedmove
     df['Earnings Date'] = df['Earnings Date'].dt.strftime('%-m/%-d/%y')
     df['Move'] = df['Move'].astype(float).round(2)
+    impliedmovelst = df['Implied Move'].values.tolist()
     edatelst = df['Earnings Date'].values.tolist()
     mvlst = df['Move'].values.tolist()
-    return edatelst, mvlst
+    return edatelst, mvlst, impliedmovelst
