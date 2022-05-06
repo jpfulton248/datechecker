@@ -353,6 +353,7 @@ def computemain(routeticker):
         histdown = 0
         beup = 0
         bedown = 0
+        #
     return underlyingprice, strike, straddlemid, impliedmove, iv, ivcrushto, expiry, mw, stddevi, oslink, impliedup, implieddown, histup, histdown, beup, bedown
 
 def computescreener():
