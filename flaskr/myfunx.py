@@ -156,6 +156,7 @@ def getcurrent(ticker, beforedate):
 
 def getiv(theticker, beforedate):
 #this gets the date 90 days from today. I reference later with futuredate.year, futuredate.month, futuredate.day
+    beforedate = datetime.datetime.strptime(beforedate, "%Y-%m-%d")
     futuredate = datetime.date.today() + datetime.timedelta(days=150)
     # try:
     r = c.get_option_chain(theticker,

@@ -198,8 +198,14 @@ def historical(routeticker):
         print('historical df empty on', routeticker)
         cumabsavgperc = 0
         countreports = 0
+        cap12 = 0
+        cr12 = 0
+        cap4 = 0
+        cr4 = 0
         stddevi = 0
-        return cumabsavgperc, countreports, stddevi
+        stddevi12 = 0
+        stddevi4 = 0
+        return cumabsavgperc, countreports, cap12, cr12, cap4, cr4, stddevi, stddevi12, stddevi4
     else:
         cumabsavgperc, countreports, stddevi = calcabsavg(df, 48)
         cap12, cr12, stddevi12 = calcabsavg(df, 12)
@@ -374,6 +380,7 @@ def prepimport():
     thedfprepped = thedfprepped.drop(columns=['Implied Move', 'Implied Move Relative to 4-Qtr Avg', 'Implied Move Relative to 12-Qtr Avg', 'Implied Move Relative to 12-Qtr Median', 'Abs. Avg Implied Move', 'Abs. Avg Actual Move', 'Abs. Max Actual Move', 'Abs. Min Actual Move', 'Abs. Avg Implied Move.1', 'Abs. Avg Actual Move.1', 'Abs. Median Actual Move', 'Abs. Max Actual Move.1', 'Abs. Min Actual Move.1', 'Current Price', 'InWatchlist', 'EtfHoldingsList', 'Sector', 'Industry', 'Diff_ImpliedVsLast4AvgImplied', 'Diff_ImpliedVsLast12AvgImplied'])
     thedfprepped[['beforedate', 'afterdate']] = '',''
     thedfprepped[['edate2', 'bmoamc2']] = thedfprepped[['Earnings Date', 'bmoamc']]
+    thedfprepped['edate2'] = pd.to_datetime(thedfprepped['edate2']).dt.strftime('%-m/%-d/%Y')
     thedfprepped['Earnings Date'] = pd.to_datetime(thedfprepped['Earnings Date'])
     thedfprepped['bmoamc'] = thedfprepped['bmoamc'].replace('BMO', '8:00:00')
     thedfprepped['bmoamc'] = thedfprepped['bmoamc'].replace('AMC', '16:00:00')
@@ -405,13 +412,14 @@ def prepimport():
     i = len(thedfprepped.index) + 1
     for index, row in thedfprepped.iterrows():
         i -= 1
-        cumabsavgperc, countreports, cap12, cr12, cap4, cr4, stddevi = historical(row['Symbol'])
+        cumabsavgperc, countreports, cap12, cr12, cap4, cr4, stddevi, stddevi12, stddevi4 = historical(row['Symbol'])
         thedfprepped.at[index, 'histavg'] = cumabsavgperc
         thedfprepped.at[index, 'cntreports'] = countreports
         print('Step 3 of 4: getting historical', i)
     i = len(thedfprepped.index) + 1
     for index, row in thedfprepped.iterrows():
         i -= 1
+        print('Getting IV crush for:', row['Symbol'], 'Before Date:', row['beforedate'])
         thedfprepped.at[index, 'ivcrushto'] = getiv(row['Symbol'], row['beforedate'])
         print('Step 4 of 4: getting iv crush', i)
 
@@ -429,9 +437,10 @@ def prepimport():
 
 @app.route('/migratescreener', methods=['POST', 'GET'])
 def migrate():
-    s = Screener.query.with_entities(Screener.ticker, earningsdates.exactearningsdate, Screener.companyname, Screener.edate, Screener.etime, Screener.averageoptionvol, Screener.averagestockvol, Screener.marketcap, Screener.underlyingprice, Screener.strike, Screener.straddlemid, Screener.histavg, Screener.impliedmove, Screener.valued, Screener.iv, Screener.ivcrushto, Screener.exactearningsdate, Screener.expiry, Screener.mw, Screener.stddevi).filter(Screener.exactearningsdate > sxtnhrsago(), Screener.exactearningsdate < screenerend()).all()
-    df = pd.DataFrame(s)
-    print(df)
+    # s = Screener.query.with_entities(Screener.ticker, earningsdates.exactearningsdate, Screener.companyname, Screener.edate, Screener.etime, Screener.averageoptionvol, Screener.averagestockvol, Screener.marketcap, Screener.underlyingprice, Screener.strike, Screener.straddlemid, Screener.histavg, Screener.impliedmove, Screener.valued, Screener.iv, Screener.ivcrushto, Screener.exactearningsdate, Screener.expiry, Screener.mw, Screener.stddevi).filter(Screener.exactearningsdate > sxtnhrsago(), Screener.exactearningsdate < screenerend()).all()
+    # df = pd.DataFrame(s)
+    # print(df)
+    print(getiv('TGNA', datetime.datetime.strptime('2022-05-19', '%Y-%m-%d')))
 
 def gen_histchart(routeticker):
     q = earningsdates.query.with_entities(earningsdates.ticker, earningsdates.actualmoveperc, earningsdates.exactearningsdate).filter(earningsdates.ticker == routeticker).order_by(earningsdates.exactearningsdate.asc()).all()
