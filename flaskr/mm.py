@@ -138,6 +138,7 @@ class Screener(db.Model):
     beup = db.Column(db.Numeric(10,2))
     bedown = db.Column(db.Numeric(10,2))
     updated = db.Column(db.String())
+    ew = db.Column(db.String())
 
 def sidebar():
     try:
@@ -361,8 +362,8 @@ def computemain(routeticker):
     return underlyingprice, strike, straddlemid, impliedmove, iv, ivcrushto, expiry, mw, stddevi, oslink, impliedup, implieddown, histup, histdown, beup, bedown
 
 def computescreener():
-    s = Screener.query.with_entities(Screener.ticker, Screener.companyname, Screener.edate, Screener.etime, Screener.averageoptionvol, Screener.averagestockvol, Screener.marketcap, Screener.underlyingprice, Screener.strike, Screener.straddlemid, Screener.histavg, Screener.impliedmove, Screener.valued, Screener.iv, Screener.ivcrushto, Screener.exactearningsdate, Screener.expiry, Screener.mw, Screener.stddevi, Screener.beup, Screener.bedown).filter(Screener.exactearningsdate > sxtnhrsago(), Screener.exactearningsdate < screenerend()).all()
-    df = pd.DataFrame(s, columns=['Ticker', 'Name', 'Edate', 'Etime', 'AvgOptVol', 'AvgStockVol', 'MCap', 'StockPrice', 'Strike', 'Straddle', 'HistAvg', 'ExpMove', 'Valued', 'IV', 'IVCrushTo', 'exactearningsdate', 'Expiration', 'MW', 'StdDev', 'BreakevenUp', 'BreakevenDown'])
+    s = Screener.query.with_entities(Screener.ticker, Screener.companyname, Screener.edate, Screener.etime, Screener.averageoptionvol, Screener.averagestockvol, Screener.marketcap, Screener.underlyingprice, Screener.strike, Screener.straddlemid, Screener.histavg, Screener.impliedmove, Screener.valued, Screener.iv, Screener.ivcrushto, Screener.exactearningsdate, Screener.expiry, Screener.mw, Screener.stddevi, Screener.beup, Screener.bedown, Screener.ew).filter(Screener.exactearningsdate > sxtnhrsago(), Screener.exactearningsdate < screenerend()).all()
+    df = pd.DataFrame(s, columns=['Ticker', 'Name', 'Edate', 'Etime', 'AvgOptVol', 'AvgStockVol', 'MCap', 'StockPrice', 'Strike', 'Straddle', 'HistAvg', 'ExpMove', 'Valued', 'IV', 'IVCrushTo', 'exactearningsdate', 'Expiration', 'MW', 'StdDev', 'BreakevenUp', 'BreakevenDown', 'ew'])
     if df.empty == False:
         df['Valued'] = df['ExpMove'] - df['HistAvg']
         df['ImpliedUp'] = (df['StockPrice'] + ((df['ExpMove'] / 100) * df['StockPrice']))
@@ -390,6 +391,7 @@ def computescreener():
 def screener():
     computedscreenerdf = computescreener()
     exportdf = computedscreenerdf.copy(deep=True)
+    exportdf.drop(columns=['ew'], inplace=True)
     exportdf['Ticker'].replace('<a href="[A-Z]*" style="color:#FFFFFF;">','',regex=True,inplace=True)
     exportdf['Ticker'].replace('<\/a>','',regex=True,inplace=True)
     exportdf.to_csv('flaskr/static/screener.csv', index=False)
@@ -496,3 +498,12 @@ def gen_histchart(routeticker):
     mvlst = df['Move'].values.tolist()
     return edatelst, mvlst, impliedmovelst
 
+@app.route('/ew')
+def ewscreener():
+    computedscreenerdf = computescreener()
+    computedscreenerdf = computedscreenerdf.drop(computedscreenerdf.index[computedscreenerdf['ew'] != 'ewatch'])
+    exportdf = computedscreenerdf.copy(deep=True)
+    exportdf['Ticker'].replace('<a href="[A-Z]*" style="color:#FFFFFF;">','',regex=True,inplace=True)
+    exportdf['Ticker'].replace('<\/a>','',regex=True,inplace=True)
+    exportdf.to_csv('flaskr/static/screener.csv', index=False)
+    return render_template('screener.html', screener=computedscreenerdf.to_html(classes='display table table-dark sortable table-striped', table_id='sortit', escape=False, index=False, col_space=0, header=True, render_links=True, justify='center'))
