@@ -68,7 +68,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="card">
-                        <h5 class="card-header">Volumes</h5>
+                        <h5 class="card-header">Volumes for {{ routeticker }}</h5>
                         <div class="card-body">
                           <h5 class="card-title">Avg Opt Vol: {{ avg_optvol }}</h5>
                           <p class="card-text">Avg Vol: {{ avg_stockvol }}<br/>
@@ -78,7 +78,7 @@
                 </div>
                 <div class="col-md-4">
                   <div class="card">
-                      <h5 class="card-header">Predicted Ranges</h5>
+                      <h5 class="card-header">Predicted Ranges for {{ routeticker }}</h5>
                       <div class="card-body">
                         <p class="card-text">ImpMove: ${{ implieddown }} / ${{ impliedup }}<br/>
                              HistMove: ${{ histdown }} / ${{ histup }}<br/>
@@ -100,7 +100,7 @@
                 </div>
                 <div class="col-md-4">
                   <div class="card">
-                      <h5 class="card-header">Implied Volatility</h5>
+                      <h5 class="card-header">Implied Volatility for {{ routeticker }}</h5>
                       <div class="card-body">
                         <h5 class="card-title">Current IV: {{ iv }}</h5>
                         <p class="card-text">IV Crush to: {{ ivcrushto }}</p>
