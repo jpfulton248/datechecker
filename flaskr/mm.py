@@ -91,6 +91,10 @@ class earningsdates(db.Model):
     staticunderlying = db.Column(db.Numeric(10,2))
     staticiv = db.Column(db.Numeric(20,2))
     updated = db.Column(db.String())
+    expiration = db.Column(db.String())
+    ivcrushto = db.Column(db.String())
+    reportlink = db.Column(db.String())
+    filedate = db.Column(db.String())
 
 class changes(db.Model):
     changesid = db.Column(db.Integer(), primary_key=True)
@@ -214,6 +218,7 @@ def historical(routeticker):
         cap12, cr12, stddevi12 = calcabsavg(df, 12)
         cap4, cr4, stddevi4 = calcabsavg(df, 4)
         return cumabsavgperc, countreports, cap12, cr12, cap4, cr4, stddevi, stddevi12, stddevi4
+
 def maincontent(routeticker):
     try:
         mresult = Main.query.filter(Main.ticker==routeticker).first()
@@ -233,23 +238,24 @@ def maincontent(routeticker):
         website = website
     except:
         pass
-    edate = earningsdates.query.with_entities(earningsdates.exactearningsdate) \
+    edate = earningsdates.query.with_entities(earningsdates.exactearningsdate, earningsdates.reportlink, earningsdates.filedate) \
             .filter(earningsdates.ticker==routeticker).order_by(earningsdates.exactearningsdate.desc()).first()
     exactearningsdate = edate.exactearningsdate
+    reportlink = edate.reportlink
+    filedate = edate.filedate
     edatestr = datetime.datetime.strftime(exactearningsdate,'%-m/%-d/%Y %-H')
     edatestr, bmoamc = edatestr.split()
     bmoamc = bmoamc.replace('8', 'Before Market Open')
     bmoamc = bmoamc.replace('16', 'After Market Close')
-    maincontentvars = [company_name, avg_optvol, market_cap, avg_stockvol, sector, industry, address, city, state, zipcode, description, logo, website, edatestr, bmoamc]
+    maincontentvars = [company_name, avg_optvol, market_cap, avg_stockvol, sector, industry, address, city, state, zipcode, description, logo, website, edatestr, bmoamc, reportlink, filedate]
     return maincontentvars
 
 @app.route('/<string:routeticker>', methods=['POST', 'GET'])
 def mainroute(routeticker):
     routeticker = str.capitalize(routeticker)
     sidebarlist = sidebar()
-    company_name, avg_optvol, market_cap, avg_stockvol, sector, industry, address, city, state, zipcode, description, logo, website, edatestr, bmoamc = maincontent(routeticker) 
+    company_name, avg_optvol, market_cap, avg_stockvol, sector, industry, address, city, state, zipcode, description, logo, website, edatestr, bmoamc, reportlink, filedate = maincontent(routeticker) 
     underlyingprice, strike, straddlemid, impliedmove, iv, ivcrushto, expiry, mw, stddevi, oslink, impliedup, implieddown, histup, histdown, beup, bedown = computemain(routeticker)
-    print(oslink)
     ctable = changestable(routeticker)
     try:
         impmove = ctable.at[0, 'Implied Move']
@@ -309,6 +315,8 @@ def mainroute(routeticker):
         mw = mw,
         iv = iv,
         ivcrushto = ivcrushto,
+        reportlink = reportlink,
+        filedate = filedate,
         # historicalresult = historicalresult.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True),
         # ctable = ctable.to_html(classes='table table-light', escape=False, index=True, header=True, render_links=True),
         # stable = stable.to_html(classes='table table-light', escape=False, index=False, header=True, render_links=True),

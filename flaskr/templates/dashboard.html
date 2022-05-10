@@ -56,8 +56,10 @@
                         <h5 class="card-header">Profile</h5>
                         <div class="card-body">
                           <h5 class="card-title">{{ industry }}</h5>
-                          <p class="card-text">{{ city }}, {{ state }} {{ zipcode }}<br/>
-                            <a href="{{ website|safe }}">{{ website }}</a></p>
+                          <!-- <p class="card-text">{{ city }}, {{ state }} {{ zipcode }}<br/> -->
+                          <p class="card-text"><a href="{{ website|safe }}">{{ website }}</a><br/>
+
+                            <a href="{{ reportlink|safe }}">Report Filed: {{ filedate }}</a></p>
                         </div>
                       </div>
                 </div>
