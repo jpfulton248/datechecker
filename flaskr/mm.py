@@ -271,7 +271,7 @@ def mainroute(routeticker):
     
     # stable = statictable(routeticker)
     
-    return render_template('index.html', 
+    return render_template('dashboard.html', 
         routeticker = str.upper(routeticker),
         companyname = company_name,
         avg_optvol = f'{int(avg_optvol):,}',
@@ -396,7 +396,7 @@ def screener():
     exportdf['Ticker'].replace('<a href="[A-Z]*" style="color:#FFFFFF;">','',regex=True,inplace=True)
     exportdf['Ticker'].replace('<\/a>','',regex=True,inplace=True)
     exportdf.to_csv('flaskr/static/screener.csv', index=False)
-    return render_template('screener.html', screener=computedscreenerdf.to_html(classes='display table table-dark sortable table-striped', table_id='sortit', escape=False, index=False, col_space=0, header=True, render_links=True, justify='center'))
+    return render_template('index.html', screener=computedscreenerdf.to_html(classes='display table table-dark sortable table-striped', table_id='sortit', escape=False, index=False, col_space=0, header=True, render_links=True, justify='center'))
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
@@ -507,4 +507,4 @@ def ewscreener():
     exportdf['Ticker'].replace('<a href="[A-Z]*" style="color:#FFFFFF;">','',regex=True,inplace=True)
     exportdf['Ticker'].replace('<\/a>','',regex=True,inplace=True)
     exportdf.to_csv('flaskr/static/screener.csv', index=False)
-    return render_template('screener.html', screener=computedscreenerdf.to_html(classes='display table table-dark sortable table-striped', table_id='sortit', escape=False, index=False, col_space=0, header=True, render_links=True, justify='center'))
+    return render_template('index.html', screener=computedscreenerdf.to_html(classes='display table table-dark sortable table-striped', table_id='sortit', escape=False, index=False, col_space=0, header=True, render_links=True, justify='center'))
