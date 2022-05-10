@@ -392,6 +392,7 @@ def screener():
     computedscreenerdf = computescreener()
     exportdf = computedscreenerdf.copy(deep=True)
     exportdf.drop(columns=['ew'], inplace=True)
+    computedscreenerdf.drop(columns=['ew'], inplace=True)
     exportdf['Ticker'].replace('<a href="[A-Z]*" style="color:#FFFFFF;">','',regex=True,inplace=True)
     exportdf['Ticker'].replace('<\/a>','',regex=True,inplace=True)
     exportdf.to_csv('flaskr/static/screener.csv', index=False)
