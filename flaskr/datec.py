@@ -45,25 +45,113 @@ class alldates(db.Model):
     edate = db.Column(db.String(255))
     bmoamc = db.Column(db.String(255))
 
-@app.route('/', methods=['GET', 'POST'])
-def check():
+# @app.route('/', methods=['GET', 'POST'])
+# def check():
+#     if request.method == 'POST':
+#         file = request.files['file']        
+#         kdf = pd.read_csv(file, header=0, names=['kticker', 'kedate', 'kbmoamc'])
+#         kdf.fillna('None', inplace=True)
+#         mydict = {"ticker":[],"correct_date":[],"correct_time":[],"kedate":[],"kbmoamc":[], "issue": []}
+#         for index, row in kdf.iterrows():
+#             kticker = row['kticker']
+#             kedate = row['kedate']
+#             kbmoamc = row['kbmoamc']
+#             ticker = ''
+#             edate = ''
+#             bmoamc = ''
+#             q = alldates.query.with_entities(alldates.ticker, alldates.edate, alldates.bmoamc).filter(alldates.ticker == kticker).all()
+#             if q:
+#                 ticker = q[0][0]
+#                 edate = q[0][1]
+#                 bmoamc = q[0][2]
+#             if kedate == edate and bmoamc == kbmoamc and bmoamc != 'None':
+#                 mydict["ticker"].append(kticker)
+#                 mydict["correct_date"].append(edate)
+#                 mydict["correct_time"].append(bmoamc)
+#                 mydict["kedate"].append(kedate)
+#                 mydict["kbmoamc"].append(kbmoamc)
+#                 mydict["issue"].append(str('No Issues'))
+#             elif kedate == edate and bmoamc == None:
+#                 mydict["ticker"].append(kticker)
+#                 mydict["correct_date"].append(edate)
+#                 mydict["correct_time"].append(bmoamc)
+#                 mydict["kedate"].append(kedate)
+#                 mydict["kbmoamc"].append(kbmoamc)
+#                 mydict["issue"].append(str('Date is Correct. Time unknown.'))
+#             elif kedate != edate and bmoamc == kbmoamc:
+#                 mydict["ticker"].append(kticker)
+#                 mydict["correct_date"].append(edate)
+#                 mydict["correct_time"].append(bmoamc)
+#                 mydict["kedate"].append(kedate)
+#                 mydict["kbmoamc"].append(kbmoamc)
+#                 mydict["issue"].append(str('Date is Incorrect. Time is Correct'))
+#             elif kedate == edate and bmoamc != kbmoamc:
+#                 mydict["ticker"].append(kticker)
+#                 mydict["correct_date"].append(edate)
+#                 mydict["correct_time"].append(bmoamc)
+#                 mydict["kedate"].append(kedate)
+#                 mydict["kbmoamc"].append(kbmoamc)
+#                 mydict["issue"].append(str('Date is Correct. Time is Incorrect'))
+#             elif kedate != edate and bmoamc != kbmoamc:
+#                 mydict["ticker"].append(kticker)
+#                 mydict["correct_date"].append(edate)
+#                 mydict["correct_time"].append(bmoamc)
+#                 mydict["kedate"].append(kedate)
+#                 mydict["kbmoamc"].append(kbmoamc)
+#                 mydict["issue"].append(str('Date and time are both incorrect'))
+#             else:
+#                 mydict["ticker"].append(kticker)
+#                 mydict["correct_date"].append(edate)
+#                 mydict["correct_time"].append(bmoamc)
+#                 mydict["kedate"].append(kedate)
+#                 mydict["kbmoamc"].append(kbmoamc)
+#                 mydict["issue"].append(str('Issue unclear'))
+#         resultsdf = pd.DataFrame.from_dict(mydict)
+#         return render_template('index.html', outputted=resultsdf.to_html(classes='display table table-dark sortable table-striped', table_id='sortit', escape=False, index=False, col_space=0, header=True, render_links=True, justify='center'))
+#     return render_template('index.html')
+
+# @app.route('/import', methods=['GET', 'POST'])
+# def imp():
+#     if request.method == 'POST':
+#         file = request.files['file']        
+#         df = pd.read_csv(file, header=0, names=['ticker', 'Name', 'MarketCap', 'SP500', 'QtrNext', 'IsProjectedNext', 'IsAnnouncedNext', 'edate', 'bmoamc', 'ConfCallNext', 'ExpectedMoveNext', 'ActualMovePrev', 'ExpectedMovePrev', 'QtrPrev', 'DatePrev', 'TimePrev', 'ConfCallPrev', 'SECFiling', 'StockType', 'HasOptions'])
+#         df = df[['ticker', 'edate', 'bmoamc']]
+#         df['edate']=pd.to_datetime(df['edate'].astype(str), format='%m/%d/%Y')
+#         # Conver DataTime to Different Format
+#         df['edate'] = df['edate'].dt.strftime('%Y-%m-%d')
+#         df.to_sql('alldates', con=db.engine, if_exists='replace', index=True)
+#         return render_template('import.html', imported=df.to_html(classes='display table table-dark sortable table-striped', table_id='sortit', escape=False, index=False, col_space=0, header=True, render_links=True, justify='center'))
+#     return render_template('import.html')
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/submit', methods=['POST'])
+def submit():
     if request.method == 'POST':
-        file = request.files['file']        
-        kdf = pd.read_csv(file, header=0, names=['kticker', 'kedate', 'kbmoamc'])
-        kdf.fillna('None', inplace=True)
         mydict = {"ticker":[],"correct_date":[],"correct_time":[],"kedate":[],"kbmoamc":[], "issue": []}
-        for index, row in kdf.iterrows():
-            kticker = row['kticker']
-            kedate = row['kedate']
-            kbmoamc = row['kbmoamc']
-            ticker = ''
+        incoming = request.form['text']
+        incoming = io.StringIO(incoming)
+        incoming = incoming.read()
+        try:
+            incoming = str(incoming).splitlines()
+        except:
+            pass
+        for row in incoming:
             edate = ''
             bmoamc = ''
+            kticker = ''
+            kedate = ''
+            kbmoamc = ''
+            kticker, kedate, kbmoamc = row.split(",")
+            kticker = str.upper(kticker)
+            kbmoamc = str.upper(kbmoamc)
             q = alldates.query.with_entities(alldates.ticker, alldates.edate, alldates.bmoamc).filter(alldates.ticker == kticker).all()
             if q:
-                ticker = q[0][0]
                 edate = q[0][1]
                 bmoamc = q[0][2]
+                bmoamc = str.upper(bmoamc)
             if kedate == edate and bmoamc == kbmoamc and bmoamc != 'None':
                 mydict["ticker"].append(kticker)
                 mydict["correct_date"].append(edate)
@@ -109,16 +197,3 @@ def check():
         resultsdf = pd.DataFrame.from_dict(mydict)
         return render_template('index.html', outputted=resultsdf.to_html(classes='display table table-dark sortable table-striped', table_id='sortit', escape=False, index=False, col_space=0, header=True, render_links=True, justify='center'))
     return render_template('index.html')
-
-@app.route('/import', methods=['GET', 'POST'])
-def imp():
-    if request.method == 'POST':
-        file = request.files['file']        
-        df = pd.read_csv(file, header=0, names=['ticker', 'Name', 'MarketCap', 'SP500', 'QtrNext', 'IsProjectedNext', 'IsAnnouncedNext', 'edate', 'bmoamc', 'ConfCallNext', 'ExpectedMoveNext', 'ActualMovePrev', 'ExpectedMovePrev', 'QtrPrev', 'DatePrev', 'TimePrev', 'ConfCallPrev', 'SECFiling', 'StockType', 'HasOptions'])
-        df = df[['ticker', 'edate', 'bmoamc']]
-        df['edate']=pd.to_datetime(df['edate'].astype(str), format='%m/%d/%Y')
-        # Conver DataTime to Different Format
-        df['edate'] = df['edate'].dt.strftime('%Y-%m-%d')
-        df.to_sql('alldates', con=db.engine, if_exists='replace', index=True)
-        return render_template('import.html', imported=df.to_html(classes='display table table-dark sortable table-striped', table_id='sortit', escape=False, index=False, col_space=0, header=True, render_links=True, justify='center'))
-    return render_template('import.html')
