@@ -1,139 +1,35 @@
-{% extends "base.html" %}
-{% block headstart %}
-<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css"/>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css"/>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css"/>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css"/>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/colreorder/1.5.5/css/colReorder.dataTables.min.css"/>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/datetime/1.1.2/css/dataTables.dateTime.min.css"/>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/fixedheader/3.2.2/css/fixedHeader.dataTables.min.css"/>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css"/>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/searchbuilder/1.3.2/css/searchBuilder.dataTables.min.css"/>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/searchpanes/2.0.0/css/searchPanes.dataTables.min.css"/>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/staterestore/1.1.0/css/stateRestore.dataTables.min.css"/>
-{% endblock %}
-{% block headend %}
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.colVis.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/colreorder/1.5.5/js/dataTables.colReorder.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/datetime/1.1.2/js/dataTables.dateTime.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/fixedheader/3.2.2/js/dataTables.fixedHeader.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/searchbuilder/1.3.2/js/dataTables.searchBuilder.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/searchpanes/2.0.0/js/dataTables.searchPanes.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/staterestore/1.1.0/js/dataTables.stateRestore.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/rowgroup/1.1.4/js/dataTables.rowGroup.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.11.5/sorting/datetime-moment.js"></script>
-{% endblock %}
-{% block title %} Screener {% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
 </head>
-<body class="bg-light">
-{% block content %}
-<div class="container-fluid main-container">
-<div class="row justify-content-center">
-<div class="col-md-10 content">
-    <div class="row my-2">
-        <div class="col-md-2 content">
-          <a class="btn btn-primary" href="../static/screener.csv">Export</a>
-        </div>
-      </div>
-<div class="dataTables_wrapper">
-{{ screener|safe }}
+<body>
+<div class="container">
+<col class="col-sm-4" style="height: 100vh;">
+<div>CSV Columns: ticker | edate | bmoamc</div>
+<div>Example: AAPL | 2022-05-04 | bmo</div>
+</col>
+<col class="col-lg" style="height: 100vh;">
+<row class="row" style="height: 100px;">
+<form method="POST" action="" enctype="multipart/form-data">
+    <p><input class="button" type="file" name="file"></p>
+    <p><input type="submit" value="Submit"></p>
+  </form>
+</row>
+<row class="row">
+	{{ outputted|safe }}
+</row>
+<!-- <row class="row" style="height: 100%;">
+		<div>
+			<table>
+				<h1>
+				Displaying the converted table
+
+				
+				</h1>
+			</table>
+		</div>
+</col>
+</row> -->
 </div>
-</div>
-</div>
-</div>
-{% endblock %}
-{% block footerscript %} 
-<script type="text/javascript">
-    $.fn.dataTable.ext.search.push(
-    function( settings, data, dataIndex ) {
-        var min = parseInt( 2500 );
-        var max = parseInt( 1000000000000000 );
-        var age = parseFloat( data[4] ) || 0; // use data for the avgoptvol column
-        if ( ( isNaN( min ) && isNaN( max ) ) ||
-             ( isNaN( min ) && age <= max ) ||
-             ( min <= age   && isNaN( max ) ) ||
-             ( min <= age   && age <= max ) )
-        {
-            return true;
-        }
-        return false;
-    }
-    );
-    $.fn.dataTable.ext.search.push(
-    function( settings, data, dataIndex ) {
-        var optvol = parseFloat( data[4] ) || 0; // use data for the avgoptvol column
-        if ( ( 0 <= optvol && optvol <= 1000000000000000 ) )
-        {
-            return true;
-        }
-        return false;
-    }
-    );
-$(document).ready(function(){
-    $.fn.dataTable.moment( 'D/M/YYYY' );
-    $('table').DataTable({
-        "pageLength": 100,
-        "orderClasses": false,
-        "order": [[ 2, 'asc' ], [ 3, 'desc' ]],
-        fixedHeader: true,
-        stateSave: true,
-        dom: 'Bfrtip',
-        buttons: [
-            {
-                extend: 'colvisGroup',
-                text: 'Hide Vol, Mcap, Price',
-                show: [ 1, 2 ],
-                hide: [ 4, 5, 6, 7 ]
-            },
-            {
-                extend: 'colvisGroup',
-                text: 'Hide Expiration',
-                show: [ 1, 2 ],
-                hide: [ 15, 16 ]
-            },
-            {
-                extend: 'colvisGroup',
-                text: 'Hide Moves',
-                show: [ 1, 2 ],
-                hide: [ 10, 11, 12, 17 ]
-            },
-            {
-                extend: 'colvisGroup',
-                text: 'Hide IV',
-                show: [ 1, 2 ],
-                hide: [ 13, 14 ]
-            },
-            {
-                extend: 'colvisGroup',
-                text: 'Show all',
-                show: ':hidden'
-            }
-            ],
-        rowReorder: {
-        selector: 'td:nth-child(2)'
-            },
-        responsive: true,
-        });
-    var table = $('#sortit').DataTable();
-    $('#filteropt').click( function() {
-        table.draw();
-    } );
-    $('#clearoptvol').click( function() {
-        table.draw();
-    } );
-    var table = $('#sortit').DataTable();
-    table.buttons().container()
-        .appendTo( '#dataTables_wrapper .col-md-6:eq(0)' );
-});
-</script>
-{% endblock %}
 </body>
+</html>

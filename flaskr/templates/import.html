@@ -3,18 +3,31 @@
 <head>
 </head>
 <body>
-    <h1>Success!</h1>
+<div class="container">
+<col class="col-lg" style="height: 100vh;">
+<row class="row" style="height: 100px;">
+Upload "FutureEarningsResults" CSV on this page. Only filter should be 30 days and announced
+<form method="POST" action="" enctype="multipart/form-data">
+    <p><input class="button" type="file" name="file"></p>
+    <p><input type="submit" value="Submit"></p>
+  </form>
+</row>
+<row class="row">
+	{{ imported|safe }}
+</row>
+
+<!-- <row class="row" style="height: 100%;">
 		<div>
-            <a href="upload">Return to Upload Page</a>
 			<table>
 				<h1>
-				<!--Displaying the converted table-->
-					{% for table in tables %}
-					<h2>{{titles[loop.index]}}</h2>							
-					{{ table|safe }}
-					{% endfor %}	
+				Displaying the converted table
+
+				
 				</h1>
 			</table>
 		</div>
-	</body>
+</col>
+</row> -->
+</div>
+</body>
 </html>

@@ -1,9 +1,9 @@
-from flaskr.mm import app
+from flaskr.datec import app
 from dotenv import load_dotenv
 import os
 load_dotenv
 
  
 
-if __name__ == "__mm__":
+if __name__ == "__datec__":
         app.run()

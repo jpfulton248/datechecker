@@ -1,3 +1,3 @@
 #.flaskenv
-FLASK_APP=mm
+FLASK_APP=datec
 FLASK_ENV=development
