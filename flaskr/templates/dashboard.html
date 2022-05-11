@@ -14,9 +14,9 @@
 <body class="bg-dark">
 {% block content %}
 <div class="container-fluid main-container">
-<div class="row justify-content-center">
-<div class="col-md-10 content">
-<div class=""><a href="/">Weekly Screener</a></div>
+  <div class="row justify-content-center">
+    <div class="col-md-10 content">
+      <div class=""><a href="/">Weekly Screener</a></div>
             <div class="row my-4">
                 <div class="col-md-4">
                     <div class="card">
@@ -85,16 +85,6 @@
               </div>
               </div> <!-- This is the closing div for the second row of cards -->
               <div class="row my-4">
-                <div class="col-md-8">
-                    <div class="card">
-                        <h5 class="card-header">Historic Moves for {{ routeticker }}</h5>
-                        <div class="card-body">
-                            <p class="card-text">
-                                <canvas id="myChart"></canvas>
-                            </p>
-                        </div>
-                      </div>
-                </div>
                 <div class="col-md-4">
                   <div class="card">
                       <h5 class="card-header">Implied Volatility for {{ routeticker }}</h5>
@@ -103,9 +93,57 @@
                         <p class="card-text">IV Crush to: {{ ivcrushto }}</p>
                       </div>
                     </div>
+                </div>
               </div>
-          </div>   
-        </div>
+                <div class="row my-6">
+                  <div class="col-md-6">
+                    <div class="card" style="height: 100%">
+                        <h5 class="card-header">Historic Moves for {{ routeticker }}</h5>
+                        <div class="card-body">
+                            <p class="card-text">
+                                <canvas id="myChart"></canvas>
+                            </p>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="card" style="height: 100%">
+                      {% set tvlink = 'https://www.tradingview.com/symbols/' + routeticker + '/' %}
+                      {% set tvsymbol = routeticker %}
+                        <div class="card-header tradingview-widget-copyright"><a href={{ tvlink }} rel="noopener" target="_blank">
+                        <span class="blue-text">{{routeticker}} Chart</span></a> by TradingView</div>
+
+                        <div class="card-body">
+                                <!-- TradingView Widget BEGIN -->
+                                <div class="tradingview-widget-container">
+                                    <div id="tradingview_9f216"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>   
+      <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+      <script type="text/javascript">
+      new TradingView.widget(
+      {
+      "autosize": true,
+      "symbol": "{{ tvsymbol }}",
+      "interval": "1",
+      "timezone": "America/New_york",
+      "theme": "dark",
+      "style": "1",
+      "locale": "en",
+      "hide_top_toolbar": true,
+      "hide_bottom_toolbar": true,
+      "toolbar_bg": "#f1f3f6",
+      "enable_publishing": false,
+      "allow_symbol_change": false,
+      "container_id": "tradingview_9f216"
+    }
+      );
+      </script>
+    </div>
+<!-- TradingView Widget END -->
         <div>
             <span class="col-md-3" style="color: white"><a href="{{ oslink|safe }}">{{ oslink }}</a></span>
         </div>
