@@ -70,7 +70,7 @@ def check():
                 mydict["correct_time"].append(bmoamc)
                 mydict["kedate"].append(kedate)
                 mydict["kbmoamc"].append(kbmoamc)
-                mydict["issue"].append(str('Correct time and date.'))
+                mydict["issue"].append(str('No Issues'))
             elif kedate == edate and bmoamc == kbmoamc and bmoamc == 'None':
                 mydict["ticker"].append(kticker)
                 mydict["correct_date"].append(edate)
