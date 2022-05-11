@@ -6,7 +6,6 @@ from flask import Flask, current_app, render_template, url_for, redirect, reques
 from flask_sqlalchemy import SQLAlchemy
 from matplotlib import image
 from numpy import logical_or
-# from config import sqlalchemyurl
 import datetime
 import pandas as pd
 from markupsafe import Markup
@@ -16,7 +15,6 @@ import os
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 from sqlalchemy import false, true
-from .myfunx import calcabsavg, genbefaf, histurl, getcurrent, getiv, now, yesterday, sxtnhrsago, screenerend
 import requests
 import io
 
