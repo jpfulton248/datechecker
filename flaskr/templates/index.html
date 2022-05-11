@@ -32,14 +32,18 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.11.5/sorting/datetime-moment.js"></script>
 {% endblock %}
-    <title>Screener</title>
+{% block title %} Screener {% endblock %}
 </head>
 <body class="bg-light">
 {% block content %}
 <div class="container-fluid main-container">
 <div class="row justify-content-center">
 <div class="col-md-10 content">
-<div class="" style="color: white;"><a href="../static/screener.csv">Export</a></div>
+    <div class="row my-2">
+        <div class="col-md-2 content">
+          <a class="btn btn-primary" href="../static/screener.csv">Export</a>
+        </div>
+      </div>
 <div class="dataTables_wrapper">
 {{ screener|safe }}
 </div>
