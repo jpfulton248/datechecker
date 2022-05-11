@@ -64,13 +64,20 @@ def check():
                 ticker = q[0][0]
                 edate = q[0][1]
                 bmoamc = q[0][2]
-            if kedate == edate and bmoamc == kbmoamc:
+            if kedate == edate and bmoamc == kbmoamc and bmoamc != 'None':
                 mydict["ticker"].append(kticker)
                 mydict["correct_date"].append(edate)
                 mydict["correct_time"].append(bmoamc)
                 mydict["kedate"].append(kedate)
                 mydict["kbmoamc"].append(kbmoamc)
-                mydict["issue"].append(str('No Issues'))
+                mydict["issue"].append(str('Correct time and date.'))
+            elif kedate == edate and bmoamc == kbmoamc and bmoamc == 'None':
+                mydict["ticker"].append(kticker)
+                mydict["correct_date"].append(edate)
+                mydict["correct_time"].append(bmoamc)
+                mydict["kedate"].append(kedate)
+                mydict["kbmoamc"].append(kbmoamc)
+                mydict["issue"].append(str('Date is Correct. Time unknown.'))
             elif kedate != edate and bmoamc == kbmoamc:
                 mydict["ticker"].append(kticker)
                 mydict["correct_date"].append(edate)
