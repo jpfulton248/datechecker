@@ -50,6 +50,7 @@ def check():
     if request.method == 'POST':
         file = request.files['file']        
         kdf = pd.read_csv(file, header=0, names=['kticker', 'kedate', 'kbmoamc'])
+        kdf.fillna('None', inplace=True)
         mydict = {"ticker":[],"correct_date":[],"correct_time":[],"kedate":[],"kbmoamc":[], "issue": []}
         for index, row in kdf.iterrows():
             kticker = row['kticker']
@@ -63,29 +64,42 @@ def check():
                 ticker = q[0][0]
                 edate = q[0][1]
                 bmoamc = q[0][2]
-            if bmoamc == 'NaN' or bmoamc == 'None' or kbmoamc == 'NaN' or bmoamc == 'None':
+            if kedate == edate and bmoamc == kbmoamc:
                 mydict["ticker"].append(kticker)
                 mydict["correct_date"].append(edate)
                 mydict["correct_time"].append(bmoamc)
                 mydict["kedate"].append(kedate)
                 mydict["kbmoamc"].append(kbmoamc)
-                mydict["issue"].append(str('NaN or None'))
-            elif kedate != edate or bmoamc != kbmoamc:
+                mydict["issue"].append(str('No Issues'))
+            elif kedate != edate and bmoamc == kbmoamc:
                 mydict["ticker"].append(kticker)
                 mydict["correct_date"].append(edate)
                 mydict["correct_time"].append(bmoamc)
                 mydict["kedate"].append(kedate)
                 mydict["kbmoamc"].append(kbmoamc)
-                mydict["issue"].append(str('Date is Incorrect or Not Announced'))
+                mydict["issue"].append(str('Date is Incorrect. Time is Correct'))
+            elif kedate == edate and bmoamc != kbmoamc:
+                mydict["ticker"].append(kticker)
+                mydict["correct_date"].append(edate)
+                mydict["correct_time"].append(bmoamc)
+                mydict["kedate"].append(kedate)
+                mydict["kbmoamc"].append(kbmoamc)
+                mydict["issue"].append(str('Date is Correct. Time is Incorrect'))
+            elif kedate != edate and bmoamc != kbmoamc:
+                mydict["ticker"].append(kticker)
+                mydict["correct_date"].append(edate)
+                mydict["correct_time"].append(bmoamc)
+                mydict["kedate"].append(kedate)
+                mydict["kbmoamc"].append(kbmoamc)
+                mydict["issue"].append(str('Date and time are both incorrect'))
             else:
                 mydict["ticker"].append(kticker)
                 mydict["correct_date"].append(edate)
                 mydict["correct_time"].append(bmoamc)
                 mydict["kedate"].append(kedate)
                 mydict["kbmoamc"].append(kbmoamc)
-                mydict["issue"].append(str('no problems'))
+                mydict["issue"].append(str('Issue unclear'))
         resultsdf = pd.DataFrame.from_dict(mydict)
-        print(resultsdf)
         return render_template('index.html', outputted=resultsdf.to_html(classes='display table table-dark sortable table-striped', table_id='sortit', escape=False, index=False, col_space=0, header=True, render_links=True, justify='center'))
     return render_template('index.html')
 
