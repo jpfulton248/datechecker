@@ -11,6 +11,7 @@
     <title>Hello, world!</title>
   </head>
   <body class="bg-light">
+	<a href="/import">import</a>
 	<div class="container-fluid main-container">
 		<div class="row justify-content-center">
 			<div class="col-md-10 content">
@@ -28,18 +29,20 @@
 			</div>
 		</div>
 		{%if good == "good"%}
+		<div>{{ completecnt }} Processed</div>
+		<div><a class="btn btn-primary" href="../static/goodresults.txt">Export</a></div>
 		<div class="accordion" id="accordionExample">
 			<div class="card">
 			  <div class="card-header" id="headingOne">
 				<h2 class="mb-0">
 				  <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-					Issues Only
+					Results with no Issues - {{ noissuescnt }}
 				  </button>
 				</h2>
 			  </div>
 			  <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
 				<div class="card-body">
-					{{ filteredtable|safe }}
+					{{ noissues|safe }}
 				</div>
 			  </div>
 			</div>
@@ -47,16 +50,31 @@
 			  <div class="card-header" id="headingTwo">
 				<h2 class="mb-0">
 				  <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-					Complete Results
+					Results with Issues - {{ issuescnt }}
 				  </button>
 				</h2>
 			  </div>
 			  <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
 				<div class="card-body">
-					{{ outputted|safe }}
+					
+					{{ issues|safe }}
 				</div>
 			  </div>
 			</div>
+			<div class="card">
+				<div class="card-header" id="headingThree">
+				  <h2 class="mb-0">
+					<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+					  Complete Results - {{ completecnt }}
+					</button>
+				  </h2>
+				</div>
+				<div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+				  <div class="card-body">
+					  {{ complete|safe }}
+				  </div>
+				</div>
+			  </div>
 			</div>
 		  </div>
 		  {% endif %}

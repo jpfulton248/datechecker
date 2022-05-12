@@ -18,10 +18,12 @@ h11==0.12.0
 httpcore==0.14.7
 httpx==0.22.0
 idna==3.3
+importlib-metadata==4.11.3
 itsdangerous==2.1.1
 Jinja2==3.0.3
 kiwisolver==1.4.0
 lxml==4.8.0
+Markdown==3.3.7
 MarkupSafe==2.1.1
 matplotlib==3.5.1
 multitasking==0.0.10
@@ -61,4 +63,5 @@ websockets==10.3
 Werkzeug==2.0.3
 wsproto==1.1.0
 yfinance==0.1.70
+zipp==3.8.0
 zope.interface==5.4.0
