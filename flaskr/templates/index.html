@@ -1,40 +1,70 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-</head>
-<body>
-<div class="container">
-<col class="col-sm-4" style="height: 100vh;">
-<div>CSV Columns: ticker | edate | bmoamc</div>
-<div>Example: AAPL | 2022-05-04 | bmo</div>
-</col>
-<col class="col-lg">
-<row class="row" style="height: 100vh;">
-<!-- <form method="POST" action="" enctype="multipart/form-data">
-    <p><input class="button" type="file" name="file"></p>
-    <p><input type="submit" value="Submit"></p>
-  </form> -->
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<form action="{{ url_for('submit') }}" method="post" name="text">
-	<textarea width="500px" name="text"></textarea>
-<input type="submit">
-</form>
-</row>
-<row class="row">
-	{{ outputted|safe }}
-</row>
-<!-- <row class="row" style="height: 100%;">
-		<div>
-			<table>
-				<h1>
-				Displaying the converted table
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-				
-				</h1>
-			</table>
+    <title>Hello, world!</title>
+  </head>
+  <body class="bg-light">
+	<div class="container-fluid main-container">
+		<div class="row justify-content-center">
+			<div class="col-md-10 content">
+				<div>AAPL,2022-05-04,AMC</div>
+				<div class="form-outline row my-4">
+					<form class="row g-3" action="{{ url_for('submit') }}" method="post" name="text">
+						<div class="col-md-6">
+							<textarea style="width: 500px; height: 300px;" name="text"></textarea>
+						</div>
+						<div class="col-12">
+							<input class="btn btn-primary" type="submit">
+						</div>
+					</form>
+				</div>
+			</div>
 		</div>
-</col>
-</row> -->
-</div>
-</body>
+		{%if good == "good"%}
+		<div class="accordion" id="accordionExample">
+			<div class="card">
+			  <div class="card-header" id="headingOne">
+				<h2 class="mb-0">
+				  <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+					Issues Only
+				  </button>
+				</h2>
+			  </div>
+			  <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+				<div class="card-body">
+					{{ filteredtable|safe }}
+				</div>
+			  </div>
+			</div>
+			<div class="card">
+			  <div class="card-header" id="headingTwo">
+				<h2 class="mb-0">
+				  <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+					Complete Results
+				  </button>
+				</h2>
+			  </div>
+			  <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+				<div class="card-body">
+					{{ outputted|safe }}
+				</div>
+			  </div>
+			</div>
+			</div>
+		  </div>
+		  {% endif %}
+		</div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
 </html>

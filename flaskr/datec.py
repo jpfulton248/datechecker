@@ -145,13 +145,17 @@ def submit():
             kedate = ''
             kbmoamc = ''
             kticker, kedate, kbmoamc = row.split(",")
-            kticker = str.upper(kticker)
-            kbmoamc = str.upper(kbmoamc)
+            try:
+                kticker = str.upper(kticker)
+                kbmoamc = str.upper(kbmoamc)
+            except:
+                pass
             q = alldates.query.with_entities(alldates.ticker, alldates.edate, alldates.bmoamc).filter(alldates.ticker == kticker).all()
             if q:
                 edate = q[0][1]
                 bmoamc = q[0][2]
-                bmoamc = str.upper(bmoamc)
+                if bmoamc:
+                    bmoamc = str.upper(bmoamc)
             if kedate == edate and bmoamc == kbmoamc and bmoamc != 'None':
                 mydict["ticker"].append(kticker)
                 mydict["correct_date"].append(edate)
@@ -195,5 +199,8 @@ def submit():
                 mydict["kbmoamc"].append(kbmoamc)
                 mydict["issue"].append(str('Issue unclear'))
         resultsdf = pd.DataFrame.from_dict(mydict)
-        return render_template('index.html', outputted=resultsdf.to_html(classes='display table table-dark sortable table-striped', table_id='sortit', escape=False, index=False, col_space=0, header=True, render_links=True, justify='center'))
+        filtereddf = resultsdf.copy(deep=True)
+        filtereddf = filtereddf[filtereddf.issue != 'No Issues']
+        good = str('good')
+        return render_template('index.html', good=good, outputted=resultsdf.to_html(classes='display table table-light sortable table-striped', table_id='sortit', escape=False, index=False, col_space=0, header=True, render_links=True, justify='center'), filteredtable=filtereddf.to_html(classes='display table table-light sortable table-striped', table_id='sortit', escape=False, index=False, col_space=0, header=True, render_links=True, justify='center'))
     return render_template('index.html')
