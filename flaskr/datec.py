@@ -184,13 +184,20 @@ def submit():
                 mydict["kedate"].append(kedate)
                 mydict["kbmoamc"].append(kbmoamc)
                 mydict["issue"].append(str('Date is Correct. Time is Incorrect'))
-            elif kedate != edate and bmoamc != kbmoamc:
+            elif kedate != edate and bmoamc != kbmoamc and edate != '':
                 mydict["ticker"].append(kticker)
                 mydict["correct_date"].append(edate)
                 mydict["correct_time"].append(bmoamc)
                 mydict["kedate"].append(kedate)
                 mydict["kbmoamc"].append(kbmoamc)
                 mydict["issue"].append(str('Date and time are both incorrect'))
+            elif kedate != edate and bmoamc != kbmoamc and edate == '':
+                mydict["ticker"].append(kticker)
+                mydict["correct_date"].append(edate)
+                mydict["correct_time"].append(bmoamc)
+                mydict["kedate"].append(kedate)
+                mydict["kbmoamc"].append(kbmoamc)
+                mydict["issue"].append(str('Correct date not found. Earnings date likely not announced.'))
             else:
                 mydict["ticker"].append(kticker)
                 mydict["correct_date"].append(edate)
@@ -204,3 +211,17 @@ def submit():
         good = str('good')
         return render_template('index.html', good=good, outputted=resultsdf.to_html(classes='display table table-light sortable table-striped', table_id='sortit', escape=False, index=False, col_space=0, header=True, render_links=True, justify='center'), filteredtable=filtereddf.to_html(classes='display table table-light sortable table-striped', table_id='sortit', escape=False, index=False, col_space=0, header=True, render_links=True, justify='center'))
     return render_template('index.html')
+
+@app.route('/import', methods=['GET', 'POST'])
+def imp():
+    if request.method == 'POST':
+        file = request.files['file']        
+        df = pd.read_csv(file, header=0, names=['ticker', 'Name', 'MarketCap', 'SP500', 'QtrNext', 'IsProjectedNext', 'IsAnnouncedNext', 'edate', 'bmoamc', 'ConfCallNext', 'ExpectedMoveNext', 'ActualMovePrev', 'ExpectedMovePrev', 'QtrPrev', 'DatePrev', 'TimePrev', 'ConfCallPrev', 'SECFiling', 'StockType', 'HasOptions'])
+        df = df[['ticker', 'edate', 'bmoamc']]
+        df['edate']=pd.to_datetime(df['edate'].astype(str), format='%m/%d/%Y')
+        # Conver DateTime to Different Format
+        df['edate'] = df['edate'].dt.strftime('%Y-%m-%d')
+        print(df)
+        df.to_sql('alldates', con=db.engine, if_exists='replace', index=True)
+        return render_template('import.html', imported=df.to_html(classes='display table table-dark sortable table-striped', table_id='sortit', escape=False, index=False, col_space=0, header=True, render_links=True, justify='center'))
+    return render_template('import.html')
