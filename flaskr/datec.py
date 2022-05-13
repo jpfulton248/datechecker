@@ -21,9 +21,15 @@ import markdown
 from functools import wraps
 import asyncio
 import pyperclip as pc
-
+import asyncio
 from pymysql import NULL
+from aiohttp import ClientSession
+import aiohttp
+import ssl
+import certifi
+
 load_dotenv
+
 SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')
 #local
 # SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI_DEBUG')
@@ -36,6 +42,32 @@ from collections import OrderedDict, defaultdict
 import json
 from itertools import groupby
 import calendar
+
+urls = ['http://127.0.0.1/test']
+
+# Helper Functions
+
+client = aiohttp.ClientSession()
+
+
+import aiohttp
+import asyncio
+import ssl
+import certifi
+
+
+
+# @app.route('/test2')
+# async def main(url):
+#     ssl_context = ssl.create_default_context(cafile=certifi.where())
+#     conn = aiohttp.TCPConnector(ssl=ssl_context)
+#     async with aiohttp.ClientSession(connector=conn) as session:
+#         async with session.get(url) as response:
+#             print("Status:", response.status)
+
+# url = "https://shikimori.one/"
+# loop = asyncio.get_event_loop()
+# loop.run_until_complete(main(url))
 
 #declare some variables
 routeedate = ''
@@ -153,7 +185,6 @@ def clipcopy():
     with open('flaskr/static/goodresults.txt') as f:
         data=''.join(line.rstrip() for line in f)
     pc.copy(data)
-
 
 
 
