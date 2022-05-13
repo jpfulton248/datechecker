@@ -1,8 +1,9 @@
+from imghdr import what
 from random import randint
 from site import setcopyright
 from ssl import ALERT_DESCRIPTION_ACCESS_DENIED, CHANNEL_BINDING_TYPES
 from token import EXACT_TOKEN_TYPES
-from flask import Flask, current_app, render_template, url_for, redirect, request, Response
+from flask import Flask, current_app, render_template, url_for, redirect, request, Response, escape, abort
 from flask_sqlalchemy import SQLAlchemy
 from matplotlib import image
 from numpy import logical_or
@@ -27,6 +28,10 @@ from aiohttp import ClientSession
 import aiohttp
 import ssl
 import certifi
+from subprocess import Popen, PIPE, STDOUT
+import sys
+from apscheduler.schedulers.background import BackgroundScheduler
+from flask_socketio import SocketIO, emit
 
 load_dotenv
 
@@ -38,36 +43,12 @@ f_api_key = os.environ.get('f_api_key')
 app=Flask(__name__, instance_relative_config=True)
 app.config['SQLALCHEMY_DATABASE_URI']=SQLALCHEMY_DATABASE_URI
 db=SQLAlchemy(app)
+socketio = SocketIO(app)
 from collections import OrderedDict, defaultdict
 import json
 from itertools import groupby
 import calendar
-
-urls = ['http://127.0.0.1/test']
-
-# Helper Functions
-
-client = aiohttp.ClientSession()
-
-
-import aiohttp
-import asyncio
-import ssl
-import certifi
-
-
-
-# @app.route('/test2')
-# async def main(url):
-#     ssl_context = ssl.create_default_context(cafile=certifi.where())
-#     conn = aiohttp.TCPConnector(ssl=ssl_context)
-#     async with aiohttp.ClientSession(connector=conn) as session:
-#         async with session.get(url) as response:
-#             print("Status:", response.status)
-
-# url = "https://shikimori.one/"
-# loop = asyncio.get_event_loop()
-# loop.run_until_complete(main(url))
+import time
 
 #declare some variables
 routeedate = ''
@@ -116,32 +97,31 @@ def submit():
                 edate = q[0][1]
                 bmoamc = q[0][2]
                 projected = q[0][3]
-                if bmoamc:
-                    bmoamc = str.upper(bmoamc)
-            if kedate == edate and bmoamc == kbmoamc and bmoamc != 'None':
-                issues = str('No Issues')
-                forfilter = str('Include')
-            if kedate == edate and bmoamc == 'None':
-                issues = str('Date is Correct. Time unknown.')
-                forfilter = str('Include')
-            if kedate != edate and bmoamc == kbmoamc and edate != 'None':
-                issues = str('Date is Incorrect. Time is Correct')
-                forfilter = str('Include')
-            if kedate == edate and bmoamc != kbmoamc and bmoamc != 'None':
-                issues = str('Date is Correct. Time is Incorrect')
-            if kedate != edate and bmoamc != kbmoamc and edate != '':
-                issues = str('Date and time are both incorrect')
-                forfilter = str('Include')
-            if edate == '':
-                print('bad one')
+                try:
+                    str.upper(bmoamc)
+                except:
+                    pass
+                if projected != 1 and projected != '' and projected != 'None':
+                    if kedate == edate and bmoamc == kbmoamc and bmoamc != 'None':
+                        issues = str('No Issues')
+                        forfilter = str('Include')
+                    if kedate == edate and bmoamc == 'None':
+                        issues = str('Date is Correct. Time unknown.')
+                        forfilter = str('Include')
+                    if kedate != edate and bmoamc == kbmoamc and edate != 'None':
+                        issues = str('Date has been corrected. Time is Correct')
+                        forfilter = str('Include')
+                    if kedate == edate and bmoamc != kbmoamc and bmoamc != 'None':
+                        issues = str('Date is Correct. Time has been corrected.')
+                    if kedate != edate and bmoamc != kbmoamc and edate != '':
+                        issues = str('Date and time have both been corrected')
+                        forfilter = str('Include')
+                else:
+                    issues = str('Projected. Not Confirmed.')
+                    forfilter = str('Exclude')
+            else:
                 issues = str('Date not found. Earnings date likely not announced.')
                 forfilter = str('Exclude')
-            if projected == 1:
-                issues = str('Projected. Not Confirmed.')
-                forfilter = str('Exclude')
-            # else:
-            #     issues = str('Issue unclear')
-            #     forfilter = str('Exclude')
             mydict["ticker"].append(kticker)
             mydict["correct_date"].append(edate)
             mydict["correct_time"].append(bmoamc)
@@ -185,10 +165,6 @@ def clipcopy():
     with open('flaskr/static/goodresults.txt') as f:
         data=''.join(line.rstrip() for line in f)
     pc.copy(data)
-
-
-
-
 
 
 # def multiline(fn):
