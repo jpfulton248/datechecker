@@ -3,7 +3,7 @@ from random import randint
 from site import setcopyright
 from ssl import ALERT_DESCRIPTION_ACCESS_DENIED, CHANNEL_BINDING_TYPES
 from token import EXACT_TOKEN_TYPES
-from flask import Flask, current_app, render_template, url_for, redirect, request, Response, escape, abort
+from flask import Flask, current_app, jsonify, render_template, url_for, redirect, request, Response, escape, abort
 from flask_sqlalchemy import SQLAlchemy
 from matplotlib import image
 from numpy import logical_or
@@ -31,24 +31,21 @@ import certifi
 from subprocess import Popen, PIPE, STDOUT
 import sys
 from apscheduler.schedulers.background import BackgroundScheduler
-from flask_socketio import SocketIO, emit
-
-load_dotenv
-
-SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')
-#local
-# SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI_DEBUG')
-f_api_key = os.environ.get('f_api_key')
-# SQLALCHEMY_DATABASE_URI=str('mysql+pymysql://') + USERNAME + str(':') + PASSWORD + str('@') + HOST + str(':') + PORT + str('/') + DATABASE
-app=Flask(__name__, instance_relative_config=True)
-app.config['SQLALCHEMY_DATABASE_URI']=SQLALCHEMY_DATABASE_URI
-db=SQLAlchemy(app)
-socketio = SocketIO(app)
 from collections import OrderedDict, defaultdict
 import json
 from itertools import groupby
 import calendar
 import time
+
+load_dotenv
+
+SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')
+f_api_key = os.environ.get('f_api_key')
+
+app=Flask(__name__, instance_relative_config=True)
+app.config['SQLALCHEMY_DATABASE_URI']=SQLALCHEMY_DATABASE_URI
+db=SQLAlchemy(app)
+
 
 #declare some variables
 routeedate = ''
@@ -159,75 +156,3 @@ def imp():
         df.to_sql('alldates', con=db.engine, if_exists='replace', index=True)
         return render_template('import.html', imported=df.to_html(classes='display table table-dark sortable table-striped', table_id='sortit', escape=False, index=False, col_space=0, header=True, render_links=True, justify='center'))
     return render_template('import.html')
-
-@app.route('/copy', methods=['GET', 'POST'])
-def clipcopy():
-    with open('flaskr/static/goodresults.txt') as f:
-        data=''.join(line.rstrip() for line in f)
-    pc.copy(data)
-
-
-# def multiline(fn):
-#     @wraps(fn)
-#     def _fn(*args, **kwargs):
-#         return "<pre>" + fn(*args, **kwargs) + "</pre>"
-#     return _fn
-
-# @app.route('/test')
-# @multiline
-# def testit():
-#     one = str('one')
-#     two = str('two')
-#     three = str('three')
-#     four = str('four')
-#     five = str('five')
-#     six = str('six')
-#     seven = str('seven')
-#     eight = str('eight')
-#     nine = str('nine')
-#     ten = str('ten')
-#     eleven = str('elevn')
-#     twelve = str('twelve')
-#     thirteen = str('thirteen')
-#     fourteen = str('fourteen')
-#     fifteen = str('fifteen')
-#     sixteen = str('sixteen')
-#     seventeen = str('seventeen')
-#     out = """[{} moves an average of **+/-{}%** around earnings] (https://earnings-watcher.com/#/moves?symbol={}), with a
-
-#     => *most past moves are between {}% and {}%, in absolute value*
-#     &#x200B;
-
-#     After earnings, stock price:
-
-#     \- **kept same direction of move for {} days on average**
-
-#     \- **reversed initial direction {}% of the time**
-
-#     &#x200B;
-
-#     Here are the last three earnings (absolute) moves and their durations:
-#     \- *{}: {}% lasted for {} days*
-
-#     \- *{}: {}% lasted for {} days*
-
-#     vy \- *{}: {}% lasted for {} days*""".format(one,
-#                                                 two,
-#                                                 three,
-#                                                 four,
-#                                                 five,
-#                                                 six,
-#                                                 seven,
-#                                                 eight,
-#                                                 nine,
-#                                                 ten,
-#                                                 eleven,
-#                                                 twelve,
-#                                                 thirteen,
-#                                                 fourteen,
-#                                                 fifteen,
-#                                                 sixteen,
-#                                                 seventeen)
-#     return str(out)
-
-# @test2
