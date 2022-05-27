@@ -11,92 +11,90 @@
     background-size: cover;
   }
 </style>
-<!-- <script type="text/javascript">
-	(function poll() {
-		$.ajax({
-			url: "/counter",
-			type: "GET",
-			success: function(data) {
-				console.log("polling");
-				$("#result").text(data.result)},
-			dataType: "json",
-			complete: setTimeout(function() {poll()}, 5000),
-			timeout: 2000
-		}).responseText;})();
-</script> -->
 {% endblock %}
 {% block title %}{% endblock %}
 {% block content %}
-<div id="progressbar"></div>
-<div id="result">?</div>
-<a href="/import">import</a>
-	<div class="container-fluid main-container">
-		<div class="row justify-content-center">
-			<div class="col-md-10 content">
-				<div>AAPL,2022-05-04,AMC</div>
-				<div class="form-outline row my-4">
-					<form class="row g-3" action="{{ url_for('submit') }}" method="post" name="text">
-						<div class="col-md-6">
-							<textarea style="width: 500px; height: 300px;" name="text"></textarea>
-						</div>
-						<div class="col-12">
-							<input class="btn btn-primary" type="submit">
-						</div>
-					</form>
-				</div>
+<div class="container-fluid main-container">
+	<a href="/import">import</a>
+	<div class="row justify-content-center mt-1">
+		<div class="col-md-12 content">
+			<div>AAPL,2022-05-04,AMC</div>
+			<div class="form-outline row">
+				<form class="row g-2" action="{{ url_for('submit') }}" method="post" name="text">
+					<div class="col-md-6">
+						<textarea style="width: 500px; height: 300px;" name="text"></textarea>
+					</div>
+					<div class="col-12">
+						<input class="btn btn-primary mt-2" type="submit">
+					</div>
+				</form>
 			</div>
 		</div>
-		{%if good == "good"%}
-		<div>{{ completecnt }} Processed</div>
-		<div><a class="btn btn-primary" href="../static/goodresults.txt">Export</a></div>
-		<div class="accordion" id="accordionExample">
-			<div class="card">
-			  <div class="card-header" id="headingOne">
-				<h2 class="mb-0">
-				  <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-					Results with no Issues - {{ noissuescnt }}
-				  </button>
-				</h2>
-			  </div>
-			  <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-				<div class="card-body">
-					{{ noissues|safe }}
-				</div>
-			  </div>
+	</div>
+	{%if good == "good"%}
+	<div class="mt-3">{{ completecnt }} Processed</div>
+	<div class="accordion mt-3" id="accordionExample">
+		<div class="card">
+			<div class="card-header" id="headingOne">
+			<h2 class="mb-0">
+				<row>
+					<div class="col-sm-6 float-start">
+						<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+							Results with no Issues - {{ noissuescnt }}
+						</button>
+					</div>
+					<div class="col-sm-6 float-end" style="display: flex; justify-content: flex-end">
+						<a class="btn btn-primary" href="../static/goodresults.txt">Good Results Export</a>
+					</div>
+				</row>
+			</h2>
 			</div>
-			<div class="card">
-			  <div class="card-header" id="headingTwo">
-				<h2 class="mb-0">
-				  <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-					Results with Issues - {{ issuescnt }}
-				  </button>
-				</h2>
-			  </div>
-			  <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-				<div class="card-body">
-					
-					{{ issues|safe }}
-				</div>
-			  </div>
+			<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+			<div class="card-body">
+				{{ noissues|safe }}
 			</div>
-			<div class="card">
-				<div class="card-header" id="headingThree">
-				  <h2 class="mb-0">
-					<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-					  Complete Results - {{ completecnt }}
-					</button>
-				  </h2>
-				</div>
-				<div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-				  <div class="card-body">
-					  {{ complete|safe }}
-				  </div>
-				</div>
-			  </div>
 			</div>
-		  </div>
-		  {% endif %}
 		</div>
+		<div class="card">
+			<div class="card-header" id="headingTwo">
+			<h2 class="mb-0">
+				<row>
+					<div class="col-sm-6 float-start">
+						<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+							Results with Issues - {{ issuescnt }}
+						</button>
+					</div>
+					<div class="col-sm-6 float-end" style="display: flex; justify-content: flex-end">
+						<a class="btn btn-danger" href="../static/issues.txt">Bad Results Export</a>
+					</div>
+			</h2>
+			</div>
+			<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+			<div class="card-body">
+				
+				{{ issues|safe }}
+			</div>
+			</div>
+		</div>
+		<div class="card">
+			<div class="card-header" id="headingThree">
+				<h2 class="mb-0">
+				<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+					Complete Results - {{ completecnt }}
+				</button>
+				</h2>
+			</div>
+			<div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+				<div class="card-body">
+					{{ complete|safe }}
+				</div>
+			</div>
+			</div>
+		</div>
+		</div>
+		{% endif %}
+	</div>
+</div>
 {% endblock %}
 {% block footerscript %}
 

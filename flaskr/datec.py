@@ -1,41 +1,13 @@
-from imghdr import what
-from random import randint
-from site import setcopyright
-from ssl import ALERT_DESCRIPTION_ACCESS_DENIED, CHANNEL_BINDING_TYPES
-from token import EXACT_TOKEN_TYPES
 from flask import Flask, current_app, jsonify, render_template, url_for, redirect, request, Response, escape, abort
 from flask_sqlalchemy import SQLAlchemy
 from matplotlib import image
 from numpy import logical_or
 import datetime
 import pandas as pd
-from markupsafe import Markup
-import re
 from dotenv import load_dotenv
 import os
-from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
-from matplotlib.figure import Figure
 from sqlalchemy import false, true
-import requests
 import io
-import markdown
-from functools import wraps
-import asyncio
-import pyperclip as pc
-import asyncio
-from pymysql import NULL
-from aiohttp import ClientSession
-import aiohttp
-import ssl
-import certifi
-from subprocess import Popen, PIPE, STDOUT
-import sys
-from apscheduler.schedulers.background import BackgroundScheduler
-from collections import OrderedDict, defaultdict
-import json
-from itertools import groupby
-import calendar
-import time
 
 load_dotenv
 
@@ -140,6 +112,7 @@ def submit():
         noissuescnt = len(noissuesdf.index)
         goodresultsdf = noissuesdf[['ticker','correct_date','correct_time']]
         goodresultsdf.to_csv('flaskr/static/goodresults.txt', index=False, header=None)
+        issuesdf.to_csv('flaskr/static/issues.txt', index=False, header=None, columns=['ticker', 'correct_date'])
         return render_template('index.html', good=good, completecnt=completecnt, noissuescnt=noissuescnt, issuescnt=issuescnt, complete=completedf.to_html(classes='display table table-light sortable table-striped', table_id='sortit', escape=False, index=False, col_space=0, header=True, render_links=True, justify='center'), issues=issuesdf.to_html(classes='display table table-light sortable table-striped', table_id='sortit', escape=False, index=False, col_space=0, header=True, render_links=True, justify='center'), noissues=noissuesdf.to_html(classes='display table table-light sortable table-striped', table_id='sortit', escape=False, index=False, col_space=0, header=True, render_links=True, justify='center'))
     return render_template('index.html')
 
