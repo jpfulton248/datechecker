@@ -70,7 +70,7 @@ def submit():
                     str.upper(bmoamc)
                 except:
                     pass
-                if projected != 1 and projected != '' and projected != 'None':
+                if projected != 1:
                     if kedate == edate and bmoamc == kbmoamc and bmoamc != 'None':
                         issues = str('No Issues')
                         forfilter = str('Include')
