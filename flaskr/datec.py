@@ -1,4 +1,4 @@
-from flask import Flask, current_app, jsonify, render_template, url_for, redirect, request, Response, escape, abort
+from flask import Flask, current_app, jsonify, render_template, send_file, send_from_directory, url_for, redirect, request, Response, escape, abort
 from flask_sqlalchemy import SQLAlchemy
 from matplotlib import image
 from numpy import logical_or
@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 import os
 from sqlalchemy import false, true
 import io
+import re
 
 load_dotenv
 
@@ -31,6 +32,60 @@ class alldates(db.Model):
     edate = db.Column(db.String(255))
     bmoamc = db.Column(db.String(255))
     projected = db.Column(db.String(255))
+
+class earningsdates(db.Model):
+    earningsdateid = db.Column(db.Integer(), primary_key=True)
+    ticker = db.Column(db.String(15))
+    companyname = db.Column(db.String(100))
+    exactearningsdate = db.Column(db.String())
+    beforedate = db.Column(db.String())
+    closebefore = db.Column(db.String())
+    afterdate = db.Column(db.String())
+    openafter = db.Column(db.Numeric(20,2))
+    highafter = db.Column(db.Numeric(20,2))
+    lowafter = db.Column(db.Numeric(20,2))
+    closeafter = db.Column(db.String())
+    actualmove = db.Column(db.Numeric(20,2))
+    actualmoveperc = db.Column(db.Numeric(20,2))
+    averageoptionvol = db.Column(db.Float())
+    averagestockvol = db.Column(db.Float())
+    marketcap = db.Column(db.Numeric(20,2))
+    impliedmove = db.Column(db.Numeric(20,2))
+    staticstrike = db.Column(db.Numeric(20,2))
+    staticexpiry = db.Column(db.String())
+    staticprice = db.Column(db.Numeric(20,2))
+    staticunderlying = db.Column(db.Numeric(10,2))
+    staticiv = db.Column(db.Numeric(20,2))
+    updated = db.Column(db.String())
+    expiration = db.Column(db.String())
+    ivcrushto = db.Column(db.String())
+    reportlink = db.Column(db.String())
+    filedate = db.Column(db.String())
+
+@app.route('/histdates')
+def hist():
+    q = earningsdates.query.with_entities(earningsdates.ticker, earningsdates.exactearningsdate, earningsdates.beforedate, earningsdates.afterdate).order_by(earningsdates.ticker.asc(), earningsdates.exactearningsdate.asc()).all()
+    df = pd.DataFrame(q, columns=['ticker', 'edate', 'beforedate', 'afterdate'])
+    df['edate'] = df['edate'].dt.strftime('%Y-%m-%d %H:%M:%S')
+    df['edate'].replace(to_replace=r"16:00:00", value="AMC", regex=True, inplace=True)
+    df['edate'].replace(to_replace=r"08:00:00", value="BMO", regex=True, inplace=True)
+    df[['edate', 'etime']] = df['edate'].str.split(r" ", expand=True)
+    df = df[['ticker', 'edate', 'etime', 'beforedate', 'afterdate']]
+    df.to_csv('flaskr/static/histdates.txt', index=False, header=True)
+    return send_file('static/histdates.txt')
+
+@app.route('/hist/<string:routeticker>')
+def histperticker(routeticker):
+    q = earningsdates.query.with_entities(earningsdates.ticker, earningsdates.exactearningsdate, earningsdates.beforedate, earningsdates.afterdate).filter(earningsdates.ticker == routeticker).order_by(earningsdates.exactearningsdate.asc()).all()
+    df = pd.DataFrame(q, columns=['ticker', 'edate', 'beforedate', 'afterdate'])
+    df['edate'] = df['edate'].dt.strftime('%Y-%m-%d %H:%M:%S')
+    df['edate'].replace(to_replace=r"16:00:00", value="AMC", regex=True, inplace=True)
+    df['edate'].replace(to_replace=r"08:00:00", value="BMO", regex=True, inplace=True)
+    df[['edate', 'etime']] = df['edate'].str.split(r" ", expand=True)
+    df = df[['ticker', 'edate', 'etime', 'beforedate', 'afterdate']]
+    df.to_csv('flaskr/static/perticker.txt', index=False, header=True)
+    return send_file('static/perticker.txt')
+
 
 @app.route('/')
 def index():
